@@ -1,0 +1,47 @@
+﻿{
+	"Save": "Save",
+	"Open": "Open",
+	"Language": "Language",
+	"FileList": "File List",
+	"AddJob": "Add Job",
+	"NewJob": "New Job",
+	"Name": "Name",
+	"SourceDirectory": "Source Directory",
+	"TargetDirectory": "Target Directory",
+	"AddCondition": "Add Condition",
+	"Property": "Property",
+	"Operator": "Operator",
+	"LeftBracket": "Left Bracket",
+	"RightBracket": "Right Bracket",
+	"Connective": "Connective",
+	"Value": "Value",
+	"OpenFileDialog": "Select...",
+	"Properties":
+	{
+		"FileName": "File Name",
+		"FilePath": "File Path",
+		"FileSize": "File Size(Bytes)",
+		"DirectoryPath": "Directory Path",
+		"Extension": "Extension",
+		"LastWriteTime": "Last Write Time",
+		"CreationTime": "Creation Time",
+		"LastAccessTime": "Last Access Time"
+	},
+	"Operators":
+	{
+		"RegularExpression": "Regular Expression",
+		"Contains": "Contains",
+		"NotContains": "Not Contains",
+		"Equals": "Equals",
+		"NotEquals": "Not Equals",
+		"StartsWith": "Starts With",
+		"NotStartsWith": "Not Starts With",
+		"EndsWith": "Ends With",
+		"NotEndsWith": "Not Ends With"
+	},
+	"LogicalConnective":
+	{
+		"And": "And",
+		"Or": "Or"
+	}
+}

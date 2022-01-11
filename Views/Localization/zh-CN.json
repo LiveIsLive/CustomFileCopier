@@ -1,0 +1,47 @@
+﻿{
+	"Save": "保存",
+	"Open": "打开",
+	"Language": "语言",
+	"FileList": "文件列表",
+	"AddJob": "添加任务",
+	"NewJob": "新任务",
+	"Name": "名称",
+	"SourceDirectory": "源目录",
+	"TargetDirectory": "目标目录",
+	"AddCondition": "添加条件",
+	"Property": "属性",
+	"Operator": "运算符",
+	"LeftBracket": "左括号",
+	"RightBracket": "右括号",
+	"Connective": "连接符",
+	"Value": "值",
+	"OpenFileDialog": "选择...",
+	"Properties":
+	{
+		"FileName": "文件名",
+		"FilePath": "完整路径",
+		"FileSize": "文件大小(字节)",
+		"DirectoryPath": "所在目录路径",
+		"Extension": "扩展名",
+		"LastWriteTime": "修改时间",
+		"CreationTime": "创建时间",
+		"LastAccessTime": "访问时间"
+	},
+	"Operators":
+	{
+		"RegularExpression": "正则表达式",
+		"Contains": "包含",
+		"NotContains": "不包含",
+		"Equals": "等于",
+		"NotEquals": "不等于",
+		"StartsWith": "始于",
+		"NotStartsWith": "非始于",
+		"EndsWith": "终于",
+		"NotEndsWith": "非终于"
+	},
+	"LogicalConnective":
+	{
+		"And": "而且",
+		"Or": "或者"
+	}
+}
