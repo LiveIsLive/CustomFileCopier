@@ -79,9 +79,9 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 			this.Task.Jobs.Add(job);
 		}
 
-		public void Save()
+		public void Save(string path)
 		{
-
+			this.Task.Save(path);
 		}
 
 		public void Open()

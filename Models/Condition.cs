@@ -55,21 +55,24 @@ namespace ColdShineSoft.SmartFileCopier.Models
 
 		public LogicalConnective? Connective { get; set; }
 
-		private object _Value;
+		public string StringValue { get; set; }
+
+		public long LongValue { get; set; }
+
+		public System.DateTime DateTimeValue { get; set; } = System.DateTime.Today;
+
+		[Newtonsoft.Json.JsonIgnore]
 		public object Value
 		{
 			get
 			{
-				return this._Value;
-			}
-			set
-			{
-				if (this.Property.Type == PropertyTypes.DateTime && value is string)
-					this._Value = Newtonsoft.Json.JsonConvert.DeserializeObject<System.DateTime>(value.ToString());
-					//this._Value = NetJSON.NetJSON.Deserialize<System.DateTime>(value.ToString());
-				else this._Value = value;
-
-				this._RegularExpression = null;
+				if (this.ValueType == PropertyTypes.String)
+					return this.StringValue;
+				if (this.ValueType == PropertyTypes.Int64)
+					return this.LongValue;
+				if (this.ValueType == PropertyTypes.DateTime)
+					return this.DateTimeValue;
+				throw new System.TypeUnloadedException($"The value type “{this.ValueType}” is unrecognized.");
 			}
 		}
 
