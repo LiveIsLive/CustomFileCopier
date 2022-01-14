@@ -96,6 +96,10 @@
     <Compile Include="GetDictionaryValue.xaml.cs">
       <DependentUpon>GetDictionaryValue.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SaveFileButton..cs" />
+    <Compile Include="OpenFileSplitButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

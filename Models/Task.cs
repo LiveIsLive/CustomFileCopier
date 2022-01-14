@@ -74,6 +74,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			//NetJSON.NetJSON.Serialize(this, stream);
 			new Newtonsoft.Json.JsonSerializer().Serialize(writer, this);
 			writer.Close();
+			Setting.Instance.AddRecentFile(path);
 		}
 
 		public static Task Open(string path)
@@ -87,6 +88,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			finally
 			{
 				stream.Close();
+				Setting.Instance.AddRecentFile(path);
 			}
 		}
 	}

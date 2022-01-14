@@ -10,6 +10,23 @@ namespace ColdShineSoft.SmartFileCopier.Models
 	{
 		public string SelectedCultureName { get; set; }
 
+		public byte MaxRecentFileCount { get; set; } = 10;
+
+		private System.Collections.ObjectModel.ObservableCollection<string> _RecentFiles;
+		public System.Collections.ObjectModel.ObservableCollection<string> RecentFiles
+		{
+			get
+			{
+				if (this._RecentFiles == null)
+					this._RecentFiles = new System.Collections.ObjectModel.ObservableCollection<string>();
+				return this._RecentFiles;
+			}
+			set
+			{
+				this._RecentFiles = value;
+			}
+		}
+
 		protected static readonly string SavePath = System.AppDomain.CurrentDomain.BaseDirectory + "Setting.json";
 
 		private static Setting _Instance;
@@ -28,6 +45,16 @@ namespace ColdShineSoft.SmartFileCopier.Models
 					else _Instance = new Setting();
 				return _Instance;
 			}
+		}
+
+		public void AddRecentFile(string path)
+		{
+			int index = this.RecentFiles.IndexOf(path);
+			if (index >= 0)
+				this.RecentFiles.Move(index, 0);
+			else this.RecentFiles.Insert(0, path);
+			if (this.RecentFiles.Count > this.MaxRecentFileCount)
+				this.RecentFiles.RemoveAt(this.RecentFiles.Count - 1);
 		}
 
 		public void Save()
