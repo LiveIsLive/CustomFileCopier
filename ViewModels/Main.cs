@@ -72,6 +72,52 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public System.Collections.Generic.Dictionary<System.Type, Models.Operator[]> Operators { get; } = Models.Operator.Operators;
 
+		public static string _OpeningFilePath;
+		public string OpeningFilePath
+		{
+			get
+			{
+				return _OpeningFilePath;
+			}
+			set
+			{
+				_OpeningFilePath = value;
+				this.NotifyOfPropertyChange(() => this.OpeningFilePath);
+			}
+		}
+
+		public static void SetOpeningFilePath(string path)
+		{
+			_OpeningFilePath = path;
+		}
+
+		private string[] _RecentFiles;
+		public string[] RecentFiles
+		{
+			get
+			{
+				if (this._RecentFiles == null)
+					this._RecentFiles = this.Setting.RecentFiles.Where(f => f != OpeningFilePath).ToArray();
+				return this._RecentFiles;
+			}
+		}
+
+		protected const string ProgramName = "Smart File Copier";
+
+		private string _Title = ProgramName;
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				this._Title = value;
+				this.NotifyOfPropertyChange(() => this.Title);
+			}
+		}
+
 		public void AddJob()
 		{
 			Models.Job job = new Models.Job();
@@ -81,12 +127,36 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void Save(string path)
 		{
-			this.Task.Save(path);
+			if (OpeningFilePath == null)
+				OpeningFilePath = path;
+			this.Save();
 		}
 
-		public void Open()
+		public void SaveAs(string path)
 		{
+			OpeningFilePath = path;
+			this.Save();
+		}
 
+		public void Save()
+		{
+			this.Task.Save(OpeningFilePath);
+			this._RecentFiles = null;
+			this.NotifyOfPropertyChange(() => this.RecentFiles);
+			this.SetTitle();
+		}
+
+		public void Open(string path)
+		{
+			this.Task = Models.Task.Open(path);
+			OpeningFilePath = path;
+			this.NotifyOfPropertyChange(() => this.RecentFiles);
+			this.SetTitle();
+		}
+
+		protected void SetTitle()
+		{
+			this.Title = ProgramName + " - " + System.IO.Path.GetFileNameWithoutExtension(OpeningFilePath);
 		}
 
 		public void AddCondition(Models.Job job)

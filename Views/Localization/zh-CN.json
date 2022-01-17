@@ -1,5 +1,6 @@
 ﻿{
 	"Save": "保存",
+	"SaveAs": "另存为...",
 	"Open": "打开",
 	"RecentFiles": "最近使用过的文件",
 	"Language": "语言",
@@ -16,7 +17,13 @@
 	"RightBracket": "右括号",
 	"Connective": "连接符",
 	"Value": "值",
-	"OpenFileDialog": "选择...",
+	"OpenFileDialog": "浏览...",
+
+	"Path": "完整路径",
+	"Directory": "所在目录",
+	"Result": "处理结果",
+	"Error": "错误",
+
 	"Properties":
 	{
 		"FileName": "文件名",
@@ -44,5 +51,12 @@
 	{
 		"And": "而且",
 		"Or": "或者"
+	},
+	"CopyResult":
+	{
+		"Waiting": "待复制",
+		"Copying": "复制中",
+		"Success": "复制成功",
+		"Failure": "复制失败"
 	}
 }

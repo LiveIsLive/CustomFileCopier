@@ -16,6 +16,9 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
 		{
+			if (e.Args.Length == 1)
+				Main.SetOpeningFilePath(e.Args[0]);
+
 			var config = new Caliburn.Micro.TypeMappingConfiguration
 			{
 				UseNameSuffixesInMappings = false,
@@ -29,34 +32,6 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 			this.DisplayRootViewFor<Main>();
 		}
-
-		//private System.ComponentModel.Composition.Hosting.CompositionContainer container;
-		//protected override void Configure()
-		//{
-		//	container = new System.ComponentModel.Composition.Hosting.CompositionContainer(new System.ComponentModel.Composition.Hosting.AggregateCatalog(Caliburn.Micro.AssemblySource.Instance.Select(x => new System.ComponentModel.Composition.Hosting.AssemblyCatalog(x)).OfType<System.ComponentModel.Composition.Primitives.ComposablePartCatalog>()));
-
-		//	System.ComponentModel.Composition.Hosting.CompositionBatch batch = new System.ComponentModel.Composition.Hosting.CompositionBatch();
-
-		//	batch.AddExportedValue<Caliburn.Micro.IWindowManager>(new Caliburn.Micro.WindowManager());
-		//	batch.AddExportedValue<Caliburn.Micro.IEventAggregator>(new Caliburn.Micro.EventAggregator());
-		//	batch.AddExportedValue(container);
-
-		//	container.Compose(batch);
-		//}
-
-
-		//protected override object GetInstance(System.Type serviceType, string key)
-		//{
-		//	string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
-		//	var exports = container.GetExportedValues<object>(contract);
-
-		//	if (exports.Count() > 0)
-		//	{
-		//		return exports.First();
-		//	}
-
-		//	throw new System.Exception(string.Format("Could not locate any instances of contract {0}.", contract));
-		//}
 
 		protected override System.Collections.Generic.IEnumerable<System.Reflection.Assembly> SelectAssemblies()
 		{

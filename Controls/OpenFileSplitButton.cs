@@ -53,7 +53,7 @@ namespace ColdShineSoft.SmartFileCopier.Controls
 
 		public OpenFileSplitButton()
 		{
-			this.Style = new Style(typeof(OpenFileSplitButton), (System.Windows.Style)Application.Current.TryFindResource("ButtonDefault"));
+			this.Style = new Style(typeof(OpenFileSplitButton), (System.Windows.Style)Application.Current.TryFindResource(typeof(HandyControl.Controls.SplitButton)));
 		}
 
 		protected virtual void OnOpenFile(string path)

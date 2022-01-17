@@ -8,8 +8,9 @@ namespace ColdShineSoft.SmartFileCopier.Models
 {
 	public enum CopyResult
 	{
-		未复制,
-		复制成功,
-		复制失败
+		Waiting,
+		Copying,
+		Success,
+		Failure
 	}
 }

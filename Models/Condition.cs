@@ -9,6 +9,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 	public class Condition : Caliburn.Micro.PropertyChangedBase
 	{
 		private int _PropertyId;
+		[Newtonsoft.Json.JsonProperty]
 		public int PropertyId
 		{
 			get
@@ -31,6 +32,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private int _OperatorId;
+		[Newtonsoft.Json.JsonProperty]
 		public int OperatorId
 		{
 			get
@@ -49,19 +51,24 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
+		[Newtonsoft.Json.JsonProperty]
 		public bool LeftBracket { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public bool RightBracket { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public LogicalConnective? Connective { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public string StringValue { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public long LongValue { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public System.DateTime DateTimeValue { get; set; } = System.DateTime.Today;
 
-		[Newtonsoft.Json.JsonIgnore]
 		public object Value
 		{
 			get
@@ -77,7 +84,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private System.Type _ValueType;
-		[Newtonsoft.Json.JsonIgnore]
 		public System.Type ValueType
 		{
 			get
@@ -91,7 +97,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private System.Text.RegularExpressions.Regex _RegularExpression;
-		[Newtonsoft.Json.JsonIgnore]
 		public System.Text.RegularExpressions.Regex RegularExpression
 		{
 			get
@@ -103,7 +108,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private Property _Property;
-		[Newtonsoft.Json.JsonIgnore]
 		public Property Property
 		{
 			get
@@ -128,7 +132,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private Operator _Operator;
-		[Newtonsoft.Json.JsonIgnore]
 		public Operator Operator
 		{
 			get
@@ -158,7 +161,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		protected static System.Collections.Generic.Dictionary<LogicalConnective, string> Connectives = new Dictionary<LogicalConnective, string>() { { LogicalConnective.And, "&&" }, { LogicalConnective.Or, "||" } };
 
 		private string _Expression;
-		[Newtonsoft.Json.JsonIgnore]
 		public string Expression
 		{
 			get
@@ -178,7 +180,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private DynamicExpresso.Parameter[] _Parameters;
-		[Newtonsoft.Json.JsonIgnore]
 		public DynamicExpresso.Parameter[] Parameters
 		{
 			get
