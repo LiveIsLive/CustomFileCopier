@@ -50,15 +50,19 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
+		public int SourceDirectoryLength;
+
 		public File()
 		{
 
 		}
 
-		public File(System.IO.FileInfo fileInfo)
+		public File(System.IO.FileInfo fileInfo,int sourceDirectoryLength)
 		{
 			this._FileInfo = fileInfo;
 			this.Path = fileInfo.FullName;
+
+			this.SourceDirectoryLength = sourceDirectoryLength;
 		}
 	}
 }

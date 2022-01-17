@@ -23,5 +23,15 @@ namespace ColdShineSoft.SmartFileCopier.Views
 		{
 			InitializeComponent();
 		}
+
+		private void SplitButton_SaveFile(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void SplitButton_SaveFile(object sender, RoutedPropertyChangedEventArgs<string> e)
+		{
+
+		}
 	}
 }

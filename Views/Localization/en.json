@@ -1,5 +1,6 @@
 ﻿{
 	"Save": "Save",
+	"SaveAs": "Save As...",
 	"Open": "Open",
 	"RecentFiles": "Recent Files",
 	"Language": "Language",
@@ -16,7 +17,7 @@
 	"RightBracket": "Right Bracket",
 	"Connective": "Connective",
 	"Value": "Value",
-	"OpenFileDialog": "Select...",
+	"OpenFileDialog": "Browse...",
 	"Properties":
 	{
 		"FileName": "File Name",
@@ -44,5 +45,12 @@
 	{
 		"And": "And",
 		"Or": "Or"
+	},
+	"CopyResult":
+	{
+		"Waiting": "Waiting To Copy",
+		"Copying": "Copying",
+		"Success": "Success",
+		"Failure": "Failure"
 	}
 }

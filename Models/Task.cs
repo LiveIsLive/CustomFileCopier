@@ -9,6 +9,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 	public class Task : Caliburn.Micro.PropertyChangedBase
 	{
 		private System.Collections.ObjectModel.ObservableCollection<Job> _Jobs;
+		[Newtonsoft.Json.JsonProperty]
 		public System.Collections.ObjectModel.ObservableCollection<Job> Jobs
 		{
 			get
@@ -26,12 +27,13 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
+		[Newtonsoft.Json.JsonProperty]
 		public bool ZipTargetDirectory { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public string ZipFilePath { get; set; }
 
 		private File[] _Files = new File[0];
-		[Newtonsoft.Json.JsonIgnore]
 		public File[] Files
 		{
 			get

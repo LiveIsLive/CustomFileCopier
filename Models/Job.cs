@@ -9,6 +9,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 	public class Job : Caliburn.Micro.PropertyChangedBase
 	{
 		private string _Name;
+		[Newtonsoft.Json.JsonProperty]
 		public string Name
 		{
 			get
@@ -23,6 +24,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private string _SourceDirectory;
+		[Newtonsoft.Json.JsonProperty]
 		public string SourceDirectory
 		{
 			get
@@ -37,7 +39,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private int? _SourceDirectoryLength;
-		[Newtonsoft.Json.JsonIgnore]
 		public int SourceDirectoryLength
 		{
 			get
@@ -56,6 +57,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private string _TargetDirectory;
+		[Newtonsoft.Json.JsonProperty]
 		public string TargetDirectory
 		{
 			get
@@ -87,9 +89,9 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		//	}
 		//}
 
+		[Newtonsoft.Json.JsonProperty]
 		public System.Collections.ObjectModel.ObservableCollection<Condition> Conditions { get; set; } = new System.Collections.ObjectModel.ObservableCollection<Condition>();
 
-		[Newtonsoft.Json.JsonIgnore]
 		public string Expression
 		{
 			get
@@ -98,7 +100,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
-		[Newtonsoft.Json.JsonIgnore]
 		public DynamicExpresso.Parameter[] Parameters
 		{
 			get
@@ -107,8 +108,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
-
-		[Newtonsoft.Json.JsonIgnore]
 		public File[] SourceFiles
 		{
 			get
@@ -150,8 +149,9 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			long fileSize = 0;
 			foreach(File sourceFile in this.SourceFiles)
 			{
-				if(sourceFile.Result!=CopyResult.复制成功)
+				if(sourceFile.Result!=CopyResult.Success)
 				{
+					sourceFile.Result = CopyResult.Copying;
 					string targetFilePath = this.GetTargetFilePath(sourceFile.Path);
 					string targetDirectory = System.IO.Path.GetDirectoryName(targetFilePath);
 					if(!System.IO.Directory.Exists(targetDirectory))
@@ -161,7 +161,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 						}
 						catch(System.Exception exception)
 						{
-							sourceFile.Result = CopyResult.复制失败;
+							sourceFile.Result = CopyResult.Failure;
 							sourceFile.Error = exception.Message;
 							//return exception.Message;
 							continue;
@@ -172,13 +172,13 @@ namespace ColdShineSoft.SmartFileCopier.Models
 					}
 					catch(System.Exception exception)
 					{
-						sourceFile.Result = CopyResult.复制失败;
+						sourceFile.Result = CopyResult.Failure;
 						sourceFile.Error = exception.Message;
 						//return exception.Message;
 						continue;
 					}
 				}
-				sourceFile.Result = CopyResult.复制成功;
+				sourceFile.Result = CopyResult.Success;
 				fileCount++;
 				fileSize += sourceFile.FileInfo.Length;
 				this.OnFileCopied(fileCount, fileSize);

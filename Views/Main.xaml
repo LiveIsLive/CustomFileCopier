@@ -12,20 +12,44 @@
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
 		mc:Ignorable="d"
 		d:DataContext="{d:DesignInstance Type=viewModels:Main,IsDesignTimeCreatable=True}"
-		Title="Smart File Copier">
+		Title="{Binding Title}">
 	<DockPanel>
 		<hc:SimplePanel DockPanel.Dock="Top">
 			<ToolBar Padding="10,6">
 				<Button Name="AddJob" hc:IconElement.Geometry="{StaticResource AddGeometry}" Margin="10,0,0,0" Content="{Binding Localization.AddJob}" />
-				<controls:SaveFileButton cal:Message.Attach="[SaveFile]=[Save($this.SelectedFilePath)]" hc:IconElement.Geometry="{StaticResource SaveGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Save}" />
-				<hc:SplitButton Name="Open" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Open}">
+				<!--<hc:SplitButton controls:SaveFileHelper.Enabled="True" Tag="{Binding Path=(controls:SaveFileHelper.SelectedFilePath),RelativeSource={RelativeSource Mode=Self}}"  cal:Message.Attach="[Event controls:SaveFileHelper.SaveFile]=[Action Save($this.Tag)]" hc:IconElement.Geometry="{StaticResource SaveGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Save}">
 					<hc:SplitButton.DropDownContent>
 						<StackPanel>
-							<MenuItem Header="G:\WindowsApplications\SmartFileCopier\Views\Localization\en.json" Command="{Binding SelectCmd}" CommandParameter="Command1"/>
-							<MenuItem Header="G:\WindowsApplications\SmartFileCopier\Views\Localization\zh-CN.json" Command="{Binding SelectCmd}" CommandParameter="Command2"/>
+							<MenuItem Header="{Binding Localization.SaveAs}" Command="{Binding SelectCmd}" CommandParameter="Command1"/>
 						</StackPanel>
 					</hc:SplitButton.DropDownContent>
-				</hc:SplitButton>
+				</hc:SplitButton>-->
+				<controls:SaveFileSplitButton SelectedFilePath="{Binding OpeningFilePath}" cal:Message.Attach="[SaveFile]=[Save($this.SelectedFilePath)]" hc:IconElement.Geometry="{StaticResource SaveGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Save}">
+					<controls:SaveFileSplitButton.DropDownContent>
+						<StackPanel>
+							<controls:SaveFileMenuItem Header="{Binding Localization.SaveAs}" cal:Message.Attach="[SaveFile]=[SaveAs($this.SelectedFilePath)]" />
+						</StackPanel>
+					</controls:SaveFileSplitButton.DropDownContent>
+				</controls:SaveFileSplitButton>
+				<controls:OpenFileSplitButton cal:Message.Attach="[OpenFile]=[Open($this.SelectedFilePath)]" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Open}">
+					<controls:OpenFileSplitButton.DropDownContent>
+						<StackPanel>
+							<TextBlock Text="{Binding Localization.RecentFiles}" Margin="5" />
+							<ItemsControl ItemsSource="{Binding RecentFiles}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<StackPanel />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<MenuItem Header="{Binding}" cal:Message.Attach="Open($dataContext)" cal:Action.TargetWithoutContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}" />
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</StackPanel>
+					</controls:OpenFileSplitButton.DropDownContent>
+				</controls:OpenFileSplitButton>
 			</ToolBar>
 			<Menu HorizontalAlignment="Right" Margin="0,0,10,3" VerticalAlignment="Center">
 				<MenuItem Header="{Binding Localization.Language}" ItemsSource="{Binding InstalledCultures}">
@@ -108,7 +132,7 @@
 										</DataGridTemplateColumn.Header>
 										<DataGridTemplateColumn.CellTemplate>
 											<DataTemplate>
-												<controls:ToggleBoolean Value="{Binding LeftBracket}" TrueContent="(" />
+												<controls:ToggleBoolean Value="{Binding Path=LeftBracket,UpdateSourceTrigger=PropertyChanged}" TrueContent="(" />
 											</DataTemplate>
 										</DataGridTemplateColumn.CellTemplate>
 									</DataGridTemplateColumn>
@@ -190,6 +214,16 @@
 										</DataGridTemplateColumn.CellTemplate>
 									</DataGridTemplateColumn>
 									<DataGridTemplateColumn>
+										<DataGridTemplateColumn.Header>
+											<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.RightBracket}" />
+										</DataGridTemplateColumn.Header>
+										<DataGridTemplateColumn.CellTemplate>
+											<DataTemplate>
+												<controls:ToggleBoolean Value="{Binding Path=RightBracket,UpdateSourceTrigger=PropertyChanged}" TrueContent=")" />
+											</DataTemplate>
+										</DataGridTemplateColumn.CellTemplate>
+									</DataGridTemplateColumn>
+									<DataGridTemplateColumn>
 										<DataGridTemplateColumn.CellTemplate>
 											<DataTemplate>
 												<Button Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}"/>
@@ -204,7 +238,26 @@
 			</hc:TabControl>
 			<GridSplitter Grid.Row="0" Height="5" Visibility="{c:Binding FileListExpanded}"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="Gray" />
 			<Expander Grid.Row="1" cal:Message.Attach="[Collapsed]=[CollapsedExpander($this.MinHeight,$this.ActualHeight)];[Expanded]=[ExpandExpander]" Header="{Binding Localization.FileList}" IsExpanded="{Binding Path=FileListExpanded}" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource BorderBrush}">
-				<Border Background="{DynamicResource SecondaryRegionBrush}" />
+				<DataGrid ItemsSource="{Binding Task.Files}" AutoGenerateColumns="False">
+					<DataGrid.Columns>
+						<DataGridTemplateColumn>
+							<DataGridTemplateColumn.Header>
+								<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Connective}" />
+							</DataGridTemplateColumn.Header>
+							<DataGridTemplateColumn.CellTemplate>
+								<DataTemplate>
+									<hc:ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Connectives}" SelectedItem="{Binding Path=Connective,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding RelativeSource={RelativeSource AncestorType=DataGrid},Path=DataContext}" Visibility="{c:Binding 'Tag.Conditions[0]!=DataContext',RelativeSource={RelativeSource Mode=Self}}" MinWidth="75">
+										<hc:ComboBox.ItemTemplate>
+											<DataTemplate>
+												<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.LogicalConnective}" Key="{Binding}" />
+											</DataTemplate>
+										</hc:ComboBox.ItemTemplate>
+									</hc:ComboBox>
+								</DataTemplate>
+							</DataGridTemplateColumn.CellTemplate>
+						</DataGridTemplateColumn>
+					</DataGrid.Columns>
+				</DataGrid>
 			</Expander>
 		</Grid>
 	</DockPanel>

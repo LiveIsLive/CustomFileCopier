@@ -26,7 +26,7 @@ namespace ColdShineSoft.SmartFileCopier.Controls
 		[Bindables.DependencyProperty]
 		public object FalseContent { get; set; } = " ";
 
-		[Bindables.DependencyProperty]
+		[Bindables.DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
 		public bool Value { get; set; }
 
 		public ToggleBoolean()

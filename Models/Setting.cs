@@ -55,6 +55,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			else this.RecentFiles.Insert(0, path);
 			if (this.RecentFiles.Count > this.MaxRecentFileCount)
 				this.RecentFiles.RemoveAt(this.RecentFiles.Count - 1);
+			this.Save();
 		}
 
 		public void Save()

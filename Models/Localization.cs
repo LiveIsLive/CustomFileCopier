@@ -9,6 +9,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 	public class Localization
 	{
 		public string Save { get; set; }
+		public string SaveAs { get; set; }
 		public string Open { get; set; }
 		public string RecentFiles { get; set; }
 		public string Language { get; set; }
@@ -28,6 +29,12 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string Connective { get; set; }
 		public string Value { get; set; }
 
+		public string Path { get; set; }
+		public string Directory { get; set; }
+		public string Result { get; set; }
+		public string Error { get; set; }
+
+
 		public string OpenFileDialog { get; set; }
 
 		public System.Collections.Generic.Dictionary<string,string> Properties { get; set; }
@@ -35,5 +42,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public System.Collections.Generic.Dictionary<string,string> Operators { get; set; }
 
 		public System.Collections.Generic.Dictionary<LogicalConnective, string> LogicalConnective { get; set; }
+
+		public System.Collections.Generic.Dictionary<CopyResult, string> CopyResult { get; set; }
 	}
 }

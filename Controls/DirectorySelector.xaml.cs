@@ -37,7 +37,7 @@ namespace ColdShineSoft.SmartFileCopier.Controls
 		[Bindables.DependencyProperty]
 		public string OpenButtonText { get; set; } = "选择...";
 
-		[Bindables.DependencyProperty]
+		[Bindables.DependencyProperty(Options =FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
 		public string Path { get; set; }
 
 		public DirectorySelector()
