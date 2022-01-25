@@ -8,6 +8,8 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 {
 	public class Main : Screen
 	{
+		protected readonly System.Threading.CancellationTokenSource CancellationTokenSource = new System.Threading.CancellationTokenSource();
+
 		private Models.Task _Task = new Models.Task();
 		public Models.Task Task
 		{
@@ -127,14 +129,14 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void Save(string path)
 		{
-			if (OpeningFilePath == null)
-				OpeningFilePath = path;
+			if (this.OpeningFilePath == null)
+				this.OpeningFilePath = path;
 			this.Save();
 		}
 
 		public void SaveAs(string path)
 		{
-			OpeningFilePath = path;
+			this.OpeningFilePath = path;
 			this.Save();
 		}
 
@@ -149,7 +151,8 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 		public void Open(string path)
 		{
 			this.Task = Models.Task.Open(path);
-			OpeningFilePath = path;
+			this.OpeningFilePath = path;
+			this._RecentFiles = null;
 			this.NotifyOfPropertyChange(() => this.RecentFiles);
 			this.SetTitle();
 		}
@@ -167,6 +170,12 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 				condition.Connective = Models.LogicalConnective.And;
 			//condition.Operator = condition.Property.AllowOperators[0];
 			job.Conditions.Add(condition);
+		}
+
+		public void RemoveCondition(Models.Job job, Models.Condition condition)
+		{
+			job.Conditions.Remove(condition);
+			job.Conditions[0].Connective = null;
 		}
 
 		protected Models.Localization GetLocalization(System.Globalization.CultureInfo culture)
@@ -207,6 +216,17 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 		public void ExpandExpander()
 		{
 			this.FileListHeight = new System.Windows.GridLength(this.FileListPreviousHeight);
+		}
+
+		public void Run()
+		{
+			System.Threading.Tasks.Task.Run(() => this.Task.Run(), this.CancellationTokenSource.Token);
+		}
+
+		public void Stop()
+		{
+			this.CancellationTokenSource.Cancel();
+			this.Task.Status = Models.TaskStatus.Standby;
 		}
 	}
 }

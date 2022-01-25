@@ -89,8 +89,37 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		//	}
 		//}
 
+		private System.Collections.ObjectModel.ObservableCollection<Condition> _Conditions;
 		[Newtonsoft.Json.JsonProperty]
-		public System.Collections.ObjectModel.ObservableCollection<Condition> Conditions { get; set; } = new System.Collections.ObjectModel.ObservableCollection<Condition>();
+		public System.Collections.ObjectModel.ObservableCollection<Condition> Conditions
+		{
+			get
+			{
+				if(this._Conditions==null)
+				{
+					this._Conditions = new System.Collections.ObjectModel.ObservableCollection<Condition>();
+					this._Conditions.CollectionChanged += this.Conditions_CollectionChanged;
+				}
+				return this._Conditions;
+			}
+			set
+			{
+				this._Conditions = value;
+				value.CollectionChanged += Conditions_CollectionChanged;
+			}
+		}
+
+		private void Conditions_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			if(e.NewItems!=null&& e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+				foreach(Condition condition in e.NewItems)
+					condition.PropertyChanged += Condition_PropertyChanged;
+		}
+
+		private void Condition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			this._SourceFiles = null;
+		}
 
 		public string Expression
 		{
@@ -108,19 +137,24 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
+		private File[] _SourceFiles;
 		public File[] SourceFiles
 		{
 			get
 			{
-				System.Collections.Generic.List<File> files = new List<File>();
-				DynamicExpresso.Lambda lambda = new DynamicExpresso.Interpreter().Parse(this.Expression, typeof(bool), this.Parameters);
-				foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories))
+				if(this._SourceFiles==null)
 				{
-					System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
-					if ((bool)lambda.Invoke(this.Conditions.SelectMany(c => c.GetValues(fileInfo)).ToArray()))
-						files.Add(new File(fileInfo));
+					System.Collections.Generic.List<File> files = new List<File>();
+					DynamicExpresso.Lambda lambda = new DynamicExpresso.Interpreter().Parse(this.Expression, typeof(bool), this.Parameters);
+					foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories))
+					{
+						System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
+						if ((bool)lambda.Invoke(this.Conditions.SelectMany(c => c.GetValues(fileInfo)).ToArray()))
+							files.Add(new File(fileInfo,this.SourceDirectoryLength));
+					}
+					this._SourceFiles = files.ToArray();
 				}
-				return files.ToArray();
+				return this._SourceFiles;
 			}
 		}
 
@@ -168,9 +202,9 @@ namespace ColdShineSoft.SmartFileCopier.Models
 						}
 					try
 					{
-						System.IO.File.Copy(sourceFile.Path,targetFilePath);
+						System.IO.File.Copy(sourceFile.Path, targetFilePath, true);
 					}
-					catch(System.Exception exception)
+					catch (System.Exception exception)
 					{
 						sourceFile.Result = CopyResult.Failure;
 						sourceFile.Error = exception.Message;

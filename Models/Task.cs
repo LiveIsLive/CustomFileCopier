@@ -19,8 +19,9 @@ namespace ColdShineSoft.SmartFileCopier.Models
 					this._Jobs = new System.Collections.ObjectModel.ObservableCollection<Job>();
 					this._Jobs.CollectionChanged += (sender, e) =>
 					{
-						foreach (Job job in e.NewItems)
-							job.FileCopied += j => this.OnFileCopied(j.CopiedCount, j.CopiedSize);
+						if (e.NewItems != null)
+							foreach (Job job in e.NewItems)
+								job.FileCopied += j => this.OnFileCopied(j.CopiedCount, j.CopiedSize);
 					};
 				}
 				return this._Jobs;
@@ -33,22 +34,82 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		[Newtonsoft.Json.JsonProperty]
 		public string ZipFilePath { get; set; }
 
-		private File[] _Files = new File[0];
-		public File[] Files
+		private TaskStatus _Status;
+		public TaskStatus Status
+		{
+			get
+			{
+				return this._Status;
+			}
+			set
+			{
+				this._Status = value;
+				this.NotifyOfPropertyChange(() => this.Status);
+			}
+		}
+
+		private JobFile[] _Files = new JobFile[0];
+		public JobFile[] Files
 		{
 			get
 			{
 				if (this._Files == null)
-					this._Files = this.Jobs.SelectMany(j => j.SourceFiles).ToArray();
+					this._Files = this.Jobs.SelectMany(j => j.SourceFiles.Select(f => new JobFile(j, f))).ToArray();
 				return this._Files;
+			}
+			protected set
+			{
+				this._Files = value;
+				this.NotifyOfPropertyChange(() => this.Files);
+			}
+		}
+
+		private long? _TotalFileSize;
+		public long TotalFileSize
+		{
+			get
+			{
+				if (this._TotalFileSize == null)
+					this._TotalFileSize = this.Files.Sum(f => f.File.FileInfo.Length);
+				return this._TotalFileSize.Value;
+			}
+		}
+
+		private long _CopiedFileSize;
+		public long CopiedFileSize
+		{
+			get
+			{
+				return this._CopiedFileSize;
+			}
+			set
+			{
+				this._CopiedFileSize = value;
+				this.NotifyOfPropertyChange(() => this.CopiedFileSize);
+			}
+		}
+
+		private int _CopiedFileCount;
+		public int CopiedFileCount
+		{
+			get
+			{
+				return this._CopiedFileCount;
+			}
+			set
+			{
+				this._CopiedFileCount = value;
+				this.NotifyOfPropertyChange(() => this.CopiedFileCount);
 			}
 		}
 
 		public event System.Action<(int CopiedCount, long CopiedSize)> FileCopied;
 		protected void OnFileCopied(int copiedCount, long copiedSize)
 		{
+			this.CopiedFileCount += copiedCount;
+			this.CopiedFileSize += copiedSize;
 			if (this.FileCopied != null)
-				this.FileCopied((copiedCount, copiedSize));
+				this.FileCopied((this.CopiedFileCount, this.CopiedFileSize));
 		}
 
 		public event System.Action Done;
@@ -60,14 +121,25 @@ namespace ColdShineSoft.SmartFileCopier.Models
 
 		public void LoadFiles()
 		{
-			this._Files = null;
-			this.NotifyOfPropertyChange(() => this.Files);
+			this.Files = null;
+			this.CopiedFileSize = 0;
+			this.CopiedFileCount = 0;
 		}
 
 		public void CopyFiles()
 		{
 			foreach (Job job in this.Jobs)
 				job.CopyFiles();
+		}
+
+		public void Run()
+		{
+			this.Status = TaskStatus.CollectingFiles;
+			this.LoadFiles();
+			this.Status = TaskStatus.Copying;
+			this.CopyFiles();
+			this.Status = TaskStatus.Standby;
+			this.OnDone();
 		}
 
 		public void Save(string path)
