@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ColdShineSoft.SmartFileCopier.Models
 {
-	public class File
+	public class File : Caliburn.Micro.PropertyChangedBase
 	{
 		private string _Name;
 		[Newtonsoft.Json.JsonIgnore]
@@ -34,9 +34,33 @@ namespace ColdShineSoft.SmartFileCopier.Models
 
 		public string Path { get; set; }
 
-		public CopyResult Result { get; set; }
+		private CopyResult _Result;
+		public CopyResult Result
+		{
+			get
+			{
+				return this._Result;
+			}
+			set
+			{
+				this._Result = value;
+				this.NotifyOfPropertyChange(() => this.Result);
+			}
+		}
 
-		public string Error { get; set; }
+		private string _Error;
+		public string Error
+		{
+			get
+			{
+				return this._Error;
+			}
+			set
+			{
+				this._Error = value;
+				this.NotifyOfPropertyChange(() => this.Error);
+			}
+		}
 
 		private System.IO.FileInfo _FileInfo;
 		[Newtonsoft.Json.JsonIgnore]
@@ -51,6 +75,18 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		public int SourceDirectoryLength;
+
+		private string _RelativeDirectoryPath;
+		[Newtonsoft.Json.JsonIgnore]
+		public string RelativeDirectoryPath
+		{
+			get
+			{
+				if (this._RelativeDirectoryPath == null)
+					this._RelativeDirectoryPath = this.Path.Substring(this.SourceDirectoryLength);
+				return this._RelativeDirectoryPath;
+			}
+		}
 
 		public File()
 		{

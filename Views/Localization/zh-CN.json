@@ -5,8 +5,12 @@
 	"RecentFiles": "最近使用过的文件",
 	"Language": "语言",
 	"FileList": "文件列表",
+	"Job": "任务",
 	"AddJob": "添加任务",
 	"NewJob": "新任务",
+	"Run": "开始执行",
+	"Stop": "停止",
+
 	"Name": "名称",
 	"SourceDirectory": "源目录",
 	"TargetDirectory": "目标目录",
@@ -24,13 +28,16 @@
 	"Result": "处理结果",
 	"Error": "错误",
 
+	"Files": "文件",
+	"Bytes": "字节",
+
 	"Properties":
 	{
 		"FileName": "文件名",
 		"FilePath": "完整路径",
 		"FileSize": "文件大小(字节)",
 		"DirectoryPath": "所在目录路径",
-		"Extension": "扩展名",
+		"Extension": "扩展名(包含.)",
 		"LastWriteTime": "修改时间",
 		"CreationTime": "创建时间",
 		"LastAccessTime": "访问时间"
@@ -58,5 +65,11 @@
 		"Copying": "复制中",
 		"Success": "复制成功",
 		"Failure": "复制失败"
+	},
+	"TaskStatus":
+	{
+		"Standby": "待执行",
+		"CollectingFiles": "正在汇总文件...",
+		"Copying": "执行中..."
 	}
 }

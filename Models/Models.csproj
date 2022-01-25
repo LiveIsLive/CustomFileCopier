@@ -59,6 +59,7 @@
     <Compile Include="File.cs" />
     <Compile Include="GetIsPass.cs" />
     <Compile Include="Job.cs" />
+    <Compile Include="JobFile.cs" />
     <Compile Include="Localization.cs" />
     <Compile Include="LogicalConnective.cs" />
     <Compile Include="Operator.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="PropertyTypes.cs" />
     <Compile Include="Setting.cs" />
     <Compile Include="Task.cs" />
+    <Compile Include="TaskStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -14,8 +14,11 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string RecentFiles { get; set; }
 		public string Language { get; set; }
 		public string FileList { get; set; }
+		public string Job { get; set; }
 		public string AddJob { get; set; }
 		public string NewJob { get; set; }
+		public string Run { get; set; }
+		public string Stop { get; set; }
 
 		public string Name { get; set; }
 		public string SourceDirectory { get; set; }
@@ -34,6 +37,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string Result { get; set; }
 		public string Error { get; set; }
 
+		public string Files { get; set; }
+		public string Bytes { get; set; }
 
 		public string OpenFileDialog { get; set; }
 
@@ -44,5 +49,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public System.Collections.Generic.Dictionary<LogicalConnective, string> LogicalConnective { get; set; }
 
 		public System.Collections.Generic.Dictionary<CopyResult, string> CopyResult { get; set; }
+
+		public System.Collections.Generic.Dictionary<TaskStatus, string> TaskStatus { get; set; }
 	}
 }

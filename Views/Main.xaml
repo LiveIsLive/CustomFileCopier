@@ -17,13 +17,8 @@
 		<hc:SimplePanel DockPanel.Dock="Top">
 			<ToolBar Padding="10,6">
 				<Button Name="AddJob" hc:IconElement.Geometry="{StaticResource AddGeometry}" Margin="10,0,0,0" Content="{Binding Localization.AddJob}" />
-				<!--<hc:SplitButton controls:SaveFileHelper.Enabled="True" Tag="{Binding Path=(controls:SaveFileHelper.SelectedFilePath),RelativeSource={RelativeSource Mode=Self}}"  cal:Message.Attach="[Event controls:SaveFileHelper.SaveFile]=[Action Save($this.Tag)]" hc:IconElement.Geometry="{StaticResource SaveGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Save}">
-					<hc:SplitButton.DropDownContent>
-						<StackPanel>
-							<MenuItem Header="{Binding Localization.SaveAs}" Command="{Binding SelectCmd}" CommandParameter="Command1"/>
-						</StackPanel>
-					</hc:SplitButton.DropDownContent>
-				</hc:SplitButton>-->
+				<Button Name="Run" Visibility="{c:Binding 'Task.Status==models:TaskStatus.Standby'}" hc:IconElement.Geometry="{StaticResource RightGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Run}" />
+				<Button Name="Stop" Visibility="{c:Binding 'Task.Status!=models:TaskStatus.Standby'}" IsEnabled="True" hc:IconElement.Geometry="{StaticResource EyeCloseGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
 				<controls:SaveFileSplitButton SelectedFilePath="{Binding OpeningFilePath}" cal:Message.Attach="[SaveFile]=[Save($this.SelectedFilePath)]" hc:IconElement.Geometry="{StaticResource SaveGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Save}">
 					<controls:SaveFileSplitButton.DropDownContent>
 						<StackPanel>
@@ -31,7 +26,7 @@
 						</StackPanel>
 					</controls:SaveFileSplitButton.DropDownContent>
 				</controls:SaveFileSplitButton>
-				<controls:OpenFileSplitButton cal:Message.Attach="[OpenFile]=[Open($this.SelectedFilePath)]" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Open}">
+				<controls:OpenFileSplitButton DockPanel.Dock="Right" cal:Message.Attach="[OpenFile]=[Open($this.SelectedFilePath)]" hc:IconElement.Geometry="{StaticResource DownloadGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Open}">
 					<controls:OpenFileSplitButton.DropDownContent>
 						<StackPanel>
 							<TextBlock Text="{Binding Localization.RecentFiles}" Margin="5" />
@@ -67,12 +62,40 @@
 				</MenuItem>
 			</Menu>
 		</hc:SimplePanel>
+		<StatusBar DockPanel.Dock="Bottom">
+			<StatusBar.ItemsPanel>
+				<ItemsPanelTemplate>
+					<DockPanel />
+				</ItemsPanelTemplate>
+			</StatusBar.ItemsPanel>
+			<StatusBarItem DockPanel.Dock="Left">
+				<WrapPanel>
+					<TextBlock Text="{Binding Task.CopiedFileCount}" />
+					<TextBlock Text="/" />
+					<TextBlock Text="{Binding Task.Files.Length}" />
+					<TextBlock Text=" " />
+					<TextBlock Text="{Binding Localization.Files}" />
+				</WrapPanel>
+			</StatusBarItem>
+			<StatusBarItem DockPanel.Dock="Right">
+				<WrapPanel>
+					<TextBlock Text="{Binding Task.CopiedFileSize}" />
+					<TextBlock Text="/" />
+					<TextBlock Text="{Binding Task.TotalFileSize}" />
+					<TextBlock Text=" " />
+					<TextBlock Text="{Binding Localization.Bytes}" />
+				</WrapPanel>
+			</StatusBarItem>
+			<StatusBarItem HorizontalContentAlignment="Stretch">
+				<ProgressBar Minimum="0" Maximum="{Binding Task.TotalFileSize}" Value="{Binding Task.CopiedFileSize}" />
+			</StatusBarItem>
+		</StatusBar>
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="7*" />
 				<RowDefinition Height="{Binding Path=FileListHeight,Mode=TwoWay}" />
 			</Grid.RowDefinitions>
-			<hc:TabControl ItemsSource="{Binding Task.Jobs}" SelectedIndex="0">
+			<hc:TabControl ItemsSource="{Binding Task.Jobs}" SelectedIndex="0" ShowCloseButton="True">
 				<hc:TabControl.ItemTemplate>
 					<DataTemplate>
 						<TextBlock Text="{Binding Name}" />
@@ -226,7 +249,7 @@
 									<DataGridTemplateColumn>
 										<DataGridTemplateColumn.CellTemplate>
 											<DataTemplate>
-												<Button Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}"/>
+												<Button cal:Message.Attach="RemoveCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}"/>
 											</DataTemplate>
 										</DataGridTemplateColumn.CellTemplate>
 									</DataGridTemplateColumn>
@@ -240,22 +263,36 @@
 			<Expander Grid.Row="1" cal:Message.Attach="[Collapsed]=[CollapsedExpander($this.MinHeight,$this.ActualHeight)];[Expanded]=[ExpandExpander]" Header="{Binding Localization.FileList}" IsExpanded="{Binding Path=FileListExpanded}" BorderThickness="1,1,1,0" BorderBrush="{DynamicResource BorderBrush}">
 				<DataGrid ItemsSource="{Binding Task.Files}" AutoGenerateColumns="False">
 					<DataGrid.Columns>
+						<DataGridTextColumn Binding="{Binding Job.Name}">
+							<DataGridTextColumn.Header>
+								<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Job}" />
+							</DataGridTextColumn.Header>
+						</DataGridTextColumn>
+						<DataGridTextColumn Binding="{Binding File.FileInfo.Length}">
+							<DataGridTextColumn.Header>
+								<controls:GetDictionaryValue DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext}" Dictionary="{Binding Localization.Properties}" Key="{Binding Properties[2].Name}" />
+							</DataGridTextColumn.Header>
+						</DataGridTextColumn>
+						<DataGridTextColumn Binding="{Binding File.RelativeDirectoryPath}">
+							<DataGridTextColumn.Header>
+								<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Directory}" />
+							</DataGridTextColumn.Header>
+						</DataGridTextColumn>
 						<DataGridTemplateColumn>
 							<DataGridTemplateColumn.Header>
-								<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Connective}" />
+								<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Result}" />
 							</DataGridTemplateColumn.Header>
 							<DataGridTemplateColumn.CellTemplate>
 								<DataTemplate>
-									<hc:ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Connectives}" SelectedItem="{Binding Path=Connective,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding RelativeSource={RelativeSource AncestorType=DataGrid},Path=DataContext}" Visibility="{c:Binding 'Tag.Conditions[0]!=DataContext',RelativeSource={RelativeSource Mode=Self}}" MinWidth="75">
-										<hc:ComboBox.ItemTemplate>
-											<DataTemplate>
-												<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.LogicalConnective}" Key="{Binding}" />
-											</DataTemplate>
-										</hc:ComboBox.ItemTemplate>
-									</hc:ComboBox>
+									<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.CopyResult}" Key="{Binding File.Result}" />
 								</DataTemplate>
 							</DataGridTemplateColumn.CellTemplate>
 						</DataGridTemplateColumn>
+						<DataGridTextColumn Binding="{Binding File.Error}">
+							<DataGridTextColumn.Header>
+								<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Error}" />
+							</DataGridTextColumn.Header>
+						</DataGridTextColumn>
 					</DataGrid.Columns>
 				</DataGrid>
 			</Expander>

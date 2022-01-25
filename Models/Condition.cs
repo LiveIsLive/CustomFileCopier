@@ -186,8 +186,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			{
 				if (this._Parameters == null)
 					if (this.Operator.IsRegularExpressionOperator)
-						this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, typeof(string)), new DynamicExpresso.Parameter(this.PropertyVariableName, typeof(string))};
-					else this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, this.Property.Type), new DynamicExpresso.Parameter(this.PropertyVariableName, this.Property.Type)};
+						this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, typeof(string)), new DynamicExpresso.Parameter(this.ValueVariableName, typeof(string))};
+					else this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, this.Property.Type), new DynamicExpresso.Parameter(this.ValueVariableName, this.Property.Type)};
 				return this._Parameters;
 			}
 		}

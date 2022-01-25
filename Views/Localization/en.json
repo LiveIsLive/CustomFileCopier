@@ -5,8 +5,12 @@
 	"RecentFiles": "Recent Files",
 	"Language": "Language",
 	"FileList": "File List",
+	"Job": "Job",
 	"AddJob": "Add Job",
 	"NewJob": "New Job",
+	"Run": "Starting Runing",
+	"Stop": "Stop",
+
 	"Name": "Name",
 	"SourceDirectory": "Source Directory",
 	"TargetDirectory": "Target Directory",
@@ -18,13 +22,22 @@
 	"Connective": "Connective",
 	"Value": "Value",
 	"OpenFileDialog": "Browse...",
+
+	"Path": "File Path",
+	"Directory": "Directory Path",
+	"Result": "Result",
+	"Error": "Error",
+
+	"Files": "Files",
+	"Bytes": "Bytes",
+
 	"Properties":
 	{
 		"FileName": "File Name",
 		"FilePath": "File Path",
 		"FileSize": "File Size(Bytes)",
 		"DirectoryPath": "Directory Path",
-		"Extension": "Extension",
+		"Extension": "Extension(Starts Width)",
 		"LastWriteTime": "Last Write Time",
 		"CreationTime": "Creation Time",
 		"LastAccessTime": "Last Access Time"
@@ -52,5 +65,11 @@
 		"Copying": "Copying",
 		"Success": "Success",
 		"Failure": "Failure"
+	},
+	"TaskStatus":
+	{
+		"Standby": "Standby",
+		"CollectingFiles": "Collecting Files...",
+		"Copying": "Copying..."
 	}
 }
