@@ -10,6 +10,8 @@
 	"NewJob": "新任务",
 	"Run": "开始执行",
 	"Stop": "停止",
+	"RunTask": "执行任务",
+	"Status": "状态",
 
 	"Name": "名称",
 	"SourceDirectory": "源目录",
@@ -70,6 +72,7 @@
 	{
 		"Standby": "待执行",
 		"CollectingFiles": "正在汇总文件...",
-		"Copying": "执行中..."
+		"Copying": "正在复制文件...",
+		"Done": "已完成"
 	}
 }

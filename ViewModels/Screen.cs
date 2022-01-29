@@ -8,6 +8,8 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 {
 	public class Screen : Caliburn.Micro.Screen
 	{
+		protected readonly System.Threading.CancellationTokenSource CancellationTokenSource = new System.Threading.CancellationTokenSource();
+
 		protected static readonly string LocalizationDirectory = System.AppDomain.CurrentDomain.BaseDirectory + @"Localization\";
 
 		private Models.Setting _Setting;
@@ -38,6 +40,7 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 						System.Threading.Thread.CurrentThread.CurrentCulture= culture;
 						System.Threading.Thread.CurrentThread.CurrentUICulture= culture;
 					}
+					this.SetUiLang(this.Setting.SelectedCultureName);
 				}
 				return this._Setting;
 			}
@@ -68,6 +71,42 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 			{
 				this._Localization = value;
 				this.NotifyOfPropertyChange(() => this.Localization);
+			}
+		}
+
+		private Caliburn.Micro.WindowManager _WindowManager;
+		public Caliburn.Micro.WindowManager WindowManager
+		{
+			get
+			{
+				if (this._WindowManager == null)
+					this._WindowManager = new Caliburn.Micro.WindowManager();
+				return this._WindowManager;
+			}
+		}
+
+		protected static readonly System.Type UiConfigHelperType = System.Type.GetType("HandyControl.Tools.ConfigHelper,HandyControl");
+
+		protected static readonly object UiConfigHelper = UiConfigHelperType.GetField("Instance").GetValue(null);
+
+		protected static System.Reflection.MethodInfo SetUiLangMethod = UiConfigHelperType.GetMethod("SetLang");
+
+		protected void SetUiLang(string name)
+		{
+			try
+			{
+				SetUiLangMethod.Invoke(UiConfigHelper, new object[] { name });
+			}
+			catch
+			{
+				try
+				{
+					SetUiLangMethod.Invoke(UiConfigHelper, new object[] { name.Split('-')[0] });
+				}
+				catch
+				{
+					SetUiLangMethod.Invoke(UiConfigHelper, new object[] { "en" });
+				}
 			}
 		}
 	}
