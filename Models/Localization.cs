@@ -19,6 +19,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string NewJob { get; set; }
 		public string Run { get; set; }
 		public string Stop { get; set; }
+		public string RunTask { get; set; }
+		public string Status { get; set; }
 
 		public string Name { get; set; }
 		public string SourceDirectory { get; set; }

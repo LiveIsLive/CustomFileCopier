@@ -10,6 +10,8 @@
 	"NewJob": "New Job",
 	"Run": "Starting Runing",
 	"Stop": "Stop",
+	"RunTask": "Run Task",
+	"Status": "Status",
 
 	"Name": "Name",
 	"SourceDirectory": "Source Directory",
@@ -37,7 +39,7 @@
 		"FilePath": "File Path",
 		"FileSize": "File Size(Bytes)",
 		"DirectoryPath": "Directory Path",
-		"Extension": "Extension(Starts Width)",
+		"Extension": "Extension(Starts Width .)",
 		"LastWriteTime": "Last Write Time",
 		"CreationTime": "Creation Time",
 		"LastAccessTime": "Last Access Time"
@@ -70,6 +72,7 @@
 	{
 		"Standby": "Standby",
 		"CollectingFiles": "Collecting Files...",
-		"Copying": "Copying..."
+		"Copying": "Copying Files...",
+		"Done": "Done"
 	}
 }

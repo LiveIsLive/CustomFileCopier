@@ -60,7 +60,9 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			protected set
 			{
 				this._Files = value;
+				this._TotalFileSize = null;
 				this.NotifyOfPropertyChange(() => this.Files);
+				this.NotifyOfPropertyChange(() => this.TotalFileSize);
 			}
 		}
 
@@ -106,8 +108,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public event System.Action<(int CopiedCount, long CopiedSize)> FileCopied;
 		protected void OnFileCopied(int copiedCount, long copiedSize)
 		{
-			this.CopiedFileCount += copiedCount;
-			this.CopiedFileSize += copiedSize;
+			this.CopiedFileCount = this.Jobs.Sum(f => f.CopiedFileCount); ;
+			this.CopiedFileSize = this.Jobs.Sum(f => f.CopiedFileSize); ;
 			if (this.FileCopied != null)
 				this.FileCopied((this.CopiedFileCount, this.CopiedFileSize));
 		}
@@ -138,7 +140,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			this.LoadFiles();
 			this.Status = TaskStatus.Copying;
 			this.CopyFiles();
-			this.Status = TaskStatus.Standby;
+			this.Status = TaskStatus.Done;
 			this.OnDone();
 		}
 

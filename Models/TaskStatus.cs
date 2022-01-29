@@ -10,6 +10,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 	{
 		Standby,
 		CollectingFiles,
-		Copying
+		Copying,
+		Done
 	}
 }

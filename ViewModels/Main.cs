@@ -8,8 +8,6 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 {
 	public class Main : Screen
 	{
-		protected readonly System.Threading.CancellationTokenSource CancellationTokenSource = new System.Threading.CancellationTokenSource();
-
 		private Models.Task _Task = new Models.Task();
 		public Models.Task Task
 		{
@@ -199,13 +197,14 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 			this.Localization = this.GetLocalization(culture);
 			this.Setting.SelectedCultureName = culture.Name;
+			this.SetUiLang(this.Setting.SelectedCultureName);
 			System.Threading.Tasks.Task.Run(() => this.Setting.Save());
 		}
 
-		public void SelectProperty(Models.Condition condition)
-		{
+		//public void SelectProperty(Models.Condition condition)
+		//{
 
-		}
+		//}
 
 		public void CollapsedExpander(double expanderHeight,double fileListHeight)
 		{
@@ -220,13 +219,9 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void Run()
 		{
-			System.Threading.Tasks.Task.Run(() => this.Task.Run(), this.CancellationTokenSource.Token);
+			this.WindowManager.ShowDialog(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
 		}
 
-		public void Stop()
-		{
-			this.CancellationTokenSource.Cancel();
-			this.Task.Status = Models.TaskStatus.Standby;
-		}
+
 	}
 }

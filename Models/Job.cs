@@ -177,10 +177,13 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			return System.IO.Path.Combine(this.TargetDirectory, sourceFilePath.Substring(this.SourceDirectoryLength));
 		}
 
+		public int CopiedFileCount;
+		public long CopiedFileSize;
 		public void CopyFiles()
 		{
-			int fileCount = 0;
-			long fileSize = 0;
+			this.CopiedFileCount = 0;
+			this.CopiedFileSize = 0;
+
 			foreach(File sourceFile in this.SourceFiles)
 			{
 				if(sourceFile.Result!=CopyResult.Success)
@@ -213,9 +216,9 @@ namespace ColdShineSoft.SmartFileCopier.Models
 					}
 				}
 				sourceFile.Result = CopyResult.Success;
-				fileCount++;
-				fileSize += sourceFile.FileInfo.Length;
-				this.OnFileCopied(fileCount, fileSize);
+				this.CopiedFileCount++;
+				this.CopiedFileSize += sourceFile.FileInfo.Length;
+				this.OnFileCopied(this.CopiedFileCount, this.CopiedFileSize);
 			}
 			this.OnDone();
 		}

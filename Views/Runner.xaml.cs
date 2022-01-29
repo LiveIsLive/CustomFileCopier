@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace ColdShineSoft.SmartFileCopier.Views
 {
 	/// <summary>
-	/// Main.xaml 的交互逻辑
+	/// Runner.xaml 的交互逻辑
 	/// </summary>
-	public partial class Main : Window
+	public partial class Runner : Window
 	{
-		public Main()
+		public Runner()
 		{
 			InitializeComponent();
 		}
