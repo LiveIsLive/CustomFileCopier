@@ -158,6 +158,23 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
+		private static readonly char[] SpecialCharacters = new char[] { '\\', '/', ':', '*', '?', '"', '>', '<', '|' };
+
+		private string _JobNameToDirectoryName;
+		public string JobNameToDirectoryName
+		{
+			get
+			{
+				if (this._JobNameToDirectoryName == null)
+				{
+					this._JobNameToDirectoryName = this.Name;
+					foreach (char c in SpecialCharacters)
+						this._JobNameToDirectoryName = this._JobNameToDirectoryName.Replace(c, (char)(c + 65248));
+				}
+				return this._JobNameToDirectoryName;
+			}
+		}
+
 		public event System.Action<(int CopiedCount, long CopiedSize)> FileCopied;
 		protected void OnFileCopied(int copiedCount,long copiedSize)
 		{

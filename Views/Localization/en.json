@@ -8,10 +8,11 @@
 	"Job": "Job",
 	"AddJob": "Add Job",
 	"NewJob": "New Job",
-	"Run": "Starting Runing",
+	"Run": "Start Runing",
 	"Stop": "Stop",
 	"RunTask": "Run Task",
 	"Status": "Status",
+	"CompressTargetDirectory": "When finish copying, compress the target directory to：",
 
 	"Name": "Name",
 	"SourceDirectory": "Source Directory",
@@ -30,8 +31,8 @@
 	"Result": "Result",
 	"Error": "Error",
 
-	"Files": "Files",
-	"Bytes": "Bytes",
+	"Files": "Copied File Count/Total File Count",
+	"Bytes": "Copied Bytes/Total Bytes",
 
 	"Properties":
 	{
@@ -71,8 +72,9 @@
 	"TaskStatus":
 	{
 		"Standby": "Standby",
-		"CollectingFiles": "Collecting Files...",
-		"Copying": "Copying Files...",
+		"CollectingFiles": "Collecting files...",
+		"Copying": "Copying files...",
+		"Compressing": "Compressing the target directory...",
 		"Done": "Done"
 	}
 }

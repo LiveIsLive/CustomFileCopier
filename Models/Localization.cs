@@ -21,6 +21,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string Stop { get; set; }
 		public string RunTask { get; set; }
 		public string Status { get; set; }
+		public string CompressTargetDirectory { get; set; }
 
 		public string Name { get; set; }
 		public string SourceDirectory { get; set; }

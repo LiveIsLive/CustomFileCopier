@@ -11,6 +11,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		Standby,
 		CollectingFiles,
 		Copying,
+		Compressing,
 		Done
 	}
 }

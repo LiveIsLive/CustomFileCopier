@@ -38,11 +38,11 @@
 			</StatusBarItem>
 			<StatusBarItem DockPanel.Dock="Right">
 				<WrapPanel>
+					<TextBlock Text="{Binding Localization.Bytes}" />
+					<TextBlock Text=" " />
 					<TextBlock Text="{Binding Task.CopiedFileSize}" />
 					<TextBlock Text="/" />
 					<TextBlock Text="{Binding Task.TotalFileSize}" />
-					<TextBlock Text=" " />
-					<TextBlock Text="{Binding Localization.Bytes}" />
 				</WrapPanel>
 			</StatusBarItem>
 			<StatusBarItem HorizontalContentAlignment="Stretch">

@@ -61,7 +61,13 @@
 				</MenuItem>
 			</Menu>
 		</hc:SimplePanel>
-		<hc:TabControl ItemsSource="{Binding Task.Jobs}" SelectedIndex="0" ShowCloseButton="True">
+		<StackPanel DockPanel.Dock="Bottom" Margin="5">
+			<DockPanel>
+				<CheckBox IsChecked="{Binding Task.CompressTargetDirectory}" Content="{Binding Localization.CompressTargetDirectory}" />
+				<controls:DirectorySelector IsEnabled="{Binding Task.CompressTargetDirectory}" Path="{Binding Path=Task.CompressFilePath,Mode=TwoWay}" />
+			</DockPanel>
+		</StackPanel>
+		<hc:TabControl ItemsSource="{Binding Task.Jobs}" SelectedItem="{Binding SelectedJob}" SelectedIndex="0" ShowCloseButton="True">
 			<hc:TabControl.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding Name}" />
