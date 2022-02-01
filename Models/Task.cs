@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO.Compression;
 
 namespace ColdShineSoft.SmartFileCopier.Models
 {
@@ -28,11 +29,37 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
+		private bool _CompressTargetDirectory;
 		[Newtonsoft.Json.JsonProperty]
-		public bool ZipTargetDirectory { get; set; }
+		public bool CompressTargetDirectory
+		{
+			get
+			{
+				return this._CompressTargetDirectory;
+			}
+			set
+			{
+				this._CompressTargetDirectory = value;
+				this.NotifyOfPropertyChange(() => this.CompressTargetDirectory);
+				if (value && string.IsNullOrWhiteSpace(this.CompressFilePath) && this.Jobs.Count > 0)
+					this.CompressFilePath = this.Jobs[0].TargetDirectory.TrimEnd('\\', '/') + ".zip";
+			}
+		}
 
+		private string _CompressFilePath;
 		[Newtonsoft.Json.JsonProperty]
-		public string ZipFilePath { get; set; }
+		public string CompressFilePath
+		{
+			get
+			{
+				return this._CompressFilePath;
+			}
+			set
+			{
+				this._CompressFilePath = value;
+				this.NotifyOfPropertyChange(() => this.CompressFilePath);
+			}
+		}
 
 		private TaskStatus _Status;
 		public TaskStatus Status
@@ -140,6 +167,21 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			this.LoadFiles();
 			this.Status = TaskStatus.Copying;
 			this.CopyFiles();
+			if (this.CompressTargetDirectory && this.Jobs.Count > 0)
+			{
+				this.Status = TaskStatus.Compressing;
+				if (this.Jobs.Count == 1)
+					System.IO.Compression.ZipFile.CreateFromDirectory(this.Jobs[0].TargetDirectory, this.CompressFilePath, System.IO.Compression.CompressionLevel.Optimal, false);
+				else
+				{
+					System.IO.FileStream stream = new System.IO.FileStream(this.CompressFilePath, System.IO.FileMode.Create);
+					System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(stream);
+					foreach(Job job in this.Jobs)
+						foreach(File file in job.SourceFiles)
+							zip.CreateEntryFromFile(file.Path, System.IO.Path.Combine(job.JobNameToDirectoryName, file.Path.Substring(job.SourceDirectoryLength)));
+					stream.Close();
+				}
+			}
 			this.Status = TaskStatus.Done;
 			this.OnDone();
 		}

@@ -12,6 +12,7 @@
 	"Stop": "停止",
 	"RunTask": "执行任务",
 	"Status": "状态",
+	"CompressTargetDirectory": "完成后打包目标文件夹到：",
 
 	"Name": "名称",
 	"SourceDirectory": "源目录",
@@ -30,8 +31,8 @@
 	"Result": "处理结果",
 	"Error": "错误",
 
-	"Files": "文件",
-	"Bytes": "字节",
+	"Files": "已复制文件数/文件总数",
+	"Bytes": "已复制字节/总字节",
 
 	"Properties":
 	{
@@ -73,6 +74,7 @@
 		"Standby": "待执行",
 		"CollectingFiles": "正在汇总文件...",
 		"Copying": "正在复制文件...",
+		"Compressing": "正在压缩目标文件夹...",
 		"Done": "已完成"
 	}
 }

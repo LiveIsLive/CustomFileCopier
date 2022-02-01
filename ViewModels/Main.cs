@@ -118,11 +118,26 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 			}
 		}
 
+		private Models.Job _SelectedJob;
+		public Models.Job SelectedJob
+		{
+			get
+			{
+				return this._SelectedJob;
+			}
+			set
+			{
+				this._SelectedJob = value;
+				this.NotifyOfPropertyChange(() => this.SelectedJob);
+			}
+		}
+
 		public void AddJob()
 		{
 			Models.Job job = new Models.Job();
 			job.Name = this.Localization.NewJob + (this.Task.Jobs.Count + 1);
 			this.Task.Jobs.Add(job);
+			this.SelectedJob = job;
 		}
 
 		public void Save(string path)
