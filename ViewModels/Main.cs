@@ -168,6 +168,7 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 			this._RecentFiles = null;
 			this.NotifyOfPropertyChange(() => this.RecentFiles);
 			this.SetTitle();
+			this.SelectedJob = this.Task.Jobs.FirstOrDefault();
 		}
 
 		protected void SetTitle()
