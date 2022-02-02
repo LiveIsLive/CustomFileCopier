@@ -67,13 +67,13 @@
 				<controls:DirectorySelector IsEnabled="{Binding Task.CompressTargetDirectory}" Path="{Binding Path=Task.CompressFilePath,Mode=TwoWay}" />
 			</DockPanel>
 		</StackPanel>
-		<hc:TabControl ItemsSource="{Binding Task.Jobs}" SelectedItem="{Binding SelectedJob}" SelectedIndex="0" ShowCloseButton="True">
-			<hc:TabControl.ItemTemplate>
+		<controls:TabControl ItemsSource="{Binding Task.Jobs}" SelectedItem="{Binding SelectedJob}" ShowCloseButton="True">
+			<controls:TabControl.ItemTemplate>
 				<DataTemplate>
 					<TextBlock Text="{Binding Name}" />
 				</DataTemplate>
-			</hc:TabControl.ItemTemplate>
-			<hc:TabControl.ContentTemplate>
+			</controls:TabControl.ItemTemplate>
+			<controls:TabControl.ContentTemplate>
 				<DataTemplate>
 					<DockPanel>
 						<StackPanel DockPanel.Dock="Top" Margin="0,5,5,0">
@@ -229,7 +229,7 @@
 						</DataGrid>
 					</DockPanel>
 				</DataTemplate>
-			</hc:TabControl.ContentTemplate>
-		</hc:TabControl>
+			</controls:TabControl.ContentTemplate>
+		</controls:TabControl>
 	</DockPanel>
 </Window>

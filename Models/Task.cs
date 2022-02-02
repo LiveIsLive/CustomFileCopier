@@ -170,15 +170,18 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			if (this.CompressTargetDirectory && this.Jobs.Count > 0)
 			{
 				this.Status = TaskStatus.Compressing;
+				var groups = (from job in this.Jobs group job by job.TargetDirectory.ToLower() into g select g.ToArray()).ToArray();
 				if (this.Jobs.Count == 1)
 					System.IO.Compression.ZipFile.CreateFromDirectory(this.Jobs[0].TargetDirectory, this.CompressFilePath, System.IO.Compression.CompressionLevel.Optimal, false);
 				else
 				{
 					System.IO.FileStream stream = new System.IO.FileStream(this.CompressFilePath, System.IO.FileMode.Create);
-					System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(stream);
-					foreach(Job job in this.Jobs)
-						foreach(File file in job.SourceFiles)
-							zip.CreateEntryFromFile(file.Path, System.IO.Path.Combine(job.JobNameToDirectoryName, file.Path.Substring(job.SourceDirectoryLength)));
+					using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(stream, System.IO.Compression.ZipArchiveMode.Create))
+					{
+						foreach (Job job in this.Jobs)
+							foreach (File file in job.SourceFiles)
+								zip.CreateEntryFromFile(file.Path, System.IO.Path.Combine(job.JobNameToDirectoryName, file.Path.Substring(job.SourceDirectoryLength)));
+					}
 					stream.Close();
 				}
 			}
