@@ -84,7 +84,7 @@
 								<Style TargetType="Label">
 									<Setter Property="DockPanel.Dock" Value="Left" />
 									<Setter Property="DataContext" Value="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext}" />
-									<Setter Property="Width" Value="120" />
+									<Setter Property="Width" Value="160" />
 									<Setter Property="HorizontalContentAlignment" Value="Right" />
 									<Setter Property="VerticalContentAlignment" Value="Center" />
 								</Style>
@@ -101,132 +101,164 @@
 								<Label Content="{c:Binding Localization.TargetDirectory+Colon}" />
 								<controls:DirectorySelector Path="{Binding TargetDirectory}" OpenButtonText="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.OpenFileDialog}" />
 							</DockPanel>
-							<Button cal:Message.Attach="[Click]=[AddCondition($dataContext)]" hc:IconElement.Geometry="{StaticResource AddGeometry}" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.AddCondition}" HorizontalAlignment="Left" />
+							<DockPanel>
+								<Label Content="{c:Binding Localization.ConditionDesignMode+Colon}" />
+								<ItemsControl ItemsSource="{Binding Path=DataContext.ConditionModes,RelativeSource={RelativeSource AncestorType=Window}}" VerticalAlignment="Center">
+									<ItemsControl.ItemsPanel>
+										<ItemsPanelTemplate>
+											<WrapPanel />
+										</ItemsPanelTemplate>
+									</ItemsControl.ItemsPanel>
+									<ItemsControl.ItemTemplate>
+										<DataTemplate>
+											<RadioButton Tag="{Binding Path=DataContext.ConditionMode,RelativeSource={RelativeSource AncestorType=ItemsControl}}" IsChecked="{c:Binding 'DataContext==Tag',RelativeSource={RelativeSource Mode=Self}}" cal:Message.Attach="[Checked]=[SetConditionMode($dataContext)]" GroupName="ConditionMode" Margin="0,0,20,0">
+												<RadioButton.Content>
+													<controls:GetDictionaryValue Dictionary="{Binding Path=DataContext.Localization.ConditionMode,RelativeSource={RelativeSource AncestorType=Window}}" Key="{Binding}" />
+												</RadioButton.Content>
+											</RadioButton>
+										</DataTemplate>
+									</ItemsControl.ItemTemplate>
+								</ItemsControl>
+							</DockPanel>
 						</StackPanel>
-						<DataGrid ItemsSource="{Binding Conditions}" AutoGenerateColumns="False">
-							<DataGrid.Columns>
-								<DataGridTemplateColumn>
-									<DataGridTemplateColumn.Header>
-										<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Connective}" />
-									</DataGridTemplateColumn.Header>
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<hc:ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Connectives}" SelectedItem="{Binding Path=Connective,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding RelativeSource={RelativeSource AncestorType=DataGrid},Path=DataContext}" Visibility="{c:Binding 'Tag.Conditions[0]!=DataContext',RelativeSource={RelativeSource Mode=Self}}" MinWidth="75">
-												<hc:ComboBox.ItemTemplate>
-													<DataTemplate>
-														<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.LogicalConnective}" Key="{Binding}" />
-													</DataTemplate>
-												</hc:ComboBox.ItemTemplate>
-											</hc:ComboBox>
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-								<DataGridTemplateColumn>
-									<DataGridTemplateColumn.Header>
-										<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.LeftBracket}" />
-									</DataGridTemplateColumn.Header>
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<controls:ToggleBoolean Value="{Binding Path=LeftBracket,UpdateSourceTrigger=PropertyChanged}" TrueContent="(" />
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-								<DataGridTemplateColumn>
-									<DataGridTemplateColumn.Header>
-										<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Property}" />
-									</DataGridTemplateColumn.Header>
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<hc:ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Properties}" SelectedItem="{Binding Path=Property,UpdateSourceTrigger=PropertyChanged}" MinWidth="150">
-												<hc:ComboBox.ItemTemplate>
-													<DataTemplate>
-														<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Properties}" Key="{Binding Name}" />
-													</DataTemplate>
-												</hc:ComboBox.ItemTemplate>
-											</hc:ComboBox>
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-								<DataGridTemplateColumn>
-									<DataGridTemplateColumn.Header>
-										<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Operator}" />
-									</DataGridTemplateColumn.Header>
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<hc:ComboBox ItemsSource="{Binding Property.AllowOperators}" SelectedItem="{Binding Path=Operator,UpdateSourceTrigger=PropertyChanged}">
-												<hc:ComboBox.ItemTemplate>
-													<DataTemplate>
-														<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Operators}" Key="{Binding Name}" />
-													</DataTemplate>
-												</hc:ComboBox.ItemTemplate>
-											</hc:ComboBox>
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-								<DataGridTemplateColumn>
-									<DataGridTemplateColumn.Header>
-										<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Value}" />
-									</DataGridTemplateColumn.Header>
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<!--<TextBlock Text="{Binding ValueType}" />-->
-											<ContentControl>
-												<ContentControl.Style>
-													<Style TargetType="ContentControl">
-														<Style.Triggers>
-															<DataTrigger Binding="{Binding ValueType}" Value="{x:Static models:PropertyTypes.String}">
-																<Setter Property="ContentTemplate">
-																	<Setter.Value>
-																		<DataTemplate>
-																			<TextBox Text="{Binding Path=DataContext.StringValue,RelativeSource={RelativeSource AncestorType=ContentControl}}" MinWidth="100" />
-																		</DataTemplate>
-																	</Setter.Value>
-																</Setter>
-															</DataTrigger>
-															<DataTrigger Binding="{Binding ValueType}" Value="{x:Static models:PropertyTypes.Int64}">
-																<Setter Property="ContentTemplate">
-																	<Setter.Value>
-																		<DataTemplate>
-																			<hc:NumericUpDown Value="{Binding Path=DataContext.LongValue,RelativeSource={RelativeSource AncestorType=ContentControl}}" MinWidth="100" />
-																		</DataTemplate>
-																	</Setter.Value>
-																</Setter>
-															</DataTrigger>
-															<DataTrigger Binding="{Binding ValueType}" Value="{x:Static models:PropertyTypes.DateTime}">
-																<Setter Property="ContentTemplate">
-																	<Setter.Value>
-																		<DataTemplate>
-																			<hc:DateTimePicker SelectedDateTime="{Binding Path=DataContext.DateTimeValue,RelativeSource={RelativeSource AncestorType=ContentControl}}" />
-																		</DataTemplate>
-																	</Setter.Value>
-																</Setter>
-															</DataTrigger>
-														</Style.Triggers>
-													</Style>
-												</ContentControl.Style>
-											</ContentControl>
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-								<DataGridTemplateColumn>
-									<DataGridTemplateColumn.Header>
-										<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.RightBracket}" />
-									</DataGridTemplateColumn.Header>
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<controls:ToggleBoolean Value="{Binding Path=RightBracket,UpdateSourceTrigger=PropertyChanged}" TrueContent=")" />
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-								<DataGridTemplateColumn>
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<Button cal:Message.Attach="RemoveCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}"/>
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-							</DataGrid.Columns>
-						</DataGrid>
+						<hc:SimplePanel>
+							<DockPanel Visibility="{c:Binding 'ConditionMode==models:ConditionMode.Designer'}">
+								<Button DockPanel.Dock="Top" cal:Message.Attach="[Click]=[AddCondition($dataContext)]" hc:IconElement.Geometry="{StaticResource AddGeometry}" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.AddCondition}"  HorizontalAlignment="Left" />
+								<DataGrid ItemsSource="{Binding Conditions}" AutoGenerateColumns="False">
+									<DataGrid.Columns>
+										<DataGridTemplateColumn>
+											<DataGridTemplateColumn.Header>
+												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Connective}" />
+											</DataGridTemplateColumn.Header>
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<hc:ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Connectives}" SelectedItem="{Binding Path=Connective,UpdateSourceTrigger=PropertyChanged}" Tag="{Binding RelativeSource={RelativeSource AncestorType=DataGrid},Path=DataContext}" Visibility="{c:Binding 'Tag.Conditions[0]!=DataContext',RelativeSource={RelativeSource Mode=Self}}" MinWidth="75">
+														<hc:ComboBox.ItemTemplate>
+															<DataTemplate>
+																<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.LogicalConnective}" Key="{Binding}" />
+															</DataTemplate>
+														</hc:ComboBox.ItemTemplate>
+													</hc:ComboBox>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+										<DataGridTemplateColumn>
+											<DataGridTemplateColumn.Header>
+												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.LeftBracket}" />
+											</DataGridTemplateColumn.Header>
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<controls:ToggleBoolean Value="{Binding Path=LeftBracket,UpdateSourceTrigger=PropertyChanged}" TrueContent="(" />
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+										<DataGridTemplateColumn>
+											<DataGridTemplateColumn.Header>
+												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Property}" />
+											</DataGridTemplateColumn.Header>
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<hc:ComboBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Properties}" SelectedItem="{Binding Path=Property,UpdateSourceTrigger=PropertyChanged}" MinWidth="150">
+														<hc:ComboBox.ItemTemplate>
+															<DataTemplate>
+																<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Properties}" Key="{Binding Name}" />
+															</DataTemplate>
+														</hc:ComboBox.ItemTemplate>
+													</hc:ComboBox>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+										<DataGridTemplateColumn>
+											<DataGridTemplateColumn.Header>
+												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Operator}" />
+											</DataGridTemplateColumn.Header>
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<hc:ComboBox ItemsSource="{Binding Property.AllowOperators}" SelectedItem="{Binding Path=Operator,UpdateSourceTrigger=PropertyChanged}">
+														<hc:ComboBox.ItemTemplate>
+															<DataTemplate>
+																<controls:GetDictionaryValue Dictionary="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Operators}" Key="{Binding Name}" />
+															</DataTemplate>
+														</hc:ComboBox.ItemTemplate>
+													</hc:ComboBox>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+										<DataGridTemplateColumn>
+											<DataGridTemplateColumn.Header>
+												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Value}" />
+											</DataGridTemplateColumn.Header>
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<!--<TextBlock Text="{Binding ValueType}" />-->
+													<ContentControl>
+														<ContentControl.Style>
+															<Style TargetType="ContentControl">
+																<Style.Triggers>
+																	<DataTrigger Binding="{Binding ValueType}" Value="{x:Static models:PropertyTypes.String}">
+																		<Setter Property="ContentTemplate">
+																			<Setter.Value>
+																				<DataTemplate>
+																					<TextBox Text="{Binding Path=DataContext.StringValue,RelativeSource={RelativeSource AncestorType=ContentControl}}" MinWidth="100" />
+																				</DataTemplate>
+																			</Setter.Value>
+																		</Setter>
+																	</DataTrigger>
+																	<DataTrigger Binding="{Binding ValueType}" Value="{x:Static models:PropertyTypes.Int64}">
+																		<Setter Property="ContentTemplate">
+																			<Setter.Value>
+																				<DataTemplate>
+																					<hc:NumericUpDown Value="{Binding Path=DataContext.LongValue,RelativeSource={RelativeSource AncestorType=ContentControl}}" MinWidth="100" />
+																				</DataTemplate>
+																			</Setter.Value>
+																		</Setter>
+																	</DataTrigger>
+																	<DataTrigger Binding="{Binding ValueType}" Value="{x:Static models:PropertyTypes.DateTime}">
+																		<Setter Property="ContentTemplate">
+																			<Setter.Value>
+																				<DataTemplate>
+																					<hc:DateTimePicker SelectedDateTime="{Binding Path=DataContext.DateTimeValue,RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+																				</DataTemplate>
+																			</Setter.Value>
+																		</Setter>
+																	</DataTrigger>
+																</Style.Triggers>
+															</Style>
+														</ContentControl.Style>
+													</ContentControl>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+										<DataGridTemplateColumn>
+											<DataGridTemplateColumn.Header>
+												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.RightBracket}" />
+											</DataGridTemplateColumn.Header>
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<controls:ToggleBoolean Value="{Binding Path=RightBracket,UpdateSourceTrigger=PropertyChanged}" TrueContent=")" />
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+										<DataGridTemplateColumn>
+											<DataGridTemplateColumn.CellTemplate>
+												<DataTemplate>
+													<Button cal:Message.Attach="RemoveCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}"/>
+												</DataTemplate>
+											</DataGridTemplateColumn.CellTemplate>
+										</DataGridTemplateColumn>
+									</DataGrid.Columns>
+								</DataGrid>
+							</DockPanel>
+							<DockPanel>
+								<WrapPanel DockPanel.Dock="Top">
+									<TextBlock Foreground="Green">/* System.IO.FileInfo */ </TextBlock>
+									<TextBlock>fileInfo=></TextBlock>
+									<TextBlock Foreground="Green"> //</TextBlock>
+									<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.ExpressionLimitation}" Foreground="Green" />
+								</WrapPanel>
+								<TextBox Text="{Binding CustomExpression}" AcceptsReturn="True" TextWrapping="Wrap" />
+							</DockPanel>
+						</hc:SimplePanel>
 					</DockPanel>
 				</DataTemplate>
 			</controls:TabControl.ContentTemplate>

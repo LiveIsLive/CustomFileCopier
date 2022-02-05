@@ -70,24 +70,44 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
-		//private int? _TargetDirectoryLength;
-		//[Newtonsoft.Json.JsonIgnore]
-		//public int TargetDirectoryLength
-		//{
-		//	get
-		//	{
-		//		if (this._TargetDirectoryLength == null)
-		//			if (this.TargetDirectory == null)
-		//				this._TargetDirectoryLength = 0;
-		//			else
-		//			{
-		//				this._TargetDirectoryLength = this.TargetDirectory.Length;
-		//				if (!this.TargetDirectory.EndsWith("\\") && !this.TargetDirectory.EndsWith("/"))
-		//					this._TargetDirectoryLength++;
-		//			}
-		//		return this._TargetDirectoryLength.Value;
-		//	}
-		//}
+		private int? _TargetDirectoryLength;
+		[Newtonsoft.Json.JsonIgnore]
+		public int TargetDirectoryLength
+		{
+			get
+			{
+				if (this._TargetDirectoryLength == null)
+					if (this.TargetDirectory == null)
+						this._TargetDirectoryLength = 0;
+					else
+					{
+						this._TargetDirectoryLength = this.TargetDirectory.Length;
+						if (!this.TargetDirectory.EndsWith("\\") && !this.TargetDirectory.EndsWith("/"))
+							this._TargetDirectoryLength++;
+					}
+				return this._TargetDirectoryLength.Value;
+			}
+		}
+
+		private ConditionMode _ConditionMode;
+		[Newtonsoft.Json.JsonIgnore]
+		public ConditionMode ConditionMode
+		{
+			get
+			{
+				return this._ConditionMode;
+			}
+			set
+			{
+				this._ConditionMode = value;
+				this.NotifyOfPropertyChange(() => this.ConditionMode);
+			}
+		}
+
+		public string ConditionVariableName { get; } = "fileInfo";
+
+		[Newtonsoft.Json.JsonIgnore]
+		public string CustomExpression { get; set; }
 
 		private System.Collections.ObjectModel.ObservableCollection<Condition> _Conditions;
 		[Newtonsoft.Json.JsonProperty]
@@ -121,7 +141,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			this._SourceFiles = null;
 		}
 
-		public string Expression
+		public string CombinedExpression
 		{
 			get
 			{
@@ -144,15 +164,25 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			{
 				if(this._SourceFiles==null)
 				{
-					System.Collections.Generic.List<File> files = new List<File>();
-					DynamicExpresso.Lambda lambda = new DynamicExpresso.Interpreter().Parse(this.Expression, typeof(bool), this.Parameters);
-					foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories))
+					switch(this.ConditionMode)
 					{
-						System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
-						if ((bool)lambda.Invoke(this.Conditions.SelectMany(c => c.GetValues(fileInfo)).ToArray()))
-							files.Add(new File(fileInfo,this.SourceDirectoryLength));
+						case ConditionMode.Designer:
+							System.Collections.Generic.List<File> files = new List<File>();
+							DynamicExpresso.Lambda lambda = new DynamicExpresso.Interpreter().Parse(this.CombinedExpression, typeof(bool), this.Parameters);
+							foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories))
+							{
+								System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
+								if ((bool)lambda.Invoke(this.Conditions.SelectMany(c => c.GetValues(fileInfo)).ToArray()))
+									files.Add(new File(fileInfo,this.SourceDirectoryLength));
+							}
+							this._SourceFiles = files.ToArray();
+							break;
+						case ConditionMode.Expression:
+							string[] allFiles = System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories);
+							Func<System.IO.FileInfo, bool> func = new DynamicExpresso.Interpreter().ParseAsDelegate<Func<System.IO.FileInfo, bool>>(this.CustomExpression, this.ConditionVariableName);
+							this._SourceFiles = allFiles.Select(f => new System.IO.FileInfo(f)).Where(func).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
+							break;
 					}
-					this._SourceFiles = files.ToArray();
 				}
 				return this._SourceFiles;
 			}

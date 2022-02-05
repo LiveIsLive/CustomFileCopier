@@ -27,6 +27,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string SourceDirectory { get; set; }
 		public string TargetDirectory { get; set; }
 
+		public string ConditionDesignMode { get; set; }
 		public string AddCondition { get; set; }
 		public string Property { get; set; }
 		public string Operator { get; set; }
@@ -44,6 +45,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string Bytes { get; set; }
 
 		public string OpenFileDialog { get; set; }
+
+		public System.Collections.Generic.Dictionary<ConditionMode,string> ConditionMode { get; set; }
 
 		public System.Collections.Generic.Dictionary<string,string> Properties { get; set; }
 

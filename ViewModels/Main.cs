@@ -72,6 +72,13 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public System.Collections.Generic.Dictionary<System.Type, Models.Operator[]> Operators { get; } = Models.Operator.Operators;
 
+		public System.Array ConditionModes { get; } = System.Enum.GetValues(typeof(Models.ConditionMode));
+
+		public void SetConditionMode(Models.ConditionMode mode)
+		{
+			this.SelectedJob.ConditionMode = mode;
+		}
+
 		public static string _OpeningFilePath;
 		public string OpeningFilePath
 		{
