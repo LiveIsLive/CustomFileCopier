@@ -88,10 +88,10 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
-		public File()
-		{
+		//public File()
+		//{
 
-		}
+		//}
 
 		public File(System.IO.FileInfo fileInfo,int sourceDirectoryLength)
 		{

@@ -34,6 +34,13 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		{
 			get
 			{
+				var interpreter = new DynamicExpresso.Interpreter();
+				//interpreter.SetVariable("fileInfos", new System.IO.FileInfo[] { new System.IO.FileInfo(@"C:\Users\Administrator\Desktop\新建文件夹\Temp2.zip") });
+				new System.IO.FileInfo[] { new System.IO.FileInfo(@"C:\Users\Administrator\Desktop\新建文件夹\Temp2.zip") }.Where(fileInfo => new [] {".cs",".zip" }.Contains(fileInfo.Extension.ToLower()));
+				//var result = interpreter.Eval("fileInfos.Where(i=>{{return i.Length>1;}})");
+				var func = interpreter.ParseAsDelegate<Func<System.IO.FileInfo, bool>>("new [] {\".cs\",\".zip\" }.Contains(fileInfo.Extension.ToLower())", "fileInfo");
+				var result = new System.IO.FileInfo[] { new System.IO.FileInfo(@"C:\Users\Administrator\Desktop\新建文件夹\Temp2.zip") }.Where(func).ToArray();
+
 				if (_Instance == null)
 					if (System.IO.File.Exists(SavePath))
 					{

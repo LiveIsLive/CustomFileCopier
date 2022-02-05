@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Condition.cs" />
+    <Compile Include="ConditionMode.cs" />
     <Compile Include="CopyResult.cs" />
     <Compile Include="File.cs" />
     <Compile Include="GetIsPass.cs" />

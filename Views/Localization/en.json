@@ -34,6 +34,13 @@
 	"Files": "Copied File Count/Total File Count",
 	"Bytes": "Copied Bytes/Total Bytes",
 
+	"ConditionDesignMode": "Condition Design Mode",
+	"ExpressionLimitation": "Limitation：Not support multiline expressions. It means that the expression can not contain '{}' or ';'.",
+	"ConditionMode":
+	{
+		"Designer": "Designer",
+		"Expression": "C# Expression"
+	},
 	"Properties":
 	{
 		"FileName": "File Name",
