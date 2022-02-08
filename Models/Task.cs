@@ -18,12 +18,16 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				if(this._Jobs==null)
 				{
 					this._Jobs = new System.Collections.ObjectModel.ObservableCollection<Job>();
-					this._Jobs.CollectionChanged += (sender, e) =>
-					{
-						if (e.NewItems != null)
-							foreach (Job job in e.NewItems)
-								job.FileCopied += j => this.OnFileCopied(j.CopiedCount, j.CopiedSize);
-					};
+					//this._Jobs.CollectionChanged += (sender, e) =>
+					//{
+					//	if (e.NewItems != null)
+					//		foreach (Job job in e.NewItems)
+					//		{
+					//			job.FileCopied += j => this.OnFileCopied(j.CopiedCount, j.CopiedSize);
+					//			if (!this.CompressTargetDirectory)
+					//				job.SpecifyTargetDirectory = true;
+					//		}
+					//};
 				}
 				return this._Jobs;
 			}
@@ -41,8 +45,11 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			{
 				this._CompressTargetDirectory = value;
 				this.NotifyOfPropertyChange(() => this.CompressTargetDirectory);
-				if (value && string.IsNullOrWhiteSpace(this.CompressFilePath) && this.Jobs.Count > 0)
-					this.CompressFilePath = this.Jobs[0].TargetDirectory.TrimEnd('\\', '/') + ".zip";
+				//if (value && string.IsNullOrWhiteSpace(this.CompressFilePath) && this.Jobs.Count > 0)
+				//	this.CompressFilePath = this.Jobs[0].TargetDirectoryPath.TrimEnd('\\', '/') + ".zip";
+				//if (!value)
+				//	foreach (Job job in this.Jobs)
+				//		job.SpecifyTargetDirectory = true;
 			}
 		}
 
@@ -170,9 +177,9 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			if (this.CompressTargetDirectory && this.Jobs.Count > 0)
 			{
 				this.Status = TaskStatus.Compressing;
-				var groups = (from job in this.Jobs group job by job.TargetDirectory.ToLower() into g select g.ToArray()).ToArray();
+				var groups = (from job in this.Jobs group job by job.RealTargetDirectoryPath.ToLower() into g select g.ToArray()).ToArray();
 				if (groups.Length == 1)
-					System.IO.Compression.ZipFile.CreateFromDirectory(this.Jobs[0].TargetDirectory, this.CompressFilePath, System.IO.Compression.CompressionLevel.Optimal, false);
+					System.IO.Compression.ZipFile.CreateFromDirectory(this.Jobs[0].RealTargetDirectoryPath, this.CompressFilePath, System.IO.Compression.CompressionLevel.Optimal, false);
 				else
 				{
 					System.IO.FileStream stream = new System.IO.FileStream(this.CompressFilePath, System.IO.FileMode.Create);
@@ -181,13 +188,22 @@ namespace ColdShineSoft.SmartFileCopier.Models
 						foreach (Job[] jobs in groups)
 						{
 							string directory = string.Join("、", jobs.Select(j => j.JobNameToDirectoryName));
-							foreach (string file in System.IO.Directory.GetFiles(jobs[0].TargetDirectory, "*", System.IO.SearchOption.AllDirectories))
-								zip.CreateEntryFromFile(file, System.IO.Path.Combine(directory, file.Substring(jobs[0].TargetDirectoryLength)));
+							foreach (string file in System.IO.Directory.GetFiles(jobs[0].RealTargetDirectoryPath, "*", System.IO.SearchOption.AllDirectories))
+								zip.CreateEntryFromFile(file, System.IO.Path.Combine(directory, file.Substring(jobs[0].RealTargetDirectoryLength)));
 						}
 					}
 					stream.Close();
 				}
 			}
+			foreach(Job job in this.Jobs)
+				if(!job.SpecifyTargetDirectory)
+					try
+					{
+						System.IO.Directory.Delete(job.RealTargetDirectoryPath, true);
+					}
+					catch
+					{
+					}
 			this.Status = TaskStatus.Done;
 			this.OnDone();
 		}

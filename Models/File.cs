@@ -9,7 +9,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 	public class File : Caliburn.Micro.PropertyChangedBase
 	{
 		private string _Name;
-		[Newtonsoft.Json.JsonIgnore]
 		public string Name
 		{
 			get
@@ -21,7 +20,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private string _Directory;
-		[Newtonsoft.Json.JsonIgnore]
 		public string Directory
 		{
 			get
@@ -63,7 +61,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		}
 
 		private System.IO.FileInfo _FileInfo;
-		[Newtonsoft.Json.JsonIgnore]
 		public System.IO.FileInfo FileInfo
 		{
 			get
@@ -77,7 +74,6 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public int SourceDirectoryLength;
 
 		private string _RelativeDirectoryPath;
-		[Newtonsoft.Json.JsonIgnore]
 		public string RelativeDirectoryPath
 		{
 			get

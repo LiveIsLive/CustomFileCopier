@@ -26,6 +26,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string Name { get; set; }
 		public string SourceDirectory { get; set; }
 		public string TargetDirectory { get; set; }
+		public string SpecifyTargetDirectory { get; set; }
+		public string SpecifyTargetDirectoryDescription { get; set; }
 
 		public string ConditionDesignMode { get; set; }
 		public string AddCondition { get; set; }
