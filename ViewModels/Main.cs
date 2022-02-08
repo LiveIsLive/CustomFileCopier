@@ -142,7 +142,9 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 		public void AddJob()
 		{
 			Models.Job job = new Models.Job();
-			job.Name = this.Localization.NewJob + (this.Task.Jobs.Count + 1);
+			job.Name = this.Localization.NewJob + " " + (this.Task.Jobs.Count + 1);
+			if (!this.Task.CompressTargetDirectory)
+				job.SpecifyTargetDirectory = true;
 			this.Task.Jobs.Add(job);
 			this.SelectedJob = job;
 		}
@@ -162,6 +164,9 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void Save()
 		{
+			this.SelectedJob = null;
+			this.SelectedJob = this.Task.Jobs[0];
+
 			this.Task.Save(OpeningFilePath);
 			this._RecentFiles = null;
 			this.NotifyOfPropertyChange(() => this.RecentFiles);
@@ -245,6 +250,17 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 			this.WindowManager.ShowDialog(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
 		}
 
+		public void UncheckedCompressTargetDirectory()
+		{
+			foreach (Models.Job job in this.Task.Jobs)
+				job.SpecifyTargetDirectory = true;
+		}
 
+		//public void EnsureJobBinding()
+		//{
+		//	Models.Job job = this.SelectedJob;
+		//	this.SelectedJob = null;
+		//	this.SelectedJob = job;
+		//}
 	}
 }

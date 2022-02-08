@@ -18,7 +18,7 @@ namespace ColdShineSoft.SmartFileCopier.Controls
 	/// <summary>
 	/// FileSelector.xaml 的交互逻辑
 	/// </summary>
-	public partial class FileSelector : Control
+	public partial class SaveFileSelector : Control
 	{
 		private static Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog _SaveFileDialog;
 		protected Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog SaveFileDialog
@@ -42,13 +42,15 @@ namespace ColdShineSoft.SmartFileCopier.Controls
 		[Bindables.DependencyProperty(Options = FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
 		public string Path { get; set; }
 
-		public FileSelector()
+		public SaveFileSelector()
 		{
 			InitializeComponent();
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
+			if(!string.IsNullOrWhiteSpace(this.Path))
+				this.SaveFileDialog.DefaultFileName = System.IO.Path.GetFileName(this.Path);
 			if (this.SaveFileDialog.ShowDialog() == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
 				this.Path = this.SaveFileDialog.FileName;
 		}

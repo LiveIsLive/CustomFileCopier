@@ -23,17 +23,17 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
-		private string _SourceDirectory;
+		private string _SourceDirectoryPath;
 		[Newtonsoft.Json.JsonProperty]
-		public string SourceDirectory
+		public string SourceDirectoryPath
 		{
 			get
 			{
-				return this._SourceDirectory;
+				return this._SourceDirectoryPath;
 			}
 			set
 			{
-				this._SourceDirectory = value;
+				this._SourceDirectoryPath = value;
 				this._SourceDirectoryLength = null;
 			}
 		}
@@ -44,53 +44,89 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			get
 			{
 				if (this._SourceDirectoryLength == null)
-					if (this.SourceDirectory == null)
+					if (this.SourceDirectoryPath == null)
 						this._SourceDirectoryLength = 0;
 					else
 					{
-						this._SourceDirectoryLength = this.SourceDirectory.Length;
-						if (!this.SourceDirectory.EndsWith("\\") && !this.SourceDirectory.EndsWith("/"))
+						this._SourceDirectoryLength = this.SourceDirectoryPath.Length;
+						if (!this.SourceDirectoryPath.EndsWith("\\") && !this.SourceDirectoryPath.EndsWith("/"))
 							this._SourceDirectoryLength++;
 					}
 				return this._SourceDirectoryLength.Value;
 			}
 		}
 
-		private string _TargetDirectory;
+		private bool _SpecifyTargetDirectory;
 		[Newtonsoft.Json.JsonProperty]
-		public string TargetDirectory
+		public bool SpecifyTargetDirectory
 		{
 			get
 			{
-				return this._TargetDirectory;
+				return this._SpecifyTargetDirectory;
 			}
 			set
 			{
-				this._TargetDirectory = value;
+				this._SpecifyTargetDirectory = value;
+				this.RealTargetDirectoryPath = null;
+
+				this.NotifyOfPropertyChange(() => this.SpecifyTargetDirectory);
 			}
 		}
 
-		private int? _TargetDirectoryLength;
-		[Newtonsoft.Json.JsonIgnore]
-		public int TargetDirectoryLength
+		private string _TargetDirectoryPath;
+
+		[Newtonsoft.Json.JsonProperty]
+		public string TargetDirectoryPath
 		{
 			get
 			{
-				if (this._TargetDirectoryLength == null)
-					if (this.TargetDirectory == null)
-						this._TargetDirectoryLength = 0;
+				return this._TargetDirectoryPath;
+			}
+			set
+			{
+				this._TargetDirectoryPath = value;
+				this.RealTargetDirectoryPath = null;
+			}
+		}
+
+		private string _RealTargetDirectoryPath;
+		public string RealTargetDirectoryPath
+		{
+			get
+			{
+				if (this._RealTargetDirectoryPath == null)
+					if (this.SpecifyTargetDirectory)
+						this._RealTargetDirectoryPath = this.TargetDirectoryPath;
+					else this._RealTargetDirectoryPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), System.Guid.NewGuid().ToString());
+				return this._RealTargetDirectoryPath;
+			}
+			protected set
+			{
+				this._RealTargetDirectoryPath = value;
+				this._RealTargetDirectoryLength = null;
+			}
+		}
+
+		private int? _RealTargetDirectoryLength;
+		public int RealTargetDirectoryLength
+		{
+			get
+			{
+				if (this._RealTargetDirectoryLength == null)
+					if (this.RealTargetDirectoryPath == null)
+						this._RealTargetDirectoryLength = 0;
 					else
 					{
-						this._TargetDirectoryLength = this.TargetDirectory.Length;
-						if (!this.TargetDirectory.EndsWith("\\") && !this.TargetDirectory.EndsWith("/"))
-							this._TargetDirectoryLength++;
+						this._RealTargetDirectoryLength = this.RealTargetDirectoryPath.Length;
+						if (!this.RealTargetDirectoryPath.EndsWith("\\") && !this.RealTargetDirectoryPath.EndsWith("/"))
+							this._RealTargetDirectoryLength++;
 					}
-				return this._TargetDirectoryLength.Value;
+				return this._RealTargetDirectoryLength.Value;
 			}
 		}
 
 		private ConditionMode _ConditionMode;
-		[Newtonsoft.Json.JsonIgnore]
+		[Newtonsoft.Json.JsonProperty]
 		public ConditionMode ConditionMode
 		{
 			get
@@ -106,8 +142,39 @@ namespace ColdShineSoft.SmartFileCopier.Models
 
 		public string ConditionVariableName { get; } = "fileInfo";
 
-		[Newtonsoft.Json.JsonIgnore]
-		public string CustomExpression { get; set; }
+		private string _CustomExpression;
+		[Newtonsoft.Json.JsonProperty]
+		public string CustomExpression
+		{
+			get
+			{
+				return this._CustomExpression;
+			}
+			set
+			{
+				this._CustomExpression = value;
+				this._FileFilter = null;
+			}
+		}
+
+		private FileFilter _FileFilter;
+		public FileFilter FileFilter
+		{
+			get
+			{
+				if(this._FileFilter==null)
+					this._FileFilter= (FileFilter)CSScriptLibrary.CSScript.LoadCode($@"
+using System.Linq;
+public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
+{{
+	public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(System.Collections.Generic.IEnumerable<System.IO.FileInfo> fileInfos)
+	{{
+		return fileInfos.Where(fileInfo=>{this.CustomExpression});
+	}}
+}}").CreateObject("*");
+				return this._FileFilter;
+			}
+		}
 
 		private System.Collections.ObjectModel.ObservableCollection<Condition> _Conditions;
 		[Newtonsoft.Json.JsonProperty]
@@ -118,28 +185,28 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				if(this._Conditions==null)
 				{
 					this._Conditions = new System.Collections.ObjectModel.ObservableCollection<Condition>();
-					this._Conditions.CollectionChanged += this.Conditions_CollectionChanged;
+					//this._Conditions.CollectionChanged += this.Conditions_CollectionChanged;
 				}
 				return this._Conditions;
 			}
 			set
 			{
 				this._Conditions = value;
-				value.CollectionChanged += Conditions_CollectionChanged;
+				//value.CollectionChanged += Conditions_CollectionChanged;
 			}
 		}
 
-		private void Conditions_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-		{
-			if(e.NewItems!=null&& e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-				foreach(Condition condition in e.NewItems)
-					condition.PropertyChanged += Condition_PropertyChanged;
-		}
+		//private void Conditions_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		//{
+		//	if(e.NewItems!=null&& e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+		//		foreach(Condition condition in e.NewItems)
+		//			condition.PropertyChanged += Condition_PropertyChanged;
+		//}
 
-		private void Condition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		{
-			this._SourceFiles = null;
-		}
+		//private void Condition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		//{
+		//	this._SourceFiles = null;
+		//}
 
 		public string CombinedExpression
 		{
@@ -169,7 +236,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 						case ConditionMode.Designer:
 							System.Collections.Generic.List<File> files = new List<File>();
 							DynamicExpresso.Lambda lambda = new DynamicExpresso.Interpreter().Parse(this.CombinedExpression, typeof(bool), this.Parameters);
-							foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories))
+							foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories))
 							{
 								System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
 								if ((bool)lambda.Invoke(this.Conditions.SelectMany(c => c.GetValues(fileInfo)).ToArray()))
@@ -178,9 +245,10 @@ namespace ColdShineSoft.SmartFileCopier.Models
 							this._SourceFiles = files.ToArray();
 							break;
 						case ConditionMode.Expression:
-							string[] allFiles = System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories);
-							Func<System.IO.FileInfo, bool> func = new DynamicExpresso.Interpreter().ParseAsDelegate<Func<System.IO.FileInfo, bool>>(this.CustomExpression, this.ConditionVariableName);
-							this._SourceFiles = allFiles.Select(f => new System.IO.FileInfo(f)).Where(func).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
+							//string[] allFiles = System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories);
+							//Func<System.IO.FileInfo, bool> func = new DynamicExpresso.Interpreter().ParseAsDelegate<Func<System.IO.FileInfo, bool>>(this.CustomExpression, this.ConditionVariableName);
+							//this._SourceFiles = allFiles.Select(f => new System.IO.FileInfo(f)).Where(func).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
+							this._SourceFiles = this.FileFilter.GetFiles(System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f))).Select(f=>new File(f,this.SourceDirectoryLength)).ToArray();
 							break;
 					}
 				}
@@ -217,11 +285,12 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		{
 			if (this.Done != null)
 				this.Done();
+			this._SourceFiles = null;
 		}
 
 		protected string GetTargetFilePath(string sourceFilePath)
 		{
-			return System.IO.Path.Combine(this.TargetDirectory, sourceFilePath.Substring(this.SourceDirectoryLength));
+			return System.IO.Path.Combine(this.RealTargetDirectoryPath, sourceFilePath.Substring(this.SourceDirectoryLength));
 		}
 
 		public int CopiedFileCount;

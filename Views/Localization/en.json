@@ -17,6 +17,9 @@
 	"Name": "Name",
 	"SourceDirectory": "Source Directory",
 	"TargetDirectory": "Target Directory",
+	"SpecifyTargetDirectory": "Specify Target Directory",
+	"SpecifyTargetDirectoryDescription": "If not specify the target directory, the files will copy to a temporary directory which will delete after compressed.",
+
 	"AddCondition": "Add Condition",
 	"Property": "Property",
 	"Operator": "Operator",
