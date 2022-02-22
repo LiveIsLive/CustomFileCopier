@@ -8,6 +8,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 {
 	public class File : Caliburn.Micro.PropertyChangedBase
 	{
+		public static readonly char[] InvalidFileNameCharacters = new char[] { '\\', '/', ':', '*', '?', '"', '>', '<', '|' };
+
 		private string _Name;
 		public string Name
 		{
@@ -71,7 +73,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
-		public int SourceDirectoryLength;
+		public readonly int SourceDirectoryLength;
 
 		private string _RelativeDirectoryPath;
 		public string RelativeDirectoryPath
@@ -79,7 +81,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			get
 			{
 				if (this._RelativeDirectoryPath == null)
-					this._RelativeDirectoryPath = this.Path.Substring(this.SourceDirectoryLength);
+					this._RelativeDirectoryPath = this.Directory.Substring(this.SourceDirectoryLength);
 				return this._RelativeDirectoryPath;
 			}
 		}

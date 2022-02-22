@@ -12,6 +12,7 @@
 	"Stop": "停止",
 	"RunTask": "执行任务",
 	"Status": "状态",
+	"CompressFilePath": "压缩文件路径",
 	"CompressTargetDirectory": "完成后打包目标文件夹到：",
 
 	"Name": "名称",
@@ -20,6 +21,7 @@
 	"SpecifyTargetDirectory": "指定目标目录",
 	"SpecifyTargetDirectoryDescription": "如果不指定目标目录，文件将会复制到临时目录，并且在压缩打包后删除。",
 
+	"Condition": "条件",
 	"AddCondition": "添加条件",
 	"Property": "属性",
 	"Operator": "运算符",
@@ -27,6 +29,7 @@
 	"RightBracket": "右括号",
 	"Connective": "连接符",
 	"Value": "值",
+	"Expression": "C#表达式",
 	"OpenFileDialog": "浏览...",
 
 	"Path": "完整路径",
@@ -47,7 +50,7 @@
 	"Properties":
 	{
 		"FileName": "文件名",
-		"FilePath": "完整路径",
+		"FilePath": "文件路径",
 		"FileSize": "文件大小(字节)",
 		"DirectoryPath": "所在目录路径",
 		"Extension": "扩展名(包含.)",
@@ -86,5 +89,14 @@
 		"Copying": "正在复制文件...",
 		"Compressing": "正在压缩目标文件夹...",
 		"Done": "已完成"
+	},
+	"ValidationError":
+	{
+		"Required": "必须输入“{0}”",
+		"InvalidFilePath": "“{0}”不是有效的文件路径。",
+		"InvalidDirectoryPath": "“{0}”不是有效的目录路径。",
+		"BracketMissing": "左括号数量必须和右括号数量相等",
+		"InvalidRegularExpression": "无效的正则表达式。",
+		"InvalidCsScript": "无效的C#表达式。"
 	}
 }
