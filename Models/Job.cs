@@ -256,8 +256,6 @@ public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
 			}
 		}
 
-		private static readonly char[] SpecialCharacters = new char[] { '\\', '/', ':', '*', '?', '"', '>', '<', '|' };
-
 		private string _JobNameToDirectoryName;
 		public string JobNameToDirectoryName
 		{
@@ -266,7 +264,7 @@ public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
 				if (this._JobNameToDirectoryName == null)
 				{
 					this._JobNameToDirectoryName = this.Name;
-					foreach (char c in SpecialCharacters)
+					foreach (char c in File.InvalidFileNameCharacters)
 						this._JobNameToDirectoryName = this._JobNameToDirectoryName.Replace(c, (char)(c + 65248));
 				}
 				return this._JobNameToDirectoryName;
@@ -286,6 +284,20 @@ public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
 			if (this.Done != null)
 				this.Done();
 			this._SourceFiles = null;
+		}
+
+		private Models.DataErrorInfos.Job _DataErrorInfo;
+		public Models.DataErrorInfos.Job DataErrorInfo
+		{
+			get
+			{
+				return this._DataErrorInfo;
+			}
+			protected set
+			{
+				this._DataErrorInfo = value;
+				this.NotifyOfPropertyChange(() => this.DataErrorInfo);
+			}
 		}
 
 		protected string GetTargetFilePath(string sourceFilePath)
@@ -337,6 +349,83 @@ public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
 				this.OnFileCopied(this.CopiedFileCount, this.CopiedFileSize);
 			}
 			this.OnDone();
+		}
+
+		private static System.IO.FileInfo[] _TestFileInfos;
+		public System.IO.FileInfo[] TestFileInfos
+		{
+			get
+			{
+				if (_TestFileInfos == null)
+					_TestFileInfos = new System.IO.FileInfo[] { new System.IO.FileInfo(this.GetType().Assembly.Location) };
+				return _TestFileInfos;
+			}
+		}
+
+		public bool ValidateData(Localization localization)
+		{
+			this.DataErrorInfo = new DataErrorInfos.Job();
+			bool result = true;
+			if(string.IsNullOrWhiteSpace(this.Name))
+			{
+				result = false;
+				this.DataErrorInfo.SourceDirectoryPath = string.Format(localization.ValidationError[ValidationError.Required], localization.Name);
+			}
+			if(!System.IO.Directory.Exists(this.SourceDirectoryPath))
+			{
+				result = false;
+				this.DataErrorInfo.SourceDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.SourceDirectory);
+			}
+			if(this.SpecifyTargetDirectory)
+				if(!System.IO.Directory.Exists(this.TargetDirectoryPath))
+					try
+					{
+						System.IO.Directory.CreateDirectory(this.TargetDirectoryPath);
+					}
+					catch(System.Exception exception)
+					{
+						result = false;
+						this.DataErrorInfo.TargetDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.TargetDirectory) + exception.Message;
+					}
+			switch(this.ConditionMode)
+			{
+				case ConditionMode.Designer:
+					if (this.Conditions.Count == 0)
+					{
+						result = false;
+						this.DataErrorInfo.Condition = string.Format(localization.ValidationError[ValidationError.Required], localization.SourceDirectory);
+					}
+					else
+					{
+						if(this.Conditions.Count(c=>c.LeftBracket==true)!= this.Conditions.Count(c => c.RightBracket == true))
+						{
+							result = false;
+							this.DataErrorInfo.Condition = localization.ValidationError[ValidationError.BracketMissing];
+						}
+
+						foreach (Condition condition in this.Conditions)
+							if (!condition.ValidateData(localization))
+								result = false;
+					}
+					break;
+				case ConditionMode.Expression:
+					if(string.IsNullOrWhiteSpace(this.CustomExpression?.Trim()))
+					{
+						result = false;
+						this.DataErrorInfo.Condition = string.Format(localization.ValidationError[ValidationError.Required], localization.Expression);
+					}
+					else try
+					{
+						this.FileFilter.GetFiles(this.TestFileInfos);
+					}
+					catch(Exception exception)
+					{
+						result = false;
+						this.DataErrorInfo.CustomExpression = localization.ValidationError[ValidationError.InvalidCsScript] + exception.Message;
+					}
+					break;
+			}
+			return result;
 		}
 	}
 }

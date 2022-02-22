@@ -62,6 +62,9 @@
     <Compile Include="Condition.cs" />
     <Compile Include="ConditionMode.cs" />
     <Compile Include="CopyResult.cs" />
+    <Compile Include="DataErrorInfos\Condition.cs" />
+    <Compile Include="DataErrorInfos\Job.cs" />
+    <Compile Include="DataErrorInfos\Task.cs" />
     <Compile Include="File.cs" />
     <Compile Include="FileFilter.cs" />
     <Compile Include="GetIsPass.cs" />
@@ -76,6 +79,7 @@
     <Compile Include="Setting.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="TaskStatus.cs" />
+    <Compile Include="ValidationError.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

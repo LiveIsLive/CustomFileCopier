@@ -76,6 +76,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ErrorReminder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SaveFileSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,6 +100,9 @@
   <ItemGroup>
     <Compile Include="DirectorySelector.xaml.cs">
       <DependentUpon>DirectorySelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorReminder.xaml.cs">
+      <DependentUpon>ErrorReminder.xaml</DependentUpon>
     </Compile>
     <Compile Include="SaveFileSelector.xaml.cs">
       <DependentUpon>SaveFileSelector.xaml</DependentUpon>

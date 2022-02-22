@@ -148,6 +148,20 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				this.FileCopied((this.CopiedFileCount, this.CopiedFileSize));
 		}
 
+		private Models.DataErrorInfos.Task _DataErrorInfo;
+		public Models.DataErrorInfos.Task DataErrorInfo
+		{
+			get
+			{
+				return this._DataErrorInfo;
+			}
+			protected set
+			{
+				this._DataErrorInfo = value;
+				this.NotifyOfPropertyChange(() => this.DataErrorInfo);
+			}
+		}
+
 		public event System.Action Done;
 		protected void OnDone()
 		{
@@ -179,7 +193,18 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				this.Status = TaskStatus.Compressing;
 				var groups = (from job in this.Jobs group job by job.RealTargetDirectoryPath.ToLower() into g select g.ToArray()).ToArray();
 				if (groups.Length == 1)
+				{
+					if(System.IO.File.Exists(this.CompressFilePath))
+						//try
+						//{
+							System.IO.File.Move(this.CompressFilePath, System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.CompressFilePath), $"{System.IO.Path.GetFileNameWithoutExtension(this.CompressFilePath)}(Old_{System.DateTime.Now.ToString("yyyyMMddHHmmss")}).zip"));
+						//}
+						//catch
+						//{
+						//	System.IO.File.Delete(this.CompressFilePath);
+						//}
 					System.IO.Compression.ZipFile.CreateFromDirectory(this.Jobs[0].RealTargetDirectoryPath, this.CompressFilePath, System.IO.Compression.CompressionLevel.Optimal, false);
+				}
 				else
 				{
 					System.IO.FileStream stream = new System.IO.FileStream(this.CompressFilePath, System.IO.FileMode.Create);
@@ -230,6 +255,54 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				stream.Close();
 				Setting.Instance.AddRecentFile(path);
 			}
+		}
+
+		public bool ValidateData(Localization localization)
+		{
+			this.DataErrorInfo = new DataErrorInfos.Task();
+			bool result = true;
+			if(this.CompressTargetDirectory)
+				if(string.IsNullOrWhiteSpace(this.CompressFilePath))
+				{
+					result = false;
+					this.DataErrorInfo.CompressFilePath = string.Format(localization.ValidationError[ValidationError.Required], localization.CompressFilePath);
+				}
+				else if (System.IO.File.Exists(this.CompressFilePath))
+					try
+					{
+						System.IO.File.OpenWrite(this.CompressFilePath).Close();
+					}
+					catch (System.Exception exception)
+					{
+						result = false;
+						this.DataErrorInfo.CompressFilePath = string.Format(localization.ValidationError[ValidationError.InvalidFilePath], localization.CompressFilePath) + exception.Message;
+					}
+				else
+					try
+					{
+						result = false;
+						System.IO.File.WriteAllBytes(this.CompressFilePath, new byte[1]);
+						System.IO.File.Delete(this.CompressFilePath);
+					}
+					catch (System.Exception exception)
+					{
+						this.DataErrorInfo.CompressFilePath = string.Format(localization.ValidationError[ValidationError.InvalidFilePath], localization.CompressFilePath) + exception.Message;
+					}
+
+			if(this.Jobs.Count==0)
+			{
+				result = false;
+				this.DataErrorInfo.Job = string.Format(localization.ValidationError[ValidationError.Required], localization.Job);
+			}
+
+			foreach(Job job in this.Jobs)
+				if(!job.ValidateData(localization))
+				{
+					result = false;
+					this.DataErrorInfo.LastInvalidJob = job;
+				}
+
+			return result;
 		}
 	}
 }

@@ -21,6 +21,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string Stop { get; set; }
 		public string RunTask { get; set; }
 		public string Status { get; set; }
+		public string CompressFilePath { get; set; }
 		public string CompressTargetDirectory { get; set; }
 
 		public string Name { get; set; }
@@ -29,6 +30,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string SpecifyTargetDirectory { get; set; }
 		public string SpecifyTargetDirectoryDescription { get; set; }
 
+		public string Condition { get; set; }
 		public string ConditionDesignMode { get; set; }
 		public string AddCondition { get; set; }
 		public string Property { get; set; }
@@ -37,6 +39,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string RightBracket { get; set; }
 		public string Connective { get; set; }
 		public string Value { get; set; }
+		public string Expression { get; set; }
 
 		public string Path { get; set; }
 		public string Directory { get; set; }
@@ -59,5 +62,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public System.Collections.Generic.Dictionary<CopyResult, string> CopyResult { get; set; }
 
 		public System.Collections.Generic.Dictionary<TaskStatus, string> TaskStatus { get; set; }
+
+		public System.Collections.Generic.Dictionary<ValidationError, string> ValidationError { get; set; }
 	}
 }

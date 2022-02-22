@@ -192,6 +192,20 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
+		private Models.DataErrorInfos.Condition _DataErrorInfo;
+		public Models.DataErrorInfos.Condition DataErrorInfo
+		{
+			get
+			{
+				return this._DataErrorInfo;
+			}
+			protected set
+			{
+				this._DataErrorInfo = value;
+				this.NotifyOfPropertyChange(() => this.DataErrorInfo);
+			}
+		}
+
 		public object[] GetValues(System.IO.FileInfo fileInfo)
 		{
 			if (this.Operator.IsRegularExpressionOperator)
@@ -222,5 +236,33 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			////输入结果
 			//int[] integers = integerList.ToArray();
 		}
+
+
+		public bool ValidateData(Localization localization)
+		{
+			this.DataErrorInfo = new DataErrorInfos.Condition();
+			//bool result = true;
+
+			if(this.ValueType==PropertyTypes.String)
+				if(string.IsNullOrWhiteSpace(this.StringValue))
+				{
+					this.DataErrorInfo.StringValue = string.Format(localization.ValidationError[ValidationError.Required], localization.Value);
+				}
+
+			if(this.Operator==Operator.RegularExpressionOperator)
+				try
+				{
+					this.RegularExpression.Match("");
+				}
+				catch(System.Exception exception)
+				{
+						this.DataErrorInfo.StringValue = localization.ValidationError[ValidationError.InvalidRegularExpression] + exception.Message;
+					return false;
+				}
+
+			return true;
+			//return result;
+		}
+
 	}
 }

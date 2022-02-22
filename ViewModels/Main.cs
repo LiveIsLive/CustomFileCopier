@@ -111,6 +111,20 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		protected const string ProgramName = "Smart File Copier";
 
+		private bool _UpdateJobBinding;
+		public bool UpdateJobBinding
+		{
+			get
+			{
+				return this._UpdateJobBinding;
+			}
+			set
+			{
+				this._UpdateJobBinding = value;
+				this.NotifyOfPropertyChange(() => this.UpdateJobBinding);
+			}
+		}
+
 		private string _Title = ProgramName;
 		public string Title
 		{
@@ -151,6 +165,7 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void Save(string path)
 		{
+			this.UpdateJobBinding = true;
 			if (this.OpeningFilePath == null)
 				this.OpeningFilePath = path;
 			this.Save();
@@ -158,12 +173,16 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void SaveAs(string path)
 		{
+			this.UpdateJobBinding = true;
 			this.OpeningFilePath = path;
 			this.Save();
 		}
 
 		public void Save()
 		{
+			//if (!this.ValidateData())
+			//	return;
+
 			this.SelectedJob = null;
 			this.SelectedJob = this.Task.Jobs[0];
 
@@ -247,6 +266,10 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void Run()
 		{
+			if (!this.ValidateData())
+				return;
+
+			this.UpdateJobBinding = true;
 			this.WindowManager.ShowDialog(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
 		}
 
@@ -254,6 +277,15 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 		{
 			foreach (Models.Job job in this.Task.Jobs)
 				job.SpecifyTargetDirectory = true;
+		}
+
+		public bool ValidateData()
+		{
+			if (this.Task.ValidateData(this.Localization))
+				return true;
+			if (this.Task.DataErrorInfo.LastInvalidJob != null)
+				this.SelectedJob = this.Task.DataErrorInfo.LastInvalidJob;
+			return false;
 		}
 
 		//public void EnsureJobBinding()

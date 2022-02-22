@@ -14,7 +14,7 @@
 		Title="Runner" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
 	<DockPanel>
 		<ToolBar Padding="10,6" DockPanel.Dock="Top">
-			<Button Name="Stop" IsEnabled="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" hc:IconElement.Geometry="{StaticResource LeftGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
+			<Button cal:Message.Attach="TryClose" IsEnabled="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" hc:IconElement.Geometry="{StaticResource LeftGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
 			<WrapPanel VerticalAlignment="Center" Margin="20,0,0,0">
 				<TextBlock Text="{Binding Localization.Status}" />
 				<TextBlock>：</TextBlock>
@@ -62,6 +62,11 @@
 				<DataGridTextColumn Binding="{Binding File.FileInfo.Length}">
 					<DataGridTextColumn.Header>
 						<controls:GetDictionaryValue DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext}" Dictionary="{Binding Localization.Properties}" Key="FileSize" />
+					</DataGridTextColumn.Header>
+				</DataGridTextColumn>
+				<DataGridTextColumn Binding="{Binding File.FileInfo.Name}">
+					<DataGridTextColumn.Header>
+						<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Name}" />
 					</DataGridTextColumn.Header>
 				</DataGridTextColumn>
 				<DataGridTextColumn Binding="{Binding File.RelativeDirectoryPath}">

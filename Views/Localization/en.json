@@ -12,6 +12,7 @@
 	"Stop": "Stop",
 	"RunTask": "Run Task",
 	"Status": "Status",
+	"CompressFilePath": "Compress File Path",
 	"CompressTargetDirectory": "When finish copying, compress the target directory to：",
 
 	"Name": "Name",
@@ -20,6 +21,7 @@
 	"SpecifyTargetDirectory": "Specify Target Directory",
 	"SpecifyTargetDirectoryDescription": "If not specify the target directory, the files will copy to a temporary directory which will delete after compressed.",
 
+	"Condition": "Condition",
 	"AddCondition": "Add Condition",
 	"Property": "Property",
 	"Operator": "Operator",
@@ -27,6 +29,7 @@
 	"RightBracket": "Right Bracket",
 	"Connective": "Connective",
 	"Value": "Value",
+	"Expression": "C# Expression",
 	"OpenFileDialog": "Browse...",
 
 	"Path": "File Path",
@@ -86,5 +89,14 @@
 		"Copying": "Copying files...",
 		"Compressing": "Compressing the target directory...",
 		"Done": "Done"
+	},
+	"ValidationError":
+	{
+		"Required": "Must input the “{0}”.",
+		"InvalidFilePath": "The “{0}” is not a valid file path.",
+		"InvalidDirectoryPath": "The “{0}” is not a valid directory path.",
+		"BracketMissing": "The count of the left brackets must equal to the count of the rihgt brackets.",
+		"InvalidRegularExpression": "The regular expression is not valid.",
+		"InvalidCsScript": "This C# expression is invaild."
 	}
 }
