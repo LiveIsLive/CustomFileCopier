@@ -14,6 +14,8 @@
 	"Status": "Status",
 	"CompressFilePath": "Compress File Path",
 	"CompressTargetDirectory": "When finish copying, compress the target directory to：",
+	"AddNowToCompressFileName": "Add a time stamp to the end of the compress file name. ",
+	"NowFormatString": "Date Time Format String",
 
 	"Name": "Name",
 	"SourceDirectory": "Source Directory",
@@ -40,8 +42,9 @@
 	"Files": "Copied File Count/Total File Count",
 	"Bytes": "Copied Bytes/Total Bytes",
 
+	"TargetDirectoryIsNotEmpty": "The target directory “{0}”is not empty. Maybe overwrite the files which have been existed when copying. Do you want to continue?",
 	"ConditionDesignMode": "Condition Design Mode",
-	"ExpressionLimitation": "Limitation：Not support multiline expressions. It means that the expression can not contain '{}' or ';'.",
+	//"ExpressionLimitation": "Limitation：Not support multiline expressions. It means that the expression can not contain '{}' or ';'.",
 	"ConditionMode":
 	{
 		"Designer": "Designer",
@@ -94,9 +97,11 @@
 	{
 		"Required": "Must input the “{0}”.",
 		"InvalidFilePath": "The “{0}” is not a valid file path.",
+		"InvalidFileNameCharacter": "A file name can not contain character “{0}”.",
 		"InvalidDirectoryPath": "The “{0}” is not a valid directory path.",
 		"BracketMissing": "The count of the left brackets must equal to the count of the rihgt brackets.",
 		"InvalidRegularExpression": "The regular expression is not valid.",
-		"InvalidCsScript": "This C# expression is invaild."
+		"InvalidCsScript": "The C# expression is invaild.",
+		"InvalidDateTimeFormatString": "The “DateTime” format string is invaild."
 	}
 }

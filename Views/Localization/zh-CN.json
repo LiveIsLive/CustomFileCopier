@@ -14,6 +14,8 @@
 	"Status": "状态",
 	"CompressFilePath": "压缩文件路径",
 	"CompressTargetDirectory": "完成后打包目标文件夹到：",
+	"AddNowToCompressFileName": "添加时间戳到压缩文件名。",
+	"NowFormatString": "时间格式",
 
 	"Name": "名称",
 	"SourceDirectory": "源目录",
@@ -40,8 +42,9 @@
 	"Files": "已复制文件数/文件总数",
 	"Bytes": "已复制字节/总字节",
 
+	"TargetDirectoryIsNotEmpty": "“{0}”是非空目录，执行过程中可能会覆盖已存在文件，是否继续？",
 	"ConditionDesignMode": "条件设置模式",
-	"ExpressionLimitation": "限制：不支持多行表达式，也就是说表达式内不能包含'{}'或者';'。",
+	//"ExpressionLimitation": "限制：不支持多行表达式，也就是说表达式内不能包含'{}'或者';'。",
 	"ConditionMode":
 	{
 		"Designer": "设计器",
@@ -94,9 +97,11 @@
 	{
 		"Required": "必须输入“{0}”",
 		"InvalidFilePath": "“{0}”不是有效的文件路径。",
+		"InvalidFileNameCharacter": "文件名不能包含字符“{0}”",
 		"InvalidDirectoryPath": "“{0}”不是有效的目录路径。",
 		"BracketMissing": "左括号数量必须和右括号数量相等",
 		"InvalidRegularExpression": "无效的正则表达式。",
-		"InvalidCsScript": "无效的C#表达式。"
+		"InvalidCsScript": "无效的C#表达式。",
+		"InvalidDateTimeFormatString": "无效的时间格式化字符串。"
 	}
 }

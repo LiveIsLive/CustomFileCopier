@@ -45,6 +45,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				this._Operator = null;
 				this._Expression = null;
 				this._ValueType = null;
+				this._Parameters = null;
 
 				this.NotifyOfPropertyChange(() => this.Operator);
 				this.NotifyOfPropertyChange(() => this.ValueType);
@@ -60,8 +61,21 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		[Newtonsoft.Json.JsonProperty]
 		public LogicalConnective? Connective { get; set; }
 
+		private string _StringValue;
 		[Newtonsoft.Json.JsonProperty]
-		public string StringValue { get; set; }
+		public string StringValue
+		{
+			get
+			{
+				return this._StringValue;
+			}
+			set
+			{
+				this._StringValue = value;
+				this._RegularExpression = null;
+				this.NotifyOfPropertyChange(() => this.StringValue);
+			}
+		}
 
 		[Newtonsoft.Json.JsonProperty]
 		public long LongValue { get; set; }
@@ -146,6 +160,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				this._Operator = value;
 				this._Expression = null;
 				this._ValueType = null;
+				this._Parameters = null;
 
 				this.NotifyOfPropertyChange(() => this.Operator);
 				this.NotifyOfPropertyChange(() => this.ValueType);
@@ -186,7 +201,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			{
 				if (this._Parameters == null)
 					if (this.Operator.IsRegularExpressionOperator)
-						this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, typeof(string)), new DynamicExpresso.Parameter(this.ValueVariableName, typeof(string))};
+						this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, typeof(string)), new DynamicExpresso.Parameter(this.ValueVariableName, typeof(System.Text.RegularExpressions.Regex))};
 					else this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, this.Property.Type), new DynamicExpresso.Parameter(this.ValueVariableName, this.Property.Type)};
 				return this._Parameters;
 			}
@@ -247,6 +262,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				if(string.IsNullOrWhiteSpace(this.StringValue))
 				{
 					this.DataErrorInfo.StringValue = string.Format(localization.ValidationError[ValidationError.Required], localization.Value);
+					return false;
 				}
 
 			if(this.Operator==Operator.RegularExpressionOperator)

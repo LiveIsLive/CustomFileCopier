@@ -74,14 +74,25 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 			}
 		}
 
-		private Caliburn.Micro.WindowManager _WindowManager;
-		public Caliburn.Micro.WindowManager WindowManager
+		private Caliburn.Micro.IWindowManager _WindowManager;
+		public Caliburn.Micro.IWindowManager WindowManager
 		{
 			get
 			{
 				if (this._WindowManager == null)
 					this._WindowManager = new Caliburn.Micro.WindowManager();
 				return this._WindowManager;
+			}
+		}
+
+		private MvvmDialogs.IDialogService _DialogService;
+		public MvvmDialogs.IDialogService DialogService
+		{
+			get
+			{
+				if (this._DialogService == null)
+					this._DialogService = new MvvmDialogs.DialogService();
+				return this._DialogService;
 			}
 		}
 
@@ -108,6 +119,11 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 					SetUiLangMethod.Invoke(UiConfigHelper, new object[] { "en" });
 				}
 			}
+		}
+
+		public void CloseWindow()
+		{
+			this.TryClose();
 		}
 	}
 }

@@ -14,7 +14,7 @@
 		Title="Runner" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
 	<DockPanel>
 		<ToolBar Padding="10,6" DockPanel.Dock="Top">
-			<Button cal:Message.Attach="TryClose" IsEnabled="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" hc:IconElement.Geometry="{StaticResource LeftGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
+			<Button cal:Message.Attach="CloseWindow" IsEnabled="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" hc:IconElement.Geometry="{StaticResource LeftGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
 			<WrapPanel VerticalAlignment="Center" Margin="20,0,0,0">
 				<TextBlock Text="{Binding Localization.Status}" />
 				<TextBlock>：</TextBlock>

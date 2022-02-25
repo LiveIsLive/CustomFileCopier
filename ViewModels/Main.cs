@@ -220,7 +220,8 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 		public void RemoveCondition(Models.Job job, Models.Condition condition)
 		{
 			job.Conditions.Remove(condition);
-			job.Conditions[0].Connective = null;
+			if (job.Conditions.Count > 0)
+				job.Conditions[0].Connective = null;
 		}
 
 		protected Models.Localization GetLocalization(System.Globalization.CultureInfo culture)
@@ -266,10 +267,17 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void Run()
 		{
+			this.UpdateJobBinding = true;
+
 			if (!this.ValidateData())
 				return;
 
-			this.UpdateJobBinding = true;
+			foreach(Models.Job job in this.Task.Jobs)
+				if(job.SpecifyTargetDirectory)
+					if(System.IO.Directory.EnumerateFileSystemEntries(job.TargetDirectoryPath).FirstOrDefault()!=null)
+						if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
+							return;
+			
 			this.WindowManager.ShowDialog(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
 		}
 

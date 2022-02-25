@@ -25,9 +25,9 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void Stop()
 		{
-			//this.CancellationTokenSource.Cancel();
+			this.CancellationTokenSource.Cancel();
 			//this.Task.Status = Models.TaskStatus.Standby;
-			this.TryClose();
+			//this.TryClose();
 		}
 	}
 }
