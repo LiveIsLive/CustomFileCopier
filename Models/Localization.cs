@@ -23,6 +23,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string Status { get; set; }
 		public string CompressFilePath { get; set; }
 		public string CompressTargetDirectory { get; set; }
+		public string AddNowToCompressFileName { get; set; }
+		public string NowFormatString { get; set; }
 
 		public string Name { get; set; }
 		public string SourceDirectory { get; set; }
@@ -50,6 +52,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string Bytes { get; set; }
 
 		public string OpenFileDialog { get; set; }
+
+		public string TargetDirectoryIsNotEmpty { get; set; }
 
 		public System.Collections.Generic.Dictionary<ConditionMode,string> ConditionMode { get; set; }
 

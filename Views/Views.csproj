@@ -53,6 +53,9 @@
     <Reference Include="HandyControl, Version=3.3.0.0, Culture=neutral, PublicKeyToken=45be8712787a1e5b, processorArchitecture=MSIL">
       <HintPath>..\packages\HandyControl.3.3.0\lib\net45\HandyControl.dll</HintPath>
     </Reference>
+    <Reference Include="MvvmDialogs, Version=8.0.0.0, Culture=neutral, PublicKeyToken=3d3b9708589bc73e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmDialogs.8.0.0\lib\net45\MvvmDialogs.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -83,7 +86,6 @@
     <Compile Include="Runner.xaml.cs">
       <DependentUpon>Runner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.xaml.cs">
@@ -92,20 +94,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="Localization\zh-CN.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -113,10 +101,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Resource Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -35,6 +35,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			{
 				this._SourceDirectoryPath = value;
 				this._SourceDirectoryLength = null;
+
+				this.NotifyOfPropertyChange(() => this.SourceDirectoryPath);
 			}
 		}
 
@@ -86,6 +88,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			{
 				this._TargetDirectoryPath = value;
 				this.RealTargetDirectoryPath = null;
+
+				this.NotifyOfPropertyChange(() => this.TargetDirectoryPath);
 			}
 		}
 
@@ -154,6 +158,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			{
 				this._CustomExpression = value;
 				this._FileFilter = null;
+
+				this.NotifyOfPropertyChange(() => this.CustomExpression);
 			}
 		}
 
@@ -369,15 +375,27 @@ public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
 			if(string.IsNullOrWhiteSpace(this.Name))
 			{
 				result = false;
-				this.DataErrorInfo.SourceDirectoryPath = string.Format(localization.ValidationError[ValidationError.Required], localization.Name);
+				this.DataErrorInfo.Name = string.Format(localization.ValidationError[ValidationError.Required], localization.Name);
 			}
-			if(!System.IO.Directory.Exists(this.SourceDirectoryPath))
+
+			if(string.IsNullOrWhiteSpace(this.SourceDirectoryPath))
+			{
+				result = false;
+				this.DataErrorInfo.SourceDirectoryPath = string.Format(localization.ValidationError[ValidationError.Required], localization.SourceDirectory);
+			}
+			else if(!System.IO.Directory.Exists(this.SourceDirectoryPath))
 			{
 				result = false;
 				this.DataErrorInfo.SourceDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.SourceDirectory);
 			}
+
 			if(this.SpecifyTargetDirectory)
-				if(!System.IO.Directory.Exists(this.TargetDirectoryPath))
+				if(string.IsNullOrWhiteSpace(this.TargetDirectoryPath))
+				{
+					result = false;
+					this.DataErrorInfo.TargetDirectoryPath = string.Format(localization.ValidationError[ValidationError.Required], localization.TargetDirectory);
+				}
+				else if(!System.IO.Directory.Exists(this.TargetDirectoryPath))
 					try
 					{
 						System.IO.Directory.CreateDirectory(this.TargetDirectoryPath);
@@ -387,13 +405,14 @@ public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
 						result = false;
 						this.DataErrorInfo.TargetDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.TargetDirectory) + exception.Message;
 					}
+
 			switch(this.ConditionMode)
 			{
 				case ConditionMode.Designer:
 					if (this.Conditions.Count == 0)
 					{
 						result = false;
-						this.DataErrorInfo.Condition = string.Format(localization.ValidationError[ValidationError.Required], localization.SourceDirectory);
+						this.DataErrorInfo.Condition = string.Format(localization.ValidationError[ValidationError.Required], localization.Condition);
 					}
 					else
 					{
@@ -412,7 +431,7 @@ public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
 					if(string.IsNullOrWhiteSpace(this.CustomExpression?.Trim()))
 					{
 						result = false;
-						this.DataErrorInfo.Condition = string.Format(localization.ValidationError[ValidationError.Required], localization.Expression);
+						this.DataErrorInfo.CustomExpression = string.Format(localization.ValidationError[ValidationError.Required], localization.Expression);
 					}
 					else try
 					{

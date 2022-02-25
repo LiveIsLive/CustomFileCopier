@@ -10,6 +10,7 @@
 		xmlns:hc="https://handyorg.github.io/handycontrol"
 		xmlns:cal="http://www.caliburnproject.org"
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
+		xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs" md:DialogServiceViews.IsRegistered="True"
 		
 	mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Main,IsDesignTimeCreatable=True}"
 		Title="{Binding Title}">
@@ -17,10 +18,19 @@
 		<StackPanel DockPanel.Dock="Top" Margin="5">
 			<DockPanel>
 				<CheckBox IsChecked="{Binding Task.CompressTargetDirectory}" Content="{Binding Localization.CompressTargetDirectory}" cal:Message.Attach="[Unchecked]=[UncheckedCompressTargetDirectory]" />
-				<controls:SaveFileSelector IsEnabled="{Binding Task.CompressTargetDirectory}" Path="{Binding Path=Task.CompressFilePath,Mode=TwoWay}" />
+				<controls:SaveFileSelector IsEnabled="{Binding Task.CompressTargetDirectory}" Path="{Binding Path=Task.CompressFilePath,Mode=TwoWay}" OpenButtonText="{Binding Localization.OpenFileDialog}" />
 			</DockPanel>
+			<controls:ErrorReminder Text="{Binding Task.DataErrorInfo.CompressFilePath}" />
+			<WrapPanel IsEnabled="{Binding Task.CompressTargetDirectory}" Margin="0,5,0,0">
+				<CheckBox IsChecked="{Binding Task.AddNowToCompressFileName}" Content="{Binding Localization.AddNowToCompressFileName}" />
+				<WrapPanel IsEnabled="{Binding Task.AddNowToCompressFileName}">
+					<TextBlock Text="{Binding Localization.NowFormatString}" VerticalAlignment="Center" />
+					<TextBlock VerticalAlignment="Center">：</TextBlock>
+					<TextBox Width="150" Text="{Binding Task.NowFormatString}" />
+					<controls:ErrorReminder Text="{Binding Task.DataErrorInfo.NowFormatString}" />
+				</WrapPanel>
+			</WrapPanel>
 		</StackPanel>
-		<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Task.DataErrorInfo.CompressFilePath}" />
 		<hc:SimplePanel DockPanel.Dock="Top">
 			<ToolBar Padding="10,6">
 				<Button Name="AddJob" hc:IconElement.Geometry="{StaticResource AddGeometry}" Margin="10,0,0,0" Content="{Binding Localization.AddJob}" />
@@ -260,8 +270,8 @@
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
 													<WrapPanel>
-														<controls:ErrorReminder Text="{Binding DataErrorInfo.StringValue}" />
 														<Button cal:Message.Attach="RemoveCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}"/>
+														<controls:ErrorReminder Text="{Binding DataErrorInfo.StringValue}" />
 													</WrapPanel>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellTemplate>

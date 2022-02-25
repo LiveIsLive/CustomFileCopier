@@ -10,9 +10,11 @@ namespace ColdShineSoft.SmartFileCopier.Models
 	{
 		Required,
 		InvalidFilePath,
+		InvalidFileNameCharacter,
 		InvalidDirectoryPath,
 		BracketMissing,
 		InvalidRegularExpression,
-		InvalidCsScript
+		InvalidCsScript,
+		InvalidDateTimeFormatString
 	}
 }

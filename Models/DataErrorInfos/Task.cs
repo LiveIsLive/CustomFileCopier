@@ -23,5 +23,19 @@ namespace ColdShineSoft.SmartFileCopier.Models.DataErrorInfos
 		}
 
 		public Models.Job LastInvalidJob;
+
+		private string _NowFormatString;
+		public override string NowFormatString
+		{
+			get
+			{
+				return this._NowFormatString;
+			}
+			set
+			{
+				this._NowFormatString = value;
+				this.NotifyOfPropertyChange(() => this.NowFormatString);
+			}
+		}
 	}
 }

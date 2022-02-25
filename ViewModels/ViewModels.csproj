@@ -40,6 +40,9 @@
     <Reference Include="Caliburn.Micro.Platform.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
+    <Reference Include="MvvmDialogs, Version=8.0.0.0, Culture=neutral, PublicKeyToken=3d3b9708589bc73e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmDialogs.8.0.0\lib\net45\MvvmDialogs.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
