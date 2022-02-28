@@ -24,8 +24,7 @@
 			<WrapPanel IsEnabled="{Binding Task.CompressTargetDirectory}" Margin="0,5,0,0">
 				<CheckBox IsChecked="{Binding Task.AddNowToCompressFileName}" Content="{Binding Localization.AddNowToCompressFileName}" />
 				<WrapPanel IsEnabled="{Binding Task.AddNowToCompressFileName}">
-					<TextBlock Text="{Binding Localization.NowFormatString}" VerticalAlignment="Center" />
-					<TextBlock VerticalAlignment="Center">：</TextBlock>
+					<controls:FieldTitle Content="{Binding Localization.NowFormatString}" VerticalAlignment="Center" />
 					<TextBox Width="150" Text="{Binding Task.NowFormatString}" />
 					<controls:ErrorReminder Text="{Binding Task.DataErrorInfo.NowFormatString}" />
 				</WrapPanel>
@@ -76,6 +75,10 @@
 						</DataTemplate>
 					</MenuItem.ItemTemplate>
 				</MenuItem>
+				<MenuItem Header="{Binding Localization.Help}">
+					<MenuItem Name="ShowTutorial" Header="{Binding Localization.Tutorial}" />
+					<MenuItem Name="ShowAboutWindow" Header="{Binding Localization.About}" />
+				</MenuItem>
 			</Menu>
 		</hc:SimplePanel>
 		<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding Task.DataErrorInfo.Job}" />
@@ -93,39 +96,39 @@
 								<Style TargetType="DockPanel">
 									<Setter Property="Margin" Value="0,5,0,0" />
 								</Style>
-								<Style TargetType="Label">
+								<Style TargetType="controls:FieldTitle">
 									<Setter Property="DockPanel.Dock" Value="Left" />
 									<Setter Property="DataContext" Value="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext}" />
-									<Setter Property="Width" Value="180" />
+									<Setter Property="Width" Value="200" />
 									<Setter Property="HorizontalContentAlignment" Value="Right" />
 									<Setter Property="VerticalContentAlignment" Value="Center" />
 								</Style>
 							</StackPanel.Resources>
 							<DockPanel>
-								<Label Content="{c:Binding Localization.Name+Colon}" />
+								<controls:FieldTitle Content="{Binding Localization.Name}" />
 								<hc:TextBox Text="{Binding Name}" />
 							</DockPanel>
 							<controls:ErrorReminder Text="{Binding DataErrorInfo.Name}" />
 							<DockPanel>
-								<Label Content="{c:Binding Localization.SourceDirectory+Colon}" />
+								<controls:FieldTitle Content="{Binding Localization.SourceDirectory}" />
 								<controls:DirectorySelector Path="{Binding SourceDirectoryPath}" OpenButtonText="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.OpenFileDialog}" />
 							</DockPanel>
 							<controls:ErrorReminder Text="{Binding DataErrorInfo.SourceDirectoryPath}" />
 							<DockPanel>
-								<Label>
-									<Label.Content>
-										<CheckBox IsChecked="{Binding Path=DataContext.SpecifyTargetDirectory,RelativeSource={RelativeSource AncestorType=DockPanel}}" IsEnabled="{Binding Path=DataContext.Task.CompressTargetDirectory,RelativeSource={RelativeSource AncestorType=Window}}" Content="{c:Binding Localization.SpecifyTargetDirectory+Colon}" />
-									</Label.Content>
-								</Label>
-								<Label Content="{Binding Path=Localization.SpecifyTargetDirectoryDescription}" Width="Auto" HorizontalAlignment="Left" />
+								<controls:FieldTitle>
+									<controls:FieldTitle.Content>
+										<CheckBox IsChecked="{Binding Path=DataContext.SpecifyTargetDirectory,RelativeSource={RelativeSource AncestorType=DockPanel}}" IsEnabled="{Binding Path=DataContext.Task.CompressTargetDirectory,RelativeSource={RelativeSource AncestorType=Window}}" Content="{Binding Localization.SpecifyTargetDirectory}"></CheckBox>
+									</controls:FieldTitle.Content>
+								</controls:FieldTitle>
+								<TextBlock Text="{Binding Path=DataContext.Localization.SpecifyTargetDirectoryDescription,RelativeSource={RelativeSource AncestorType=Window}}" VerticalAlignment="Center" />
 							</DockPanel>
 							<DockPanel Visibility="{c:Binding SpecifyTargetDirectory}">
-								<Label Content="{c:Binding Localization.TargetDirectory+Colon}" />
-								<controls:DirectorySelector Path="{Binding TargetDirectoryPath}" OpenButtonText="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.OpenFileDialog}" />
+								<controls:FieldTitle Content="{Binding Localization.TargetDirectory}" />
+								<controls:DirectorySelector Path="{Binding TargetDirectoryPath}" OpenButtonText="{Binding Path=DataContext.Localization.OpenFileDialog,RelativeSource={RelativeSource AncestorType=Window}}" />
 							</DockPanel>
 							<controls:ErrorReminder Text="{Binding DataErrorInfo.TargetDirectoryPath}" />
 							<DockPanel>
-								<Label Content="{c:Binding Localization.ConditionDesignMode+Colon}" />
+								<controls:FieldTitle Content="{Binding Localization.ConditionDesignMode}" />
 								<ItemsControl ItemsSource="{Binding Path=DataContext.ConditionModes,RelativeSource={RelativeSource AncestorType=Window}}" VerticalAlignment="Center">
 									<ItemsControl.ItemsPanel>
 										<ItemsPanelTemplate>
@@ -145,13 +148,14 @@
 							</DockPanel>
 						</StackPanel>
 						<hc:SimplePanel>
-							<!-- 如果不设置FalseToVisibility，可能会出现看不到表头行的情况 -->
-							<DockPanel Visibility="{c:Binding 'ConditionMode==models:ConditionMode.Designer', FalseToVisibility=Hidden}">
+							<DockPanel Visibility="{c:Binding 'ConditionMode==models:ConditionMode.Designer'}">
 								<WrapPanel DockPanel.Dock="Top">
 									<Button cal:Message.Attach="[Click]=[AddCondition($dataContext)]" hc:IconElement.Geometry="{StaticResource AddGeometry}" Margin="5,10,0,0" Content="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.AddCondition}"  HorizontalAlignment="Left" />
 									<controls:ErrorReminder Text="{Binding DataErrorInfo.Condition}" />
 								</WrapPanel>
-								<DataGrid ItemsSource="{Binding Conditions}" AutoGenerateColumns="False">
+								<!-- 如果不设置FalseToVisibility，可能会出现看不到表头行的情况 -->
+								<!-- 不知道为什么没有行的时候，表头显示有问题，大部分被遮住，所以设置了有行才显示 -->
+								<DataGrid ItemsSource="{Binding Conditions}" Visibility="{c:Binding 'Conditions.Count!=0', FalseToVisibility=Hidden}" AutoGenerateColumns="False">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn>
 											<DataGridTemplateColumn.Header>

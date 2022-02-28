@@ -8,6 +8,8 @@ namespace ColdShineSoft.SmartFileCopier.Models
 {
 	public class File : Caliburn.Micro.PropertyChangedBase
 	{
+		public static readonly System.Reflection.Assembly ExecutingAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+
 		public static readonly char[] InvalidFileNameCharacters = new char[] { '\\', '/', ':', '*', '?', '"', '>', '<', '|' };
 
 		private string _Name;

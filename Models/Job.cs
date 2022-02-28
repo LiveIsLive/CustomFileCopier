@@ -363,7 +363,7 @@ public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
 			get
 			{
 				if (_TestFileInfos == null)
-					_TestFileInfos = new System.IO.FileInfo[] { new System.IO.FileInfo(this.GetType().Assembly.Location) };
+					_TestFileInfos = new System.IO.FileInfo[] { new System.IO.FileInfo(File.ExecutingAssembly.Location) };
 				return _TestFileInfos;
 			}
 		}

@@ -14,6 +14,10 @@ namespace ColdShineSoft.SmartFileCopier.Models
 		public string RecentFiles { get; set; }
 		public string Language { get; set; }
 		public string FileList { get; set; }
+		public string Help { get; set; }
+		public string Tutorial { get; set; }
+		public string About { get; set; }
+
 		public string Job { get; set; }
 		public string AddJob { get; set; }
 		public string NewJob { get; set; }
