@@ -27,47 +27,13 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
-		protected static readonly string SavePath = System.AppDomain.CurrentDomain.BaseDirectory + "Setting.json";
+		protected static readonly string SavePath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Cold-Shine-Soft.Com" ,"Smart File Copier", "Setting.json");
 
 		private static Setting _Instance;
 		public static Setting Instance
 		{
 			get
 			{
-				//dynamic SayHello = CSScriptLibrary.CSScript.LoadCode(@"
-				//public class Test2
-				//{
-				//                                     public void ConsoleSayHello(string greeting)
-				//                                     {
-				//                                         System.Console.WriteLine(greeting);
-				//                                     }
-				//}")
-				//	   .CreateObject("*");
-
-				//SayHello.ConsoleSayHello("Hello again!");
-
-
-
-				//FileFilter func = (FileFilter)CSScriptLibrary.CSScript.LoadCode(@"
-				//using System.Linq;
-				//public class MyTest:ColdShineSoft.SmartFileCopier.Models.FileFilter
-				//{
-				//public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(System.Collections.Generic.IEnumerable<System.IO.FileInfo> fileInfos)
-				//{
-				//	return fileInfos.Where(fileInfo=>{return fileInfo.Length>1;}).ToArray();
-				//}
-				//}").CreateObject("*");
-				//var result = func.GetFiles(new System.IO.FileInfo[] { new System.IO.FileInfo(@"C:\Users\Administrator\Desktop\新建文件夹\Temp2.zip") });
-
-				//var result= func.Invoke(new System.IO.FileInfo[] { new System.IO.FileInfo(@"C:\Users\Administrator\Desktop\新建文件夹\Temp2.zip") });
-
-				//var interpreter = new DynamicExpresso.Interpreter();
-				//interpreter.SetVariable("fileInfos", new System.IO.FileInfo[] {                                                                                                       });
-				//new System.IO.FileInfo[] { new System.IO.FileInfo(@"C:\Users\Administrator\Desktop\新建文件夹\Temp2.zip") }.Where(fileInfo => new [] {".cs",".zip" }.Contains(fileInfo.Extension.ToLower()));
-				//var result = interpreter.Eval("fileInfos.Where(i=>{{return i.Length>1;}})");
-				//var func = interpreter.ParseAsDelegate<Func<System.IO.FileInfo, bool>>("new [] {\".cs\",\".zip\" }.Contains(fileInfo.Extension.ToLower())", "fileInfo");
-				//var result = new System.IO.FileInfo[] { new System.IO.FileInfo(@"C:\Users\Administrator\Desktop\新建文件夹\Temp2.zip") }.Where(func).ToArray();
-
 				if (_Instance == null)
 					if (System.IO.File.Exists(SavePath))
 					{

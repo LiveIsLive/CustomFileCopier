@@ -64,7 +64,7 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public double FileListPreviousHeight;
 
-		public string Colon { get; } = "：";
+		//public string Colon { get; } = "：";
 
 		public Models.Property[] Properties { get; }= Models.Property.Properties;
 
@@ -302,5 +302,15 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 		//	this.SelectedJob = null;
 		//	this.SelectedJob = job;
 		//}
+
+		public void ShowTutorial()
+		{
+			System.Diagnostics.Process.Start("https://github.com/LiveIsLive/SmartFileCopier/");
+		}
+
+		public void ShowAboutWindow()
+		{
+			this.WindowManager.ShowDialog(new About());
+		}
 	}
 }

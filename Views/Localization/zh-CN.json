@@ -3,7 +3,11 @@
 	"SaveAs": "另存为...",
 	"Open": "打开",
 	"RecentFiles": "最近使用过的文件",
-	"Language": "语言",
+	"Language": "语言/Languages",
+	"Help": "帮助",
+	"Tutorial": "入门",
+	"About": "关于",
+
 	"FileList": "文件列表",
 	"Job": "任务",
 	"AddJob": "添加任务",
