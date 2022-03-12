@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.SmartFileCopier.ViewModels
+namespace ColdShineSoft.CustomFileCopier.ViewModels
 {
 	public class Screen : Caliburn.Micro.Screen
 	{
@@ -54,7 +54,7 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 				if (this._Localization == null)
 					//if (Caliburn.Micro.Execute.InDesignMode)
 					//{
-					//	System.IO.StreamReader reader = new System.IO.StreamReader(System.Windows.Application.GetResourceStream(new Uri("/ColdShineSoft.SmartFileCopier.Views;component/Localization/zh-CN.json", System.UriKind.Relative)).Stream);
+					//	System.IO.StreamReader reader = new System.IO.StreamReader(System.Windows.Application.GetResourceStream(new Uri("/ColdShineSoft.CustomFileCopier.Views;component/Localization/zh-CN.json", System.UriKind.Relative)).Stream);
 					//	this._Localization = NetJSON.NetJSON.Deserialize<Models.Localization>(reader);
 					//	reader.Close();
 					//}

@@ -1,4 +1,4 @@
-﻿namespace ColdShineSoft.SmartFileCopier.Controls
+﻿namespace ColdShineSoft.CustomFileCopier.Controls
 {
 	public partial class SaveFileSplitButton : HandyControl.Controls.SplitButton
 	{

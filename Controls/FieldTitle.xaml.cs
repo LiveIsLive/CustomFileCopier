@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ColdShineSoft.SmartFileCopier.Controls
+namespace ColdShineSoft.CustomFileCopier.Controls
 {
 	/// <summary>
 	/// FieldTitle.xaml 的交互逻辑

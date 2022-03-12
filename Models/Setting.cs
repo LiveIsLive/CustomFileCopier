@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.SmartFileCopier.Models
+namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public class Setting
 	{
@@ -27,7 +27,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 			}
 		}
 
-		protected static readonly string SavePath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Cold-Shine-Soft.Com" ,"Smart File Copier", "Setting.json");
+		protected static readonly string SavePath = System.IO.Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Cold-Shine-Soft.Com" ,"Custom File Copier", "Setting.json");
 
 		private static Setting _Instance;
 		public static Setting Instance
@@ -60,6 +60,10 @@ namespace ColdShineSoft.SmartFileCopier.Models
 
 		public void Save()
 		{
+			string directory = System.IO.Path.GetDirectoryName(SavePath);
+			if (!System.IO.Directory.Exists(directory))
+				System.IO.Directory.CreateDirectory(directory);
+
 			System.IO.StreamWriter writer = new System.IO.StreamWriter(SavePath);
 			//NetJSON.NetJSON.Serialize(this, writer);
 			new Newtonsoft.Json.JsonSerializer().Serialize(writer, this);

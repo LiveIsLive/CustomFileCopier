@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Compression;
 
-namespace ColdShineSoft.SmartFileCopier.Models
+namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public class Task : Caliburn.Micro.PropertyChangedBase
 	{

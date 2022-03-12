@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace ColdShineSoft.SmartFileCopier.Controls
+namespace ColdShineSoft.CustomFileCopier.Controls
 {
 	public class TabControl:HandyControl.Controls.TabControl
 	{

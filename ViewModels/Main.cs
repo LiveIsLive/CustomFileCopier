@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.SmartFileCopier.ViewModels
+namespace ColdShineSoft.CustomFileCopier.ViewModels
 {
 	public class Main : Screen
 	{
@@ -109,7 +109,7 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 			}
 		}
 
-		protected const string ProgramName = "Smart File Copier";
+		protected const string ProgramName = "Custom File Copier";
 
 		private bool _UpdateJobBinding;
 		public bool UpdateJobBinding
@@ -305,7 +305,7 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 
 		public void ShowTutorial()
 		{
-			System.Diagnostics.Process.Start("https://github.com/LiveIsLive/SmartFileCopier/");
+			System.Diagnostics.Process.Start("https://github.com/LiveIsLive/CustomFileCopier/");
 		}
 
 		public void ShowAboutWindow()

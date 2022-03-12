@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.SmartFileCopier.Models
+namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public class Property
 	{
