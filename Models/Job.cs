@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.SmartFileCopier.Models
+namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public class Job : Caliburn.Micro.PropertyChangedBase
 	{
@@ -171,7 +171,7 @@ namespace ColdShineSoft.SmartFileCopier.Models
 				if(this._FileFilter==null)
 					this._FileFilter= (FileFilter)CSScriptLibrary.CSScript.LoadCode($@"
 using System.Linq;
-public class CustomFileFilter:ColdShineSoft.SmartFileCopier.Models.FileFilter
+public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 {{
 	public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(System.Collections.Generic.IEnumerable<System.IO.FileInfo> fileInfos)
 	{{

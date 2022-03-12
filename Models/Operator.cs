@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ColdShineSoft.SmartFileCopier.Models
+namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public class Operator
 	{

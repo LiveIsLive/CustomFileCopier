@@ -7,8 +7,8 @@
     <ProjectGuid>{0C7296AA-3D93-40C4-A791-F70B367DC0E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ColdShineSoft.SmartFileCopier.ViewModels</RootNamespace>
-    <AssemblyName>ColdShineSoft.SmartFileCopier.ViewModels</AssemblyName>
+    <RootNamespace>ColdShineSoft.CustomFileCopier.ViewModels</RootNamespace>
+    <AssemblyName>ColdShineSoft.CustomFileCopier.ViewModels</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

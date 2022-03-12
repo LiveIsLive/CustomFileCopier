@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ColdShineSoft.SmartFileCopier.ViewModels
+namespace ColdShineSoft.CustomFileCopier.ViewModels
 {
 	public class Runner:Screen
 	{

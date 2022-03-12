@@ -4,7 +4,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace ColdShineSoft.SmartFileCopier.Controls
+//namespace ColdShineSoft.CustomFileCopier.Controls
 //{
 //	public class SaveFileHelper: System.Windows.DependencyObject
 //	{

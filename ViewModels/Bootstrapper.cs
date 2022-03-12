@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 
-namespace ColdShineSoft.SmartFileCopier.ViewModels
+namespace ColdShineSoft.CustomFileCopier.ViewModels
 {
 	public class Bootstrapper: Caliburn.Micro.BootstrapperBase
 	{
@@ -23,7 +23,7 @@ namespace ColdShineSoft.SmartFileCopier.ViewModels
 			{
 				UseNameSuffixesInMappings = false,
 				DefaultSubNamespaceForViewModels = typeof(Main).Namespace,
-				DefaultSubNamespaceForViews = "ColdShineSoft.SmartFileCopier.Views"
+				DefaultSubNamespaceForViews = "ColdShineSoft.CustomFileCopier.Views"
 			};
 
 			Caliburn.Micro.ViewLocator.ConfigureTypeMappings(config);

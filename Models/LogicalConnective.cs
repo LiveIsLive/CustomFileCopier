@@ -1,4 +1,4 @@
-﻿namespace ColdShineSoft.SmartFileCopier.Models
+﻿namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public enum LogicalConnective
 	{
