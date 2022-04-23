@@ -70,7 +70,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 
 		public Models.LogicalConnective[] Connectives { get; } = System.Enum.GetValues(typeof(Models.LogicalConnective)).Cast<Models.LogicalConnective>().ToArray();
 
-		public System.Collections.Generic.Dictionary<System.Type, Models.Operator[]> Operators { get; } = Models.Operator.Operators;
+		public System.Collections.Generic.Dictionary<System.Type, Models.IOperator[]> Operators { get; } = Models.Operators.TypedOperators;
 
 		public System.Array ConditionModes { get; } = System.Enum.GetValues(typeof(Models.ConditionMode));
 

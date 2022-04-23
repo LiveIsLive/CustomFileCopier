@@ -7,14 +7,25 @@ using System.Threading.Tasks;
 
 namespace ColdShineSoft.CustomFileCopier.Models
 {
-	public class Property
+	public class Property<T>: IProperty
 	{
 		public int PropertyId { get; protected set; }
 
 		public string Name { get; protected set; }
 
 		[Newtonsoft.Json.JsonIgnore]
-		public System.Func<System.IO.FileInfo, object> GetValue { get; protected set; }
+		public System.Func<System.IO.FileInfo, T> GetValue { get; protected set; }
+
+		//private System.Func<System.IO.FileInfo, object> _GetPropertyValue;
+		//public System.Func<System.IO.FileInfo, object> GetPropertyValue
+		//{
+		//	get
+		//	{
+		//		if (this._GetPropertyValue == null)
+		//			this._GetPropertyValue = fileInfo => this.GetValue((System.IO.FileInfo)fileInfo);
+		//		return this._GetPropertyValue;
+		//	}
+		//}
 
 		private System.Type _Type;
 		[Newtonsoft.Json.JsonIgnore]
@@ -30,34 +41,35 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		protected static readonly System.IO.FileInfo ExecutableFileInfo = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-		private Operator[] _AllowOperators;
-		public Operator[] AllowOperators
+		public string VariableName => this.Name;
+
+		private DynamicExpresso.Parameter _Parameter;
+		public DynamicExpresso.Parameter Parameter
+		{
+			get
+			{
+				if (this._Parameter == null)
+					this._Parameter = new DynamicExpresso.Parameter(this.VariableName, this.Type);
+				return this._Parameter;
+			}
+		}
+
+		private IOperator[] _AllowOperators;
+		public IOperator[] AllowOperators
 		{
 			get
 			{
 				if (this._AllowOperators == null)
-					this._AllowOperators = Operator.Operators[this.Type];
+					this._AllowOperators = Operators.TypedOperators[this.Type];
 				return this._AllowOperators;
 			}
 		}
 
-		public Property(int propertyId, string name, Func<FileInfo, object> getValue)
+		public Property(int propertyId, string name, Func<FileInfo, T> getValue)
 		{
 			this.PropertyId = propertyId;
 			this.Name = name;
 			this.GetValue = getValue;
 		}
-
-		public static readonly Property[] Properties = new Property[]
-		{
-			new Property(101,"FileName",f=>f.Name)
-			,new Property(102,"FilePath",f=>f.FullName)
-			,new Property(103,"FileSize",f=>f.Length)
-			,new Property(104,"DirectoryPath",f=>f.DirectoryName)
-			,new Property(105,"Extension",f=>f.Extension)
-			,new Property(106,"LastWriteTime",f=>f.LastWriteTime)
-			,new Property(107,"CreationTime",f=>f.CreationTime)
-			,new Property(108,"LastAccessTime",f=>f.LastAccessTime)
-		};
 	}
 }
