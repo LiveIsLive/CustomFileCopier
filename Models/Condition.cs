@@ -21,7 +21,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 				this._PropertyId = value;
 				this._Property = null;
 				this._Expression = null;
-				this._Parameters = null;
+				//this._Parameters = null;
 				this._ValueType = null;
 
 				this.Operator = this.Property.AllowOperators[0];
@@ -45,7 +45,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 				this._Operator = null;
 				this._Expression = null;
 				this._ValueType = null;
-				this._Parameters = null;
+				//this._Parameters = null;
 
 				this.NotifyOfPropertyChange(() => this.Operator);
 				this.NotifyOfPropertyChange(() => this.ValueType);
@@ -73,15 +73,42 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			{
 				this._StringValue = value;
 				this._RegularExpression = null;
+				this._Parameter = null;
 				this.NotifyOfPropertyChange(() => this.StringValue);
 			}
 		}
 
+		private long _LongValue;
 		[Newtonsoft.Json.JsonProperty]
-		public long LongValue { get; set; }
+		public long LongValue
+		{
+			get
+			{
+				return this._LongValue;
+			}
+			set
+			{
+				this._LongValue = value;
+				this._Parameter = null;
+				this.NotifyOfPropertyChange(() => this.LongValue);
+			}
+		}
 
+		private System.DateTime _DateTimeValue = System.DateTime.Today;
 		[Newtonsoft.Json.JsonProperty]
-		public System.DateTime DateTimeValue { get; set; } = System.DateTime.Today;
+		public System.DateTime DateTimeValue
+		{
+			get
+			{
+				return this._DateTimeValue;
+			}
+			set
+			{
+				this._DateTimeValue = value;
+				this._Parameter = null;
+				this.NotifyOfPropertyChange(() => this.DateTimeValue);
+			}
+		}
 
 		public object Value
 		{
@@ -103,7 +130,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			get
 			{
 				if (this._ValueType == null)
-					if (this.Operator == Operator.RegularExpressionOperator)
+					if (this.Operator.IsRegularExpressionOperator)
 						this._ValueType = PropertyTypes.String;
 					else this._ValueType = this.Property.Type;
 				return this._ValueType;
@@ -121,13 +148,13 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
-		private Property _Property;
-		public Property Property
+		private IProperty _Property;
+		public IProperty Property
 		{
 			get
 			{
 				if (this._Property == null)
-					this._Property = Property.Properties.FirstOrDefault(p => p.PropertyId == this.PropertyId);
+					this._Property = Properties.FileProperties.FirstOrDefault(p => p.PropertyId == this.PropertyId);
 				return this._Property;
 			}
 			set                                       
@@ -135,7 +162,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 				this._PropertyId = value.PropertyId;
 				this._Property = value;
 				this._Expression = null;
-				this._Parameters = null;
+				//this._Parameters = null;
 				this._ValueType = null;
 
 				this.Operator = value.AllowOperators[0];
@@ -145,13 +172,13 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
-		private Operator _Operator;
-		public Operator Operator
+		private IOperator _Operator;
+		public IOperator Operator
 		{
 			get
 			{
 				if (this._Operator == null)
-					this._Operator = Operator.AllOperators.FirstOrDefault(p => p.OperatorId == this.OperatorId);
+					this._Operator = Operators.AllOperators.FirstOrDefault(p => p.OperatorId == this.OperatorId);
 				return this._Operator;
 			}
 			set
@@ -160,7 +187,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 				this._Operator = value;
 				this._Expression = null;
 				this._ValueType = null;
-				this._Parameters = null;
+				//this._Parameters = null;
 
 				this.NotifyOfPropertyChange(() => this.Operator);
 				this.NotifyOfPropertyChange(() => this.ValueType);
@@ -169,9 +196,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		protected static int VariableIndex;
 
-		protected readonly string PropertyVariableName = "P" + VariableIndex++;
+		//protected readonly string PropertyVariableName = "P" + VariableIndex++;
 
-		protected readonly string ValueVariableName = "V" + VariableIndex++;
+		public readonly string VariableName = "V" + VariableIndex++;
 
 		protected static System.Collections.Generic.Dictionary<LogicalConnective, string> Connectives = new Dictionary<LogicalConnective, string>() { { LogicalConnective.And, "&&" }, { LogicalConnective.Or, "||" } };
 
@@ -186,7 +213,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 						this._Expression = Connectives[this.Connective.Value];
 					if (this.LeftBracket)
 						this._Expression += "(";
-					this._Expression += string.Format(this.Operator.Expression, this.PropertyVariableName, this.ValueVariableName);
+					this._Expression += $"{this.Operator.VariableName}.Expression({this.Property.VariableName},{this.VariableName})";
+					//this._Expression += string.Format(this.Operator.Expression, this.PropertyVariableName, this.ValueVariableName);
 					if (this.RightBracket)
 						this._Expression += ")";
 				}
@@ -194,16 +222,27 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
-		private DynamicExpresso.Parameter[] _Parameters;
-		public DynamicExpresso.Parameter[] Parameters
+		//private DynamicExpresso.Parameter[] _Parameters;
+		//public DynamicExpresso.Parameter[] Parameters
+		//{
+		//	get
+		//	{
+		//		if (this._Parameters == null)
+		//			if (this.Operator.IsRegularExpressionOperator)
+		//				this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, typeof(string)), new DynamicExpresso.Parameter(this.ValueVariableName, typeof(System.Text.RegularExpressions.Regex))};
+		//			else this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, this.Property.Type), new DynamicExpresso.Parameter(this.ValueVariableName, this.Property.Type)};
+		//		return this._Parameters;
+		//	}
+		//}
+
+		private DynamicExpresso.Parameter _Parameter;
+		public DynamicExpresso.Parameter Parameter
 		{
 			get
 			{
-				if (this._Parameters == null)
-					if (this.Operator.IsRegularExpressionOperator)
-						this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, typeof(string)), new DynamicExpresso.Parameter(this.ValueVariableName, typeof(System.Text.RegularExpressions.Regex))};
-					else this._Parameters = new DynamicExpresso.Parameter[] { new DynamicExpresso.Parameter(this.PropertyVariableName, this.Property.Type), new DynamicExpresso.Parameter(this.ValueVariableName, this.Property.Type)};
-				return this._Parameters;
+				if (this._Parameter == null)
+					this._Parameter = new DynamicExpresso.Parameter(this.VariableName, this.Value);
+				return this._Parameter;
 			}
 		}
 
@@ -221,36 +260,36 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
-		public object[] GetValues(System.IO.FileInfo fileInfo)
-		{
-			if (this.Operator.IsRegularExpressionOperator)
-				return new object[] { this.Property.GetValue(fileInfo).ToString(), this.RegularExpression };
-			return new object[] { this.Property.GetValue(fileInfo), this.Value };
+		//public object[] GetValues(System.IO.FileInfo fileInfo)
+		//{
+		//	if (this.Operator.IsRegularExpressionOperator)
+		//		return new object[] { this.Property.GetValue(fileInfo).ToString(), this.RegularExpression };
+		//	return new object[] { this.Property.GetValue(fileInfo), this.Value };
 
-			//System.Collections.Generic.List<int> integerList = new System.Collections.Generic.List<int>();
-			//System.Console.WriteLine("请输入数组的元素，每行一个：");
-			//for(int i=0;i<=10;i++)
-			//{
-			//	string s = System.Console.ReadLine();
-			//	int item;
-			//	if(!int.TryParse(s,out item))
-			//	{
-			//		System.Console.WriteLine("输入格式不正确，请输入非负整数！");
-			//		i--;
-			//		continue;
-			//	}
-			//	if(item<0)
-			//	{
-			//		System.Console.WriteLine("遇到负数，输入结束");
-			//		break;
-			//	}
-			//	integerList.Add(item);
-			//	if(integerList.Count==10)
-			//		System.Console.WriteLine("已经输入10个非负整数，输入结束！");
-			//}
-			////输入结果
-			//int[] integers = integerList.ToArray();
-		}
+		//	//System.Collections.Generic.List<int> integerList = new System.Collections.Generic.List<int>();
+		//	//System.Console.WriteLine("请输入数组的元素，每行一个：");
+		//	//for(int i=0;i<=10;i++)
+		//	//{
+		//	//	string s = System.Console.ReadLine();
+		//	//	int item;
+		//	//	if(!int.TryParse(s,out item))
+		//	//	{
+		//	//		System.Console.WriteLine("输入格式不正确，请输入非负整数！");
+		//	//		i--;
+		//	//		continue;
+		//	//	}
+		//	//	if(item<0)
+		//	//	{
+		//	//		System.Console.WriteLine("遇到负数，输入结束");
+		//	//		break;
+		//	//	}
+		//	//	integerList.Add(item);
+		//	//	if(integerList.Count==10)
+		//	//		System.Console.WriteLine("已经输入10个非负整数，输入结束！");
+		//	//}
+		//	////输入结果
+		//	//int[] integers = integerList.ToArray();
+		//}
 
 
 		public bool ValidateData(Localization localization)
@@ -265,14 +304,14 @@ namespace ColdShineSoft.CustomFileCopier.Models
 					return false;
 				}
 
-			if(this.Operator==Operator.RegularExpressionOperator)
+			if(this.Operator.IsRegularExpressionOperator)
 				try
 				{
-					this.RegularExpression.Match("");
+					this.RegularExpression.Match("　");
 				}
 				catch(System.Exception exception)
 				{
-						this.DataErrorInfo.StringValue = localization.ValidationError[ValidationError.InvalidRegularExpression] + exception.Message;
+					this.DataErrorInfo.StringValue = localization.ValidationError[ValidationError.InvalidRegularExpression] + exception.Message;
 					return false;
 				}
 

@@ -222,13 +222,42 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			}
 		}
 
+		public IProperty[] Properties
+		{
+			get
+			{
+				return this.Conditions.Select(c => c.Property).Distinct().ToArray();
+			}
+		}
+
 		public DynamicExpresso.Parameter[] Parameters
 		{
 			get
 			{
+				System.Collections.Generic.List<DynamicExpresso.Parameter> propertyParameters = new List<DynamicExpresso.Parameter>();
+				System.Collections.Generic.List<DynamicExpresso.Parameter> operatorParameters = new List<DynamicExpresso.Parameter>();
+				System.Collections.Generic.List<DynamicExpresso.Parameter> parameters = new List<DynamicExpresso.Parameter>();
+				foreach(Condition condition in this.Conditions)
+				{
+					if (!propertyParameters.Contains(condition.Property.Parameter))
+						propertyParameters.Add(condition.Property.Parameter);
+					if (!operatorParameters.Contains(condition.Operator.Parameter))
+						operatorParameters.Add(condition.Operator.Parameter);
+				}
+
 				return this.Conditions.SelectMany(c => c.Parameters).ToArray();
 			}
 		}
+
+		//public System.Collections.Generic.Dictionary<string, DynamicExpresso.Parameter> Parameters
+		//{
+		//	get
+		//	{
+		//		System.Collections.Generic.Dictionary<string, DynamicExpresso.Parameter> parameters = new Dictionary<string, DynamicExpresso.Parameter>();
+		//		//foreach()
+		//		return parameters;
+		//	}
+		//}
 
 		private File[] _SourceFiles;
 		public File[] SourceFiles
@@ -245,6 +274,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 							foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories))
 							{
 								System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
+
 								if ((bool)lambda.Invoke(this.Conditions.SelectMany(c => c.GetValues(fileInfo)).ToArray()))
 									files.Add(new File(fileInfo,this.SourceDirectoryLength));
 							}
