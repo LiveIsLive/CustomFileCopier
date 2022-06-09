@@ -34,7 +34,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			get
 			{
 				if (this._Type == null)
-					this._Type = this.GetValue(ExecutableFileInfo).GetType();
+					this._Type = typeof(T);
+					//this._Type = this.GetValue(ExecutableFileInfo).GetType();
 				return this._Type;
 			}
 		}

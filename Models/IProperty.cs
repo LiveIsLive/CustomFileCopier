@@ -12,7 +12,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		string VariableName { get; }
 
-		DynamicExpresso.Parameter Parameter { get; }
+		//DynamicExpresso.Parameter Parameter { get; }
 
 		IOperator[] AllowOperators { get; }
 

@@ -66,7 +66,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 
 		//public string Colon { get; } = "：";
 
-		public Models.Property[] Properties { get; }= Models.Property.Properties;
+		public Models.IProperty[] Properties { get; }= Models.Properties.FileProperties;
 
 		public Models.LogicalConnective[] Connectives { get; } = System.Enum.GetValues(typeof(Models.LogicalConnective)).Cast<Models.LogicalConnective>().ToArray();
 
