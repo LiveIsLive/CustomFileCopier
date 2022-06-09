@@ -230,24 +230,25 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			}
 		}
 
-		public DynamicExpresso.Parameter[] Parameters
-		{
-			get
-			{
-				System.Collections.Generic.List<DynamicExpresso.Parameter> propertyParameters = new List<DynamicExpresso.Parameter>();
-				System.Collections.Generic.List<DynamicExpresso.Parameter> operatorParameters = new List<DynamicExpresso.Parameter>();
-				System.Collections.Generic.List<DynamicExpresso.Parameter> parameters = new List<DynamicExpresso.Parameter>();
-				foreach(Condition condition in this.Conditions)
-				{
-					if (!propertyParameters.Contains(condition.Property.Parameter))
-						propertyParameters.Add(condition.Property.Parameter);
-					if (!operatorParameters.Contains(condition.Operator.Parameter))
-						operatorParameters.Add(condition.Operator.Parameter);
-				}
+		//public DynamicExpresso.Parameter[] Parameters
+		//{
+		//	get
+		//	{
+		//		System.Collections.Generic.List<DynamicExpresso.Parameter> propertyParameters = new List<DynamicExpresso.Parameter>();
+		//		System.Collections.Generic.List<DynamicExpresso.Parameter> operatorParameters = new List<DynamicExpresso.Parameter>();
+		//		System.Collections.Generic.List<DynamicExpresso.Parameter> conditionParameters = new List<DynamicExpresso.Parameter>();
+		//		foreach(Condition condition in this.Conditions)
+		//		{
+		//			if (!propertyParameters.Contains(condition.Property.Parameter))
+		//				propertyParameters.Add(condition.Property.Parameter);
+		//			if (!operatorParameters.Contains(condition.Operator.Parameter))
+		//				operatorParameters.Add(condition.Operator.Parameter);
+		//			conditionParameters.Add(condition.Parameter);
+		//		}
 
-				return this.Conditions.SelectMany(c => c.Parameters).ToArray();
-			}
-		}
+		//		return propertyParameters.Concat(operatorParameters).Concat(conditionParameters).ToArray();
+		//	}
+		//}
 
 		//public System.Collections.Generic.Dictionary<string, DynamicExpresso.Parameter> Parameters
 		//{
@@ -269,16 +270,20 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 					switch(this.ConditionMode)
 					{
 						case ConditionMode.Designer:
-							System.Collections.Generic.List<File> files = new List<File>();
-							DynamicExpresso.Lambda lambda = new DynamicExpresso.Interpreter().Parse(this.CombinedExpression, typeof(bool), this.Parameters);
-							foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories))
-							{
-								System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
+							//System.Collections.Generic.List<File> files = new List<File>();
+							//DynamicExpresso.Lambda lambda = new DynamicExpresso.Interpreter().Parse(this.CombinedExpression, typeof(bool), this.Parameters);
+							//Property[] properties = this.Conditions.Select(c => c.Property).Distinct().ToArray();
+							//foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories))
+							//{
+							//	System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
+							//	System.Collections.Generic.List<DynamicExpresso.Parameter> parameters = new List<DynamicExpresso.Parameter>();
+							//	foreach (Property property in properties)
+							//		parameters.Add(new DynamicExpresso.Parameter(property.VariableName, property.GetValue(fileInfo)));
 
-								if ((bool)lambda.Invoke(this.Conditions.SelectMany(c => c.GetValues(fileInfo)).ToArray()))
-									files.Add(new File(fileInfo,this.SourceDirectoryLength));
-							}
-							this._SourceFiles = files.ToArray();
+							//	if ((bool)lambda.Invoke(parameters))
+							//		files.Add(new File(fileInfo,this.SourceDirectoryLength));
+							//}
+							//this._SourceFiles = files.ToArray();
 							break;
 						case ConditionMode.Expression:
 							//string[] allFiles = System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories);

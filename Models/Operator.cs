@@ -56,7 +56,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			get
 			{
 				if (this._VariableName == null)
-					this._VariableName = this.Name + this.OperatorId;
+					this._VariableName = "O" + this.OperatorId;
 				return this._VariableName;
 			}
 		}
