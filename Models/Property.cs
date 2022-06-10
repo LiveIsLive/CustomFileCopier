@@ -42,7 +42,27 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		protected static readonly System.IO.FileInfo ExecutableFileInfo = new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
-		public string VariableName => this.Name;
+		private string _PropertyVariableName;
+		public string PropertyVariableName
+		{
+			get
+			{
+				if (this._PropertyVariableName == null)
+					this._PropertyVariableName = this.Name + "P";
+				return this._PropertyVariableName;
+			}
+		}
+
+		private string _ValueVariableName;
+		public string ValueVariableName
+		{
+			get
+			{
+				if (this._ValueVariableName == null)
+					this._ValueVariableName = this.Name + "V";
+				return this._ValueVariableName;
+			}
+		}
 
 		private DynamicExpresso.Parameter _Parameter;
 		public DynamicExpresso.Parameter Parameter
@@ -50,7 +70,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			get
 			{
 				if (this._Parameter == null)
-					this._Parameter = new DynamicExpresso.Parameter(this.VariableName, this.Type);
+					this._Parameter = new DynamicExpresso.Parameter(this.ValueVariableName, this.Type);
 				return this._Parameter;
 			}
 		}

@@ -18,16 +18,16 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		public string Name { get; protected set; }
 
-		private OperatorHandler<SourceType, ComparisonType> _Expression;
-		public OperatorHandler<SourceType, ComparisonType> Expression
+		private OperatorHandler<SourceType, ComparisonType> _Validate;
+		public OperatorHandler<SourceType, ComparisonType> Validate
 		{
 			get
 			{
-				return this._Expression;
+				return this._Validate;
 			}
 			set
 			{
-				this._Expression = value;
+				this._Validate = value;
 			}
 		}
 
@@ -76,7 +76,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		{
 			this.OperatorId = operatorId;
 			this.Name = name;
-			this.Expression = expression;
+			this.Validate = expression;
 		}
 
 		//public readonly static Operator RegularExpressionOperator = new Operator(999, "RegularExpression", "{1}.IsMatch({0})");
@@ -84,7 +84,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		bool IOperator.Validate(object source, object comparison)
 		{
-			return this.Expression((SourceType)source, (ComparisonType)comparison);
+			return this.Validate((SourceType)source, (ComparisonType)comparison);
 		}
 	}
 }
