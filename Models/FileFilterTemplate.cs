@@ -18,9 +18,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+    #line 1 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
-    public partial class ProcessorTemplate : ProcessorTemplateBase
+    public partial class FileFilterTemplate : FileFilterTemplateBase
     {
 #line hidden
         /// <summary>
@@ -31,70 +31,70 @@ namespace ColdShineSoft.CustomFileCopier.Models
             this.Write("\r\nusing System.Linq;\r\npublic class CustomFileFilter:ColdShineSoft.CustomFileCopie" +
                     "r.Models.FileFilter\r\n{\r\n\t");
             
-            #line 10 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 10 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
  foreach(IProperty property in this.Conditions.Select(c=>c.Property).Distinct()){ 
             
             #line default
             #line hidden
             this.Write("\t\tprotected readonly ");
             
-            #line 11 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 11 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ExtentionMethods.GetGenericTypeFullName(property)));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 11 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 11 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.PropertyVariableName));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\tprotected readonly ");
             
-            #line 12 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 12 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.Type.FullName));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 12 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 12 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(property.ValueVariableName));
             
             #line default
             #line hidden
             this.Write(";\r\n\t");
             
-            #line 13 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 13 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
  } 
             
             #line default
             #line hidden
             this.Write("\r\n\t");
             
-            #line 15 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 15 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
  foreach(IOperator o in this.Conditions.Select(c=>c.Property).Distinct()){ 
             
             #line default
             #line hidden
             this.Write("\t\tprotected readonly ");
             
-            #line 16 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 16 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ExtentionMethods.GetGenericTypeFullName(o)));
             
             #line default
             #line hidden
             this.Write(" ");
             
-            #line 16 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 16 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(o.VariableName));
             
             #line default
             #line hidden
             this.Write(";\r\n\t");
             
-            #line 17 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 17 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
  } 
             
             #line default
@@ -103,7 +103,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
                     "ft.CustomFileCopier.Models.Condition> conditions)\r\n\t{\r\n\t\tColdShineSoft.CustomFil" +
                     "eCopier.Models.Condition condition;\r\n\t\t");
             
-            #line 22 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 22 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
  for(int i=0;i<this.Conditions.Count();i++)
 		{
 			Condition condition=this.Conditions.ElementAt(i);
@@ -113,42 +113,42 @@ namespace ColdShineSoft.CustomFileCopier.Models
             #line hidden
             this.Write("\t\t\tcondition=this.Conditions.ElementAt(");
             
-            #line 26 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 26 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(i));
             
             #line default
             #line hidden
             this.Write(");\r\n\t\t\tthis.");
             
-            #line 27 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 27 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(condition.Property.PropertyVariableName));
             
             #line default
             #line hidden
             this.Write("=(");
             
-            #line 27 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 27 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ExtentionMethods.GetGenericTypeFullName(condition.Property)));
             
             #line default
             #line hidden
             this.Write(")condition.Property;\r\n\t\t\tthis.");
             
-            #line 28 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 28 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(condition.Operator.VariableName));
             
             #line default
             #line hidden
             this.Write("=(");
             
-            #line 28 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 28 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ExtentionMethods.GetGenericTypeFullName(condition.Operator)));
             
             #line default
             #line hidden
             this.Write(")condition.Operator;\r\n\t\t");
             
-            #line 29 "G:\WindowsApplications\CustomFileCopier\Models\ProcessorTemplate.tt"
+            #line 29 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
  } 
             
             #line default
@@ -167,7 +167,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "17.0.0.0")]
-    public class ProcessorTemplateBase
+    public class FileFilterTemplateBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

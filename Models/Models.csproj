@@ -79,11 +79,10 @@
     <Compile Include="Operator.cs" />
     <Compile Include="OperatorHandler.cs" />
     <Compile Include="Operators.cs" />
-    <Compile Include="BaseProcessor.cs" />
-    <Compile Include="ProcessorTemplate1.cs">
+    <Compile Include="FileFilterTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ProcessorTemplate.tt</DependentUpon>
+      <DependentUpon>FileFilterTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,9 +101,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ProcessorTemplate.tt">
+    <Content Include="FileFilterTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ProcessorTemplate1.cs</LastGenOutput>
+      <LastGenOutput>FileFilterTemplate.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
