@@ -5,17 +5,18 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 using System.Linq;
-public class FileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
+public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 {
 	<# foreach(IProperty property in this.Conditions.Select(c=>c.Property).Distinct()){ #>
-		protected readonly <#= ExtentionMethods.GetGenericTypeFullName(property) #> <#= property.VariableName #>;
+		protected readonly <#= ExtentionMethods.GetGenericTypeFullName(property) #> <#= property.PropertyVariableName #>;
+		protected readonly <#= property.Type.FullName #> <#= property.ValueVariableName #>;
 	<# } #>
 
 	<# foreach(IOperator o in this.Conditions.Select(c=>c.Property).Distinct()){ #>
 		protected readonly <#= ExtentionMethods.GetGenericTypeFullName(o) #> <#= o.VariableName #>;
 	<# } #>	`
 
-	public FileFilter(System.Collections.Generic.IEnumerable<ColdShineSoft.CustomFileCopier.Models.Condition> conditions):base(conditions)
+	public CustomFileFilter(System.Collections.Generic.IEnumerable<ColdShineSoft.CustomFileCopier.Models.Condition> conditions)
 	{
 		ColdShineSoft.CustomFileCopier.Models.Condition condition;
 		<# for(int i=0;i<this.Conditions.Count();i++)
@@ -23,13 +24,16 @@ public class FileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			Condition condition=this.Conditions.ElementAt(i);
 		#>
 			condition=this.Conditions.ElementAt(<#= i #>);
-			this.<#= condition.Property.VariableName #>=(<#= ExtentionMethods.GetGenericTypeFullName(condition.Property) #>)condition.Property;
+			this.<#= condition.Property.PropertyVariableName #>=(<#= ExtentionMethods.GetGenericTypeFullName(condition.Property) #>)condition.Property;
 			this.<#= condition.Operator.VariableName #>=(<#= ExtentionMethods.GetGenericTypeFullName(condition.Operator) #>)condition.Operator;
 		<# } #>
 	}
 
-	public override bool Check(System.IO.FileInfo fileInfo)
+	public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(System.Collections.Generic.IEnumerable<System.IO.FileInfo> fileInfos)
 	{
-
+		foreach(System.IO.FileInfo file in fileInfos)
+		{
+			
+		}
 	}
 }

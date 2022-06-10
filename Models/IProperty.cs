@@ -10,7 +10,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 	{
 		int PropertyId { get; }
 
-		string VariableName { get; }
+		string PropertyVariableName { get; }
+		string ValueVariableName { get; }
 
 		//DynamicExpresso.Parameter Parameter { get; }
 

@@ -213,7 +213,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 						this._Expression = Connectives[this.Connective.Value];
 					if (this.LeftBracket)
 						this._Expression += "(";
-					this._Expression += $"{this.Operator.VariableName}.Expression({this.Property.VariableName},{this.VariableName})";
+					this._Expression += $"this.{this.Operator.VariableName}.{nameof(this.Operator.Validate)}(this.{this.Property.ValueVariableName},this.{this.VariableName})";
 					//this._Expression += string.Format(this.Operator.Expression, this.PropertyVariableName, this.ValueVariableName);
 					if (this.RightBracket)
 						this._Expression += ")";
