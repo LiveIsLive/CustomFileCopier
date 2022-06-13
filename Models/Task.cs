@@ -130,6 +130,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		{
 			get
 			{
+				lock(string.Empty)
 				if (this._Files == null)
 					this._Files = this.Jobs.SelectMany(j => j.SourceFiles.Select(f => new JobFile(j, f))).ToArray();
 				return this._Files;
@@ -214,9 +215,12 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		public void LoadFiles()
 		{
+			foreach (Job job in this.Jobs)
+				job.ClearCache();
 			this.Files = null;
 			this.CopiedFileSize = 0;
 			this.CopiedFileCount = 0;
+			this.Files.ToString();
 		}
 
 		public void CopyFiles()

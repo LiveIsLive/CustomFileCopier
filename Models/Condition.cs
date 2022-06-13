@@ -73,7 +73,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			{
 				this._StringValue = value;
 				this._RegularExpression = null;
-				this._Parameter = null;
+				//this._Parameter = null;
 				this.NotifyOfPropertyChange(() => this.StringValue);
 			}
 		}
@@ -89,7 +89,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			set
 			{
 				this._LongValue = value;
-				this._Parameter = null;
+				//this._Parameter = null;
 				this.NotifyOfPropertyChange(() => this.LongValue);
 			}
 		}
@@ -105,7 +105,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			set
 			{
 				this._DateTimeValue = value;
-				this._Parameter = null;
+				//this._Parameter = null;
 				this.NotifyOfPropertyChange(() => this.DateTimeValue);
 			}
 		}
@@ -235,16 +235,16 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		//	}
 		//}
 
-		private DynamicExpresso.Parameter _Parameter;
-		public DynamicExpresso.Parameter Parameter
-		{
-			get
-			{
-				if (this._Parameter == null)
-					this._Parameter = new DynamicExpresso.Parameter(this.VariableName, this.Value);
-				return this._Parameter;
-			}
-		}
+		//private DynamicExpresso.Parameter _Parameter;
+		//public DynamicExpresso.Parameter Parameter
+		//{
+		//	get
+		//	{
+		//		if (this._Parameter == null)
+		//			this._Parameter = new DynamicExpresso.Parameter(this.VariableName, this.Value);
+		//		return this._Parameter;
+		//	}
+		//}
 
 		private Models.DataErrorInfos.Condition _DataErrorInfo;
 		public Models.DataErrorInfos.Condition DataErrorInfo

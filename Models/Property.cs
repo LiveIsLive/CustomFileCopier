@@ -64,16 +64,16 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
-		private DynamicExpresso.Parameter _Parameter;
-		public DynamicExpresso.Parameter Parameter
-		{
-			get
-			{
-				if (this._Parameter == null)
-					this._Parameter = new DynamicExpresso.Parameter(this.ValueVariableName, this.Type);
-				return this._Parameter;
-			}
-		}
+		//private DynamicExpresso.Parameter _Parameter;
+		//public DynamicExpresso.Parameter Parameter
+		//{
+		//	get
+		//	{
+		//		if (this._Parameter == null)
+		//			this._Parameter = new DynamicExpresso.Parameter(this.ValueVariableName, this.Type);
+		//		return this._Parameter;
+		//	}
+		//}
 
 		private IOperator[] _AllowOperators;
 		public IOperator[] AllowOperators
