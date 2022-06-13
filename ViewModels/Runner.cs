@@ -12,19 +12,27 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 
 		public string Title { get; protected set; }
 
+		//protected readonly System.Threading.Thread Thread;
+
 		public Runner(Models.Task task, string fileName)
 		{
 			this.Task = task;
 			this.Title = $"{this.Localization.RunTask} - {fileName}";
+
+			//this.Thread = new System.Threading.Thread(this.Task.Run);
+			//this.Thread.IsBackground = true;
 		}
 
 		public void Run()
 		{
-			System.Threading.Tasks.Task.Run(() => this.Task.Run(), this.CancellationTokenSource.Token);
+			System.Threading.Tasks.Task.Run(this.Task.Run, this.CancellationTokenSource.Token);
+			//this.Thread.Start();
 		}
 
 		public void Stop()
 		{
+			//this.Thread.Abort();
+
 			this.CancellationTokenSource.Cancel();
 			//this.Task.Status = Models.TaskStatus.Standby;
 			//this.TryClose();

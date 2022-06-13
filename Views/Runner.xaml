@@ -11,7 +11,7 @@
 		xmlns:cal="http://www.caliburnproject.org"
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
 		mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Runner}"
-		Title="Runner" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
+		Title="{Binding Title}" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
 	<DockPanel>
 		<ToolBar Padding="10,6" DockPanel.Dock="Top">
 			<Button cal:Message.Attach="CloseWindow" IsEnabled="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" hc:IconElement.Geometry="{StaticResource LeftGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
@@ -31,7 +31,7 @@
 				<WrapPanel>
 					<TextBlock Text="{Binding Task.CopiedFileCount}" />
 					<TextBlock Text="/" />
-					<TextBlock Text="{Binding Task.Files.Length}" />
+					<TextBlock Text="{Binding Path=Task.Files.Length,IsAsync=True}" />
 					<TextBlock Text=" " />
 					<TextBlock Text="{Binding Localization.Files}" />
 				</WrapPanel>
@@ -42,24 +42,24 @@
 					<TextBlock Text=" " />
 					<TextBlock Text="{Binding Task.CopiedFileSize}" />
 					<TextBlock Text="/" />
-					<TextBlock Text="{Binding Task.TotalFileSize}" />
+					<TextBlock Text="{Binding Path=Task.TotalFileSize,IsAsync=True}" />
 				</WrapPanel>
 			</StatusBarItem>
 			<StatusBarItem HorizontalContentAlignment="Stretch">
 				<StackPanel>
 					<TextBlock Visibility="{c:Binding 'Task.Status==models:TaskStatus.Done'}" HorizontalAlignment="Center">100%</TextBlock>
-					<ProgressBar Minimum="0" Maximum="{Binding Task.TotalFileSize}" Value="{Binding Task.CopiedFileSize}" Visibility="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" />
+					<ProgressBar Minimum="0" Maximum="{Binding Path=Task.TotalFileSize,IsAsync=True}" Value="{Binding Task.CopiedFileSize}" Visibility="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" />
 				</StackPanel>
 			</StatusBarItem>
 		</StatusBar>
-		<DataGrid ItemsSource="{Binding Task.Files}" AutoGenerateColumns="False">
+		<DataGrid ItemsSource="{Binding Path=Task.Files,IsAsync=True}" AutoGenerateColumns="False">
 			<DataGrid.Columns>
 				<DataGridTextColumn Binding="{Binding Job.Name}">
 					<DataGridTextColumn.Header>
 						<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Job}" />
 					</DataGridTextColumn.Header>
 				</DataGridTextColumn>
-				<DataGridTextColumn Binding="{Binding File.FileInfo.Length}">
+				<DataGridTextColumn Binding="{Binding Path=File.FileInfo.Length,StringFormat={}{0:n0}}">
 					<DataGridTextColumn.Header>
 						<controls:GetDictionaryValue DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext}" Dictionary="{Binding Localization.Properties}" Key="FileSize" />
 					</DataGridTextColumn.Header>

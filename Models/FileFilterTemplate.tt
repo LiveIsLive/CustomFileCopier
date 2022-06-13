@@ -9,23 +9,28 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 {
 	<# foreach(IProperty property in this.Conditions.Select(c=>c.Property).Distinct()){ #>
 		protected readonly <#= ExtentionMethods.GetGenericTypeFullName(property) #> <#= property.PropertyVariableName #>;
-		protected readonly <#= property.Type.FullName #> <#= property.ValueVariableName #>;
+		protected <#= property.Type.FullName #> <#= property.ValueVariableName #>;
 	<# } #>
 
-	<# foreach(IOperator o in this.Conditions.Select(c=>c.Property).Distinct()){ #>
+	<# foreach(IOperator o in this.Conditions.Select(c=>c.Operator).Distinct()){ #>
 		protected readonly <#= ExtentionMethods.GetGenericTypeFullName(o) #> <#= o.VariableName #>;
-	<# } #>	`
+	<# } #>
+
+	<# foreach(Condition condition in this.Conditions){ #>
+		protected readonly <#= condition.ValueType.FullName #> <#= condition.VariableName #>;
+	<# } #>
 
 	public CustomFileFilter(System.Collections.Generic.IEnumerable<ColdShineSoft.CustomFileCopier.Models.Condition> conditions)
 	{
 		ColdShineSoft.CustomFileCopier.Models.Condition condition;
-		<# for(int i=0;i<this.Conditions.Count();i++)
+		<# for(int i=0;i<this.Conditions.Count;i++)
 		{
-			Condition condition=this.Conditions.ElementAt(i);
+			Condition condition=this.Conditions[i];
 		#>
-			condition=this.Conditions.ElementAt(<#= i #>);
+			condition=conditions.ElementAt(<#= i #>);
 			this.<#= condition.Property.PropertyVariableName #>=(<#= ExtentionMethods.GetGenericTypeFullName(condition.Property) #>)condition.Property;
 			this.<#= condition.Operator.VariableName #>=(<#= ExtentionMethods.GetGenericTypeFullName(condition.Operator) #>)condition.Operator;
+			this.<#= condition.VariableName #>=(<#= condition.ValueType.FullName #>)condition.Value;
 		<# } #>
 	}
 
@@ -33,7 +38,11 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 	{
 		foreach(System.IO.FileInfo file in fileInfos)
 		{
-			
+			<# foreach(IProperty property in this.Conditions.Select(c=>c.Property).Distinct()){ #>
+				this.<#= property.ValueVariableName #>=this.<#= property.PropertyVariableName #>.GetValue(file);
+			<# } #>
+			if(<#= string.Join("", this.Conditions.Select(c => c.Expression)) #>)
+				yield return file;
 		}
 	}
 }

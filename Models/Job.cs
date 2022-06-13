@@ -35,6 +35,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			{
 				this._SourceDirectoryPath = value;
 				this._SourceDirectoryLength = null;
+				//this._SourceFiles = null;
 
 				this.NotifyOfPropertyChange(() => this.SourceDirectoryPath);
 			}
@@ -140,6 +141,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			set
 			{
 				this._ConditionMode = value;
+				//this._SourceFiles = null;
+				this._FileFilter = null;
 				this.NotifyOfPropertyChange(() => this.ConditionMode);
 			}
 		}
@@ -158,6 +161,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			{
 				this._CustomExpression = value;
 				this._FileFilter = null;
+				//this._SourceFiles = null;
 
 				this.NotifyOfPropertyChange(() => this.CustomExpression);
 			}
@@ -169,7 +173,13 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			get
 			{
 				if(this._FileFilter==null)
-					this._FileFilter= (FileFilter)CSScriptLibrary.CSScript.LoadCode($@"
+					switch(this.ConditionMode)
+					{
+						case ConditionMode.Designer:
+							this._FileFilter = (FileFilter)CSScriptLibrary.CSScript.LoadCode(new FileFilterTemplate { Conditions = this.Conditions }.TransformText()).CreateObject("*", this.Conditions);
+							break;
+						case ConditionMode.Expression:
+							this._FileFilter= (FileFilter)CSScriptLibrary.CSScript.LoadCode($@"
 using System.Linq;
 public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 {{
@@ -178,6 +188,8 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 		return fileInfos.Where(fileInfo=>{this.CustomExpression});
 	}}
 }}").CreateObject("*");
+							break;
+					}
 				return this._FileFilter;
 			}
 		}
@@ -191,28 +203,35 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 				if(this._Conditions==null)
 				{
 					this._Conditions = new System.Collections.ObjectModel.ObservableCollection<Condition>();
-					//this._Conditions.CollectionChanged += this.Conditions_CollectionChanged;
+					this._Conditions.CollectionChanged += this.Conditions_CollectionChanged;
 				}
 				return this._Conditions;
 			}
 			set
 			{
 				this._Conditions = value;
-				//value.CollectionChanged += Conditions_CollectionChanged;
+				value.CollectionChanged += Conditions_CollectionChanged;
 			}
 		}
 
-		//private void Conditions_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-		//{
-		//	if(e.NewItems!=null&& e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-		//		foreach(Condition condition in e.NewItems)
-		//			condition.PropertyChanged += Condition_PropertyChanged;
-		//}
+		private void Conditions_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			if (e.NewItems != null && e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+				foreach (Condition condition in e.NewItems)
+					condition.PropertyChanged += Condition_PropertyChanged;
+		}
 
-		//private void Condition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-		//{
-		//	this._SourceFiles = null;
-		//}
+		private void Condition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName != nameof(this.DataErrorInfo))
+				this.OnConditionsChanged();
+		}
+
+		protected virtual void OnConditionsChanged()
+		{
+			//this._SourceFiles = null;
+			this._FileFilter = null;
+		}
 
 		public string CombinedExpression
 		{
@@ -265,34 +284,10 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 		{
 			get
 			{
+				lock(System.DBNull.Value)
 				if(this._SourceFiles==null)
-				{
-					switch(this.ConditionMode)
-					{
-						case ConditionMode.Designer:
-							//System.Collections.Generic.List<File> files = new List<File>();
-							//DynamicExpresso.Lambda lambda = new DynamicExpresso.Interpreter().Parse(this.CombinedExpression, typeof(bool), this.Parameters);
-							//Property[] properties = this.Conditions.Select(c => c.Property).Distinct().ToArray();
-							//foreach (string filePath in System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories))
-							//{
-							//	System.IO.FileInfo fileInfo = new System.IO.FileInfo(filePath);
-							//	System.Collections.Generic.List<DynamicExpresso.Parameter> parameters = new List<DynamicExpresso.Parameter>();
-							//	foreach (Property property in properties)
-							//		parameters.Add(new DynamicExpresso.Parameter(property.VariableName, property.GetValue(fileInfo)));
-
-							//	if ((bool)lambda.Invoke(parameters))
-							//		files.Add(new File(fileInfo,this.SourceDirectoryLength));
-							//}
-							//this._SourceFiles = files.ToArray();
-							break;
-						case ConditionMode.Expression:
-							//string[] allFiles = System.IO.Directory.GetFiles(this.SourceDirectory, "*", System.IO.SearchOption.AllDirectories);
-							//Func<System.IO.FileInfo, bool> func = new DynamicExpresso.Interpreter().ParseAsDelegate<Func<System.IO.FileInfo, bool>>(this.CustomExpression, this.ConditionVariableName);
-							//this._SourceFiles = allFiles.Select(f => new System.IO.FileInfo(f)).Where(func).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
-							this._SourceFiles = this.FileFilter.GetFiles(System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f))).Select(f=>new File(f,this.SourceDirectoryLength)).ToArray();
-							break;
-					}
-				}
+					this._SourceFiles = this.FileFilter.GetFiles(System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f))).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
+				//this._SourceFiles = new CustomFileFilter(this.Conditions).GetFiles(System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f))).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
 				return this._SourceFiles;
 			}
 		}
@@ -324,6 +319,11 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 		{
 			if (this.Done != null)
 				this.Done();
+			//this._SourceFiles = null;
+		}
+
+		public void ClearCache()
+		{
 			this._SourceFiles = null;
 		}
 

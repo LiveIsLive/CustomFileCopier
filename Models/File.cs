@@ -83,7 +83,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			get
 			{
 				if (this._RelativeDirectoryPath == null)
-					this._RelativeDirectoryPath = this.Directory.Substring(this.SourceDirectoryLength);
+					if (this.SourceDirectoryLength > this.Directory.Length)
+						this._RelativeDirectoryPath = "";
+					else this._RelativeDirectoryPath = this.Directory.Substring(this.SourceDirectoryLength);
 				return this._RelativeDirectoryPath;
 			}
 		}
