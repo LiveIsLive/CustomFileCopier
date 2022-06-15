@@ -214,11 +214,17 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			}
 		}
 
+		public Condition FirstCondition => this.Conditions.FirstOrDefault();
+
+		public Condition LastCondition => this.Conditions.LastOrDefault();
+
 		private void Conditions_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
 			if (e.NewItems != null && e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
 				foreach (Condition condition in e.NewItems)
 					condition.PropertyChanged += Condition_PropertyChanged;
+			if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Move|| e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+				this.NotifyConditionChange(e.OldStartingIndex, e.NewStartingIndex);
 		}
 
 		private void Condition_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -231,6 +237,17 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 		{
 			//this._SourceFiles = null;
 			this._FileFilter = null;
+		}
+
+		protected void NotifyConditionChange(params int[] indexes)
+		{
+			foreach (int index in indexes)
+			{
+				if (index <= 0)
+					this.NotifyOfPropertyChange(() => this.FirstCondition);
+				if (index >= this.Conditions.Count - 1)
+					this.NotifyOfPropertyChange(() => this.LastCondition);
+			}
 		}
 
 		public string CombinedExpression
