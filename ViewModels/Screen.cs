@@ -123,7 +123,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 
 		public void CloseWindow()
 		{
-			this.TryClose();
+			this.TryCloseAsync();
 		}
 	}
 }
