@@ -98,13 +98,13 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			_OpeningFilePath = path;
 		}
 
-		private string[] _RecentFiles;
-		public string[] RecentFiles
+		private System.Collections.ObjectModel.ObservableCollection<string> _RecentFiles;
+		public System.Collections.ObjectModel.ObservableCollection<string> RecentFiles
 		{
 			get
 			{
 				if (this._RecentFiles == null)
-					this._RecentFiles = this.Setting.RecentFiles.Where(f => f != OpeningFilePath).ToArray();
+					this._RecentFiles = new System.Collections.ObjectModel.ObservableCollection<string>(this.Setting.RecentFiles.Where(f => f != OpeningFilePath));
 				return this._RecentFiles;
 			}
 		}
@@ -202,6 +202,13 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			this.SelectedJob = this.Task.Jobs.FirstOrDefault();
 		}
 
+		public void RemoveRecentFile(string path)
+		{
+			this.RecentFiles.Remove(path);
+			this.Setting.RecentFiles.Remove(path);
+			this.Setting.Save();
+		}
+
 		protected void SetTitle()
 		{
 			this.Title = ProgramName + " - " + System.IO.Path.GetFileNameWithoutExtension(OpeningFilePath);
@@ -215,6 +222,20 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 				condition.Connective = Models.LogicalConnective.And;
 			//condition.Operator = condition.Property.AllowOperators[0];
 			job.Conditions.Add(condition);
+		}
+
+		public void MoveUpCondition(Models.Job job, Models.Condition condition)
+		{
+			int oldIndex = job.Conditions.IndexOf(condition);
+			int newIndex = oldIndex - 1;
+			job.Conditions.Move(oldIndex, newIndex);
+		}
+
+		public void MoveDownCondition(Models.Job job, Models.Condition condition)
+		{
+			int oldIndex = job.Conditions.IndexOf(condition);
+			int newIndex = oldIndex + 1;
+			job.Conditions.Move(oldIndex, newIndex);
 		}
 
 		public void RemoveCondition(Models.Job job, Models.Condition condition)

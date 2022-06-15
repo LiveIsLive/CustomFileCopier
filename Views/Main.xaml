@@ -53,7 +53,14 @@
 								</ItemsControl.ItemsPanel>
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-										<MenuItem Header="{Binding}" cal:Message.Attach="Open($dataContext)" cal:Action.TargetWithoutContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}" />
+										<MenuItem cal:Message.Attach="Open($dataContext)" cal:Action.TargetWithoutContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}">
+											<MenuItem.Header>
+												<DockPanel Margin="0,0,-40,0">
+													<Button DockPanel.Dock="Right" cal:Message.Attach="RemoveRecentFile($dataContext)"  Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource RemoveGeometry}" />
+													<TextBlock Text="{Binding}" VerticalAlignment="Center" />
+												</DockPanel>
+											</MenuItem.Header>
+										</MenuItem>
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
@@ -274,6 +281,8 @@
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
 													<WrapPanel>
+														<Button cal:Message.Attach="MoveUpCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource UpGeometry}" Visibility="{c:Binding 'Tag.FirstCondition!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" />
+														<Button cal:Message.Attach="MoveDownCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DownGeometry}" Visibility="{c:Binding 'Tag.LastCondition!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" />
 														<Button cal:Message.Attach="RemoveCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource ButtonIcon}" hc:IconElement.Geometry="{StaticResource DeleteGeometry}"/>
 														<controls:ErrorReminder Text="{Binding DataErrorInfo.StringValue}" />
 													</WrapPanel>
