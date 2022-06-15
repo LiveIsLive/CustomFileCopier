@@ -299,7 +299,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 						if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
 							return;
 			
-			this.WindowManager.ShowDialog(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
+			this.WindowManager.ShowDialogAsync(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
 		}
 
 		public void UncheckedCompressTargetDirectory()
@@ -331,7 +331,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 
 		public void ShowAboutWindow()
 		{
-			this.WindowManager.ShowDialog(new About());
+			this.WindowManager.ShowDialogAsync(new About());
 		}
 	}
 }
