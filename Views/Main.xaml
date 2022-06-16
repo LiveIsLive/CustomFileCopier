@@ -11,7 +11,7 @@
 		xmlns:cal="http://www.caliburnproject.org"
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
 		xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs" md:DialogServiceViews.IsRegistered="True"
-		
+		xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
 	mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Main,IsDesignTimeCreatable=True}"
 		Title="{Binding Title}">
 	<DockPanel>
@@ -162,7 +162,7 @@
 								</WrapPanel>
 								<!-- 如果不设置FalseToVisibility，可能会出现看不到表头行的情况 -->
 								<!-- 不知道为什么没有行的时候，表头显示有问题，大部分被遮住，所以设置了有行才显示 -->
-								<DataGrid ItemsSource="{Binding Conditions}" Visibility="{c:Binding 'Conditions.Count!=0', FalseToVisibility=Hidden}" AutoGenerateColumns="False">
+								<DataGrid ItemsSource="{Binding Conditions}" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" dd:DragDrop.ShowAlwaysDropTargetAdorner="True" dd:DragDrop.DropHandler="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}" Visibility="{c:Binding 'Conditions.Count!=0', FalseToVisibility=Hidden}" AutoGenerateColumns="False">
 									<DataGrid.Columns>
 										<DataGridTemplateColumn>
 											<DataGridTemplateColumn.Header>
