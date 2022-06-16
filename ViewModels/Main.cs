@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GongSolutions.Wpf.DragDrop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColdShineSoft.CustomFileCopier.ViewModels
 {
-	public class Main : Screen
+	public class Main : Screen, GongSolutions.Wpf.DragDrop.IDropTarget
 	{
 		private Models.Task _Task = new Models.Task();
 		public Models.Task Task
@@ -332,6 +333,35 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 		public void ShowAboutWindow()
 		{
 			this.WindowManager.ShowDialogAsync(new About());
+		}
+
+		void IDropTarget.DragEnter(IDropInfo dropInfo)
+		{
+		}
+
+		void IDropTarget.DragOver(IDropInfo dropInfo)
+		{
+			if (dropInfo.Data == null || dropInfo.TargetItem == null)
+				return;
+
+			dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
+			dropInfo.Effects = System.Windows.DragDropEffects.Move;
+		}
+
+		void IDropTarget.DragLeave(IDropInfo dropInfo)
+		{
+		}
+
+		void IDropTarget.Drop(IDropInfo dropInfo)
+		{
+			Models.Condition sourceCondition = (Models.Condition)dropInfo.Data;
+			Models.Condition targetCondition = (Models.Condition)dropInfo.TargetItem;
+
+			if (sourceCondition == null || targetCondition == null)
+				return;
+			
+			int oldIndex=this.SelectedJob.Conditions.IndexOf(sourceCondition);
+			this.SelectedJob.Conditions.Move(oldIndex, dropInfo.InsertIndex);
 		}
 	}
 }
