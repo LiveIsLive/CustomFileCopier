@@ -13,6 +13,6 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 	public partial class FileFilterTemplate
 	{
-		public System.Collections.Generic.IList<Condition> Conditions;
+		public Models.Job Job;
 	}
 }

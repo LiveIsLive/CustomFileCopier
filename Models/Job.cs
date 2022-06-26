@@ -176,7 +176,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 					switch(this.ConditionMode)
 					{
 						case ConditionMode.Designer:
-							this._FileFilter = (FileFilter)CSScriptLibrary.CSScript.LoadCode(new FileFilterTemplate { Conditions = this.Conditions }.TransformText()).CreateObject("*", this.Conditions);
+							this._FileFilter = (FileFilter)CSScriptLibrary.CSScript.LoadCode(new FileFilterTemplate { Job = this }.TransformText()).CreateObject("*", this.Conditions);
 							break;
 						case ConditionMode.Expression:
 							this._FileFilter= (FileFilter)CSScriptLibrary.CSScript.LoadCode($@"
@@ -244,7 +244,10 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			foreach (int index in indexes)
 			{
 				if (index <= 0)
+				{
 					this.NotifyOfPropertyChange(() => this.FirstCondition);
+
+				}
 				if (index >= this.Conditions.Count - 1)
 					this.NotifyOfPropertyChange(() => this.LastCondition);
 			}
@@ -254,7 +257,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 		{
 			get
 			{
-				return string.Join("", this.Conditions.Select(c => c.Expression));
+				return string.Join("", this.Conditions.Select(c => c.Expression)).TrimStart(Condition.Connectives.Values.Select(c => c[0]).Concat(" ").ToArray());
 			}
 		}
 

@@ -242,8 +242,8 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 		public void RemoveCondition(Models.Job job, Models.Condition condition)
 		{
 			job.Conditions.Remove(condition);
-			if (job.Conditions.Count > 0)
-				job.Conditions[0].Connective = null;
+			//if (job.Conditions.Count > 0)
+			//	job.Conditions[0].Connective = null;
 		}
 
 		protected Models.Localization GetLocalization(System.Globalization.CultureInfo culture)
@@ -266,6 +266,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			System.Threading.Thread.CurrentThread.CurrentCulture = culture;
 
 			this.Localization = this.GetLocalization(culture);
+			Models.Global.Instance.Localization = this.Localization;
 			this.Setting.SelectedCultureName = culture.Name;
 			this.SetUiLang(this.Setting.SelectedCultureName);
 			System.Threading.Tasks.Task.Run(() => this.Setting.Save());

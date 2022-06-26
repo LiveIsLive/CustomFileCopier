@@ -67,6 +67,7 @@
     <Compile Include="File.cs" />
     <Compile Include="FileFilter.cs" />
     <Compile Include="GetIsPass.cs" />
+    <Compile Include="Global.cs" />
     <Compile Include="IOperator.cs" />
     <Compile Include="IProperty.cs" />
     <Compile Include="Job.cs" />

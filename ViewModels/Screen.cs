@@ -63,6 +63,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 						System.IO.StreamReader reader = new System.IO.StreamReader(LocalizationDirectory + this.Setting.SelectedCultureName + ".json");
 						//this._Localization = NetJSON.NetJSON.Deserialize<Models.Localization>(reader);
 						this._Localization = new Newtonsoft.Json.JsonSerializer().Deserialize<Models.Localization>(new Newtonsoft.Json.JsonTextReader(reader));
+					Models.Global.Instance.Localization = this._Localization;
 						reader.Close();
 					}
 				return this._Localization;
