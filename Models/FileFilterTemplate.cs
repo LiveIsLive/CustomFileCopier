@@ -32,7 +32,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
                     "r.Models.FileFilter\r\n{\r\n\t");
             
             #line 10 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
- foreach(IProperty property in this.Conditions.Select(c=>c.Property).Distinct()){ 
+ foreach(IProperty property in this.Job.Conditions.Select(c=>c.Property).Distinct()){ 
             
             #line default
             #line hidden
@@ -74,7 +74,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
             this.Write("\r\n\t");
             
             #line 15 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
- foreach(IOperator o in this.Conditions.Select(c=>c.Operator).Distinct()){ 
+ foreach(IOperator o in this.Job.Conditions.Select(c=>c.Operator).Distinct()){ 
             
             #line default
             #line hidden
@@ -102,7 +102,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
             this.Write("\r\n\t");
             
             #line 19 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
- foreach(Condition condition in this.Conditions){ 
+ foreach(Condition condition in this.Job.Conditions){ 
             
             #line default
             #line hidden
@@ -132,9 +132,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
                     "ier.Models.Condition condition;\r\n\t\t");
             
             #line 26 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
- for(int i=0;i<this.Conditions.Count;i++)
+ for(int i=0;i<this.Job.Conditions.Count;i++)
 		{
-			Condition condition=this.Conditions[i];
+			Condition condition=this.Job.Conditions[i];
 		
             
             #line default
@@ -200,7 +200,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
                     "\n\t{\r\n\t\tforeach(System.IO.FileInfo file in fileInfos)\r\n\t\t{\r\n\t\t\t");
             
             #line 41 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
- foreach(IProperty property in this.Conditions.Select(c=>c.Property).Distinct()){ 
+ foreach(IProperty property in this.Job.Conditions.Select(c=>c.Property).Distinct()){ 
             
             #line default
             #line hidden
@@ -228,7 +228,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
             this.Write("\t\t\tif(");
             
             #line 44 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(string.Join("", this.Conditions.Select(c => c.Expression))));
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.Job.CombinedExpression));
             
             #line default
             #line hidden

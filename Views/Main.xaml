@@ -13,7 +13,7 @@
 		xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs" md:DialogServiceViews.IsRegistered="True"
 		xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
 	mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Main,IsDesignTimeCreatable=True}"
-		Title="{Binding Title}">
+		Title="{Binding Title}" Name="Window">
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Top" Margin="5">
 			<DockPanel>
@@ -166,7 +166,9 @@
 									<DataGrid.Columns>
 										<DataGridTemplateColumn>
 											<DataGridTemplateColumn.Header>
-												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Connective}" />
+												<!--如果使用FindAncestor这种模式绑定的话，当初始SelectedItem不是这个Tab的时候会报错绑定不了-->
+												<!--<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Connective}" />-->
+												<TextBlock Text="{Binding Path=DataContext.Localization.Connective,Source={x:Reference Window}}" />
 											</DataGridTemplateColumn.Header>
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
@@ -182,7 +184,7 @@
 										</DataGridTemplateColumn>
 										<DataGridTemplateColumn>
 											<DataGridTemplateColumn.Header>
-												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.LeftBracket}" />
+												<TextBlock Text="{Binding Path=DataContext.Localization.LeftBracket,Source={x:Reference Window}}" />
 											</DataGridTemplateColumn.Header>
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
@@ -192,7 +194,7 @@
 										</DataGridTemplateColumn>
 										<DataGridTemplateColumn>
 											<DataGridTemplateColumn.Header>
-												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Property}" />
+												<TextBlock Text="{Binding Path=DataContext.Localization.Property,Source={x:Reference Window}}" />
 											</DataGridTemplateColumn.Header>
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
@@ -208,7 +210,7 @@
 										</DataGridTemplateColumn>
 										<DataGridTemplateColumn>
 											<DataGridTemplateColumn.Header>
-												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Operator}" />
+												<TextBlock Text="{Binding Path=DataContext.Localization.Operator,Source={x:Reference Window}}" />
 											</DataGridTemplateColumn.Header>
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
@@ -224,7 +226,7 @@
 										</DataGridTemplateColumn>
 										<DataGridTemplateColumn>
 											<DataGridTemplateColumn.Header>
-												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.Value}" />
+												<TextBlock Text="{Binding Path=DataContext.Localization.Value,Source={x:Reference Window}}" />
 											</DataGridTemplateColumn.Header>
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
@@ -269,7 +271,7 @@
 										</DataGridTemplateColumn>
 										<DataGridTemplateColumn>
 											<DataGridTemplateColumn.Header>
-												<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.RightBracket}" />
+												<TextBlock Text="{Binding Path=DataContext.Localization.RightBracket,Source={x:Reference Window}}" />
 											</DataGridTemplateColumn.Header>
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>

@@ -59,7 +59,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		public bool RightBracket { get; set; }
 
 		[Newtonsoft.Json.JsonProperty]
-		public LogicalConnective? Connective { get; set; }
+		public LogicalConnective Connective { get; set; }
 
 		private string _StringValue;
 		[Newtonsoft.Json.JsonProperty]
@@ -200,7 +200,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		public readonly string VariableName = "V" + VariableIndex++;
 
-		protected static System.Collections.Generic.Dictionary<LogicalConnective, string> Connectives = new Dictionary<LogicalConnective, string>() { { LogicalConnective.And, "&&" }, { LogicalConnective.Or, "||" } };
+		public static readonly System.Collections.ObjectModel.ReadOnlyDictionary<LogicalConnective, string> Connectives = new System.Collections.ObjectModel.ReadOnlyDictionary<LogicalConnective, string>(new Dictionary<LogicalConnective, string>() { { LogicalConnective.And, "&&" }, { LogicalConnective.Or, "||" } });
 
 		private string _Expression;
 		public string Expression
@@ -209,8 +209,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			{
 				if (this._Expression == null)
 				{
-					if (this.Connective != null)
-						this._Expression = Connectives[this.Connective.Value];
+					this._Expression = Connectives[this.Connective];
 					if (this.LeftBracket)
 						this._Expression += "(";
 					this._Expression += $"this.{this.Operator.VariableName}.{nameof(this.Operator.Validate)}(this.{this.Property.ValueVariableName},this.{this.VariableName})";

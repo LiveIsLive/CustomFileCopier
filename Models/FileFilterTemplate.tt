@@ -7,25 +7,25 @@
 using System.Linq;
 public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 {
-	<# foreach(IProperty property in this.Conditions.Select(c=>c.Property).Distinct()){ #>
+	<# foreach(IProperty property in this.Job.Conditions.Select(c=>c.Property).Distinct()){ #>
 		protected readonly <#= ExtentionMethods.GetGenericTypeFullName(property) #> <#= property.PropertyVariableName #>;
 		protected <#= property.Type.FullName #> <#= property.ValueVariableName #>;
 	<# } #>
 
-	<# foreach(IOperator o in this.Conditions.Select(c=>c.Operator).Distinct()){ #>
+	<# foreach(IOperator o in this.Job.Conditions.Select(c=>c.Operator).Distinct()){ #>
 		protected readonly <#= ExtentionMethods.GetGenericTypeFullName(o) #> <#= o.VariableName #>;
 	<# } #>
 
-	<# foreach(Condition condition in this.Conditions){ #>
+	<# foreach(Condition condition in this.Job.Conditions){ #>
 		protected readonly <#= condition.ValueType.FullName #> <#= condition.VariableName #>;
 	<# } #>
 
 	public CustomFileFilter(System.Collections.Generic.IEnumerable<ColdShineSoft.CustomFileCopier.Models.Condition> conditions)
 	{
 		ColdShineSoft.CustomFileCopier.Models.Condition condition;
-		<# for(int i=0;i<this.Conditions.Count;i++)
+		<# for(int i=0;i<this.Job.Conditions.Count;i++)
 		{
-			Condition condition=this.Conditions[i];
+			Condition condition=this.Job.Conditions[i];
 		#>
 			condition=conditions.ElementAt(<#= i #>);
 			this.<#= condition.Property.PropertyVariableName #>=(<#= ExtentionMethods.GetGenericTypeFullName(condition.Property) #>)condition.Property;
@@ -38,10 +38,10 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 	{
 		foreach(System.IO.FileInfo file in fileInfos)
 		{
-			<# foreach(IProperty property in this.Conditions.Select(c=>c.Property).Distinct()){ #>
+			<# foreach(IProperty property in this.Job.Conditions.Select(c=>c.Property).Distinct()){ #>
 				this.<#= property.ValueVariableName #>=this.<#= property.PropertyVariableName #>.GetValue(file);
 			<# } #>
-			if(<#= string.Join("", this.Conditions.Select(c => c.Expression)) #>)
+			if(<#= this.Job.CombinedExpression #>)
 				yield return file;
 		}
 	}
