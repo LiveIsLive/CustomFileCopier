@@ -20,5 +20,11 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			System.Type type = o.GetType();
 			return $"{System.Text.RegularExpressions.Regex.Match(type.FullName, @"((\.?\w+)+)`").Groups[1].Value}<{string.Join(",",System.Text.RegularExpressions.Regex.Matches(type.FullName, @"\[((\.?\w+)+).*?]").Cast<System.Text.RegularExpressions.Match>().Select(m=>m.Groups[1].Value))}>";
 		}
+
+		public static string GetTypeFullName(this object o)
+		{
+			System.Type type = o.GetType();
+			return $"{type.FullName},{type.Assembly.GetName().Name}";
+		}
 	}
 }

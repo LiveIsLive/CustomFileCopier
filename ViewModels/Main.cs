@@ -29,7 +29,22 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			get
 			{
 				if (this._InstalledCultures == null)
-					this._InstalledCultures = System.IO.Directory.GetFiles(LocalizationDirectory).Select(path => System.Globalization.CultureInfo.GetCultureInfo(System.IO.Path.GetFileNameWithoutExtension(path))).ToArray();
+				{
+					System.Collections.Generic.List<System.Globalization.CultureInfo> cultures = new List<System.Globalization.CultureInfo>();
+					foreach (string path in System.IO.Directory.GetFiles(LocalizationDirectory))
+					{
+						string name = System.IO.Path.GetFileNameWithoutExtension(path);
+						try
+						{
+							cultures.Add(System.Globalization.CultureInfo.GetCultureInfo(name));
+						}
+						catch
+						{
+						}
+					}
+					this._InstalledCultures = cultures.ToArray();
+
+				}
 				return this._InstalledCultures;
 			}
 		}
@@ -158,8 +173,6 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 		{
 			Models.Job job = new Models.Job();
 			job.Name = this.Localization.NewJob + " " + (this.Task.Jobs.Count + 1);
-			if (!this.Task.CompressTargetDirectory)
-				job.SpecifyTargetDirectory = true;
 			this.Task.Jobs.Add(job);
 			this.SelectedJob = job;
 		}
@@ -296,18 +309,15 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 				return;
 
 			foreach(Models.Job job in this.Task.Jobs)
-				if(job.SpecifyTargetDirectory)
-					if(System.IO.Directory.EnumerateFileSystemEntries(job.TargetDirectoryPath).FirstOrDefault()!=null)
-						if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
-							return;
+				if(System.IO.Directory.EnumerateFileSystemEntries(job.TargetDirectoryPath).FirstOrDefault()!=null)
+					if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
+						return;
 			
 			this.WindowManager.ShowDialogAsync(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
 		}
 
 		public void UncheckedCompressTargetDirectory()
 		{
-			foreach (Models.Job job in this.Task.Jobs)
-				job.SpecifyTargetDirectory = true;
 		}
 
 		public bool ValidateData()

@@ -8,6 +8,21 @@ namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public class Job : Caliburn.Micro.PropertyChangedBase
 	{
+		private Models.Task _Task;
+		public Models.Task Task
+		{
+			get
+			{
+				return this._Task;
+			}
+			set
+			{
+				if (this._Task == null)
+					this._Task = value;
+				else throw new System.Security.VerificationException("不允许更改Task的值");
+			}
+		}
+
 		private string _Name;
 		[Newtonsoft.Json.JsonProperty]
 		public string Name
@@ -59,25 +74,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
-		private bool _SpecifyTargetDirectory;
-		[Newtonsoft.Json.JsonProperty]
-		public bool SpecifyTargetDirectory
-		{
-			get
-			{
-				return this._SpecifyTargetDirectory;
-			}
-			set
-			{
-				this._SpecifyTargetDirectory = value;
-				this.RealTargetDirectoryPath = null;
-
-				this.NotifyOfPropertyChange(() => this.SpecifyTargetDirectory);
-			}
-		}
-
 		private string _TargetDirectoryPath;
-
 		[Newtonsoft.Json.JsonProperty]
 		public string TargetDirectoryPath
 		{
@@ -88,47 +85,11 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			set
 			{
 				this._TargetDirectoryPath = value;
-				this.RealTargetDirectoryPath = null;
 
 				this.NotifyOfPropertyChange(() => this.TargetDirectoryPath);
 			}
 		}
 
-		private string _RealTargetDirectoryPath;
-		public string RealTargetDirectoryPath
-		{
-			get
-			{
-				if (this._RealTargetDirectoryPath == null)
-					if (this.SpecifyTargetDirectory)
-						this._RealTargetDirectoryPath = this.TargetDirectoryPath;
-					else this._RealTargetDirectoryPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), System.Guid.NewGuid().ToString());
-				return this._RealTargetDirectoryPath;
-			}
-			protected set
-			{
-				this._RealTargetDirectoryPath = value;
-				this._RealTargetDirectoryLength = null;
-			}
-		}
-
-		private int? _RealTargetDirectoryLength;
-		public int RealTargetDirectoryLength
-		{
-			get
-			{
-				if (this._RealTargetDirectoryLength == null)
-					if (this.RealTargetDirectoryPath == null)
-						this._RealTargetDirectoryLength = 0;
-					else
-					{
-						this._RealTargetDirectoryLength = this.RealTargetDirectoryPath.Length;
-						if (!this.RealTargetDirectoryPath.EndsWith("\\") && !this.RealTargetDirectoryPath.EndsWith("/"))
-							this._RealTargetDirectoryLength++;
-					}
-				return this._RealTargetDirectoryLength.Value;
-			}
-		}
 
 		private ConditionMode _ConditionMode;
 		[Newtonsoft.Json.JsonProperty]
@@ -361,9 +322,14 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			}
 		}
 
-		protected string GetTargetFilePath(string sourceFilePath)
+		public string GetTargetAbsoluteFilePath(string sourceFilePath)
 		{
-			return System.IO.Path.Combine(this.RealTargetDirectoryPath, sourceFilePath.Substring(this.SourceDirectoryLength));
+			return System.IO.Path.Combine(this.TargetDirectoryPath, sourceFilePath.Substring(this.SourceDirectoryLength));
+		}
+
+		public string GetTargetRelativeFilePath(string sourceFilePath)
+		{
+			return sourceFilePath.Substring(this.SourceDirectoryLength);
 		}
 
 		public int CopiedFileCount;
@@ -378,7 +344,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 				if(sourceFile.Result!=CopyResult.Success)
 				{
 					sourceFile.Result = CopyResult.Copying;
-					string targetFilePath = this.GetTargetFilePath(sourceFile.Path);
+					string targetFilePath = this.GetTargetAbsoluteFilePath(sourceFile.Path);
 					string targetDirectory = System.IO.Path.GetDirectoryName(targetFilePath);
 					if(!System.IO.Directory.Exists(targetDirectory))
 						try
@@ -444,7 +410,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 				this.DataErrorInfo.SourceDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.SourceDirectory);
 			}
 
-			if(this.SpecifyTargetDirectory)
+			if(!this.Task.CompressTargetDirectory)
 				if(string.IsNullOrWhiteSpace(this.TargetDirectoryPath))
 				{
 					result = false;

@@ -24,6 +24,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 							foreach (Job job in e.NewItems)
 							{
 								job.FileCopied += j => this.OnFileCopied(j.CopiedCount, j.CopiedSize);
+								job.Task = this;
 								//if (!this.CompressTargetDirectory)
 								//	job.SpecifyTargetDirectory = true;
 							}
@@ -231,6 +232,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		public void Run()
 		{
+			this._TargetCompressFilePath = null;
 			this.Status = TaskStatus.CollectingFiles;
 			this.LoadFiles();
 			this.Status = TaskStatus.Copying;
@@ -240,42 +242,29 @@ namespace ColdShineSoft.CustomFileCopier.Models
 				try
 				{
 					this.Status = TaskStatus.Compressing;
-					var groups = (from job in this.Jobs group job by job.RealTargetDirectoryPath.ToLower() into g select g.ToArray()).ToArray();
-					if (groups.Length == 1)
+
+					System.IO.FileStream resultFile = new System.IO.FileStream(this.TargetCompressFilePath, System.IO.FileMode.Create);
+					using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(resultFile, ZipArchiveMode.Create))
 					{
-						if(System.IO.File.Exists(this.TargetCompressFilePath))
-							System.IO.File.Move(this.TargetCompressFilePath, System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.TargetCompressFilePath), $"{System.IO.Path.GetFileNameWithoutExtension(this.TargetCompressFilePath)}(Old_{System.DateTime.Now.ToString("yyyyMMddHHmmss")}).zip"));
-						System.IO.Compression.ZipFile.CreateFromDirectory(this.Jobs[0].RealTargetDirectoryPath, this.TargetCompressFilePath, System.IO.Compression.CompressionLevel.Optimal, false);
-					}
-					else
-					{
-						System.IO.FileStream stream = new System.IO.FileStream(this.TargetCompressFilePath, System.IO.FileMode.Create);
-						using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(stream, System.IO.Compression.ZipArchiveMode.Create))
+						foreach(JobFile jobFile in this.Files)
 						{
-							foreach (Job[] jobs in groups)
-							{
-								string directory = string.Join("、", jobs.Select(j => j.JobNameToDirectoryName));
-								foreach (string file in System.IO.Directory.GetFiles(jobs[0].RealTargetDirectoryPath, "*", System.IO.SearchOption.AllDirectories))
-									zip.CreateEntryFromFile(file, System.IO.Path.Combine(directory, file.Substring(jobs[0].RealTargetDirectoryLength)));
-							}
+							string path = jobFile.Job.GetTargetRelativeFilePath(jobFile.File.Path);
+							if (this.Jobs.Count > 0)
+								path = System.IO.Path.Combine(jobFile.Job.JobNameToDirectoryName, path);
+							jobFile.File.FileInfo.OpenRead().CopyTo(zip.CreateEntry(path).Open());
+							this.CopiedFileSize += jobFile.File.FileInfo.Length;
+							this.CopiedFileCount++;
 						}
-						stream.Close();
 					}
+					resultFile.Close();
+
+
 				}
 				finally
 				{
 					this._TargetCompressFilePath = null;
 				}
 			}
-			foreach(Job job in this.Jobs)
-				if(!job.SpecifyTargetDirectory)
-					try
-					{
-						System.IO.Directory.Delete(job.RealTargetDirectoryPath, true);
-					}
-					catch
-					{
-					}
 			this.Status = TaskStatus.Done;
 			this.OnDone();
 		}

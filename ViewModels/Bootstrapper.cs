@@ -30,7 +30,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			Caliburn.Micro.ViewModelLocator.ConfigureTypeMappings(config);
 			base.OnStartup(sender, e);
 
-			this.DisplayRootViewFor<Main>();
+			this.DisplayRootViewForAsync<Main>();
 		}
 
 		protected override System.Collections.Generic.IEnumerable<System.Reflection.Assembly> SelectAssemblies()

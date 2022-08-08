@@ -46,13 +46,13 @@
       <HintPath>..\packages\CalcBinding.2.5.2\lib\net45\CalcBinding.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.Core.4.0.173\lib\netstandard2.0\Caliburn.Micro.Core.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.Core.4.0.210\lib\netstandard2.0\Caliburn.Micro.Core.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.Platform, Version=4.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.4.0.173\lib\net461\Caliburn.Micro.Platform.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.4.0.210\lib\net462\Caliburn.Micro.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro.Platform.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Caliburn.Micro.4.0.173\lib\net461\Caliburn.Micro.Platform.Core.dll</HintPath>
+      <HintPath>..\packages\Caliburn.Micro.4.0.210\lib\net462\Caliburn.Micro.Platform.Core.dll</HintPath>
     </Reference>
     <Reference Include="DynamicExpresso.Core, Version=2.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicExpresso.Core.2.13.0\lib\netstandard2.0\DynamicExpresso.Core.dll</HintPath>
