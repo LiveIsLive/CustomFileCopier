@@ -17,13 +17,13 @@
 	<DockPanel>
 		<StackPanel DockPanel.Dock="Top" Margin="5">
 			<DockPanel>
-				<CheckBox IsChecked="{Binding Task.CompressTargetDirectory}" Content="{Binding Localization.CompressTargetDirectory}" cal:Message.Attach="[Unchecked]=[UncheckedCompressTargetDirectory]" />
-				<controls:SaveFileSelector IsEnabled="{Binding Task.CompressTargetDirectory}" Path="{Binding Path=Task.CompressFilePath,Mode=TwoWay}" OpenButtonText="{Binding Localization.OpenFileDialog}" />
+				<CheckBox IsChecked="{Binding Task.CompressToZipFile}" Content="{Binding Localization.CompressToZipFile}" cal:Message.Attach="[Unchecked]=[UncheckedCompressToZipFile]" />
+				<controls:SaveFileSelector IsEnabled="{Binding Task.CompressToZipFile}" Path="{Binding Path=Task.CompressFilePath,Mode=TwoWay}" OpenButtonText="{Binding Localization.OpenFileDialog}" />
 			</DockPanel>
 			<controls:ErrorReminder Text="{Binding Task.DataErrorInfo.CompressFilePath}" />
-			<WrapPanel IsEnabled="{Binding Task.CompressTargetDirectory}" Margin="0,5,0,0">
+			<WrapPanel Visibility="{c:Binding Task.CompressToZipFile}" Margin="0,5,0,0">
 				<CheckBox IsChecked="{Binding Task.AddNowToCompressFileName}" Content="{Binding Localization.AddNowToCompressFileName}" />
-				<WrapPanel IsEnabled="{Binding Task.AddNowToCompressFileName}">
+				<WrapPanel>
 					<controls:FieldTitle Content="{Binding Localization.NowFormatString}" VerticalAlignment="Center" />
 					<TextBox Width="150" Text="{Binding Task.NowFormatString}" />
 					<controls:ErrorReminder Text="{Binding Task.DataErrorInfo.NowFormatString}" />
@@ -121,19 +121,45 @@
 								<controls:DirectorySelector Path="{Binding SourceDirectoryPath}" OpenButtonText="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.OpenFileDialog}" />
 							</DockPanel>
 							<controls:ErrorReminder Text="{Binding DataErrorInfo.SourceDirectoryPath}" />
-							<DockPanel>
-								<controls:FieldTitle>
-									<controls:FieldTitle.Content>
-										<CheckBox IsChecked="{Binding Path=DataContext.SpecifyTargetDirectory,RelativeSource={RelativeSource AncestorType=DockPanel}}" IsEnabled="{Binding Path=DataContext.Task.CompressTargetDirectory,RelativeSource={RelativeSource AncestorType=Window}}" Content="{Binding Localization.SpecifyTargetDirectory}"></CheckBox>
-									</controls:FieldTitle.Content>
-								</controls:FieldTitle>
-								<TextBlock Text="{Binding Path=DataContext.Localization.SpecifyTargetDirectoryDescription,RelativeSource={RelativeSource AncestorType=Window}}" VerticalAlignment="Center" />
-							</DockPanel>
-							<DockPanel Visibility="{c:Binding SpecifyTargetDirectory}">
-								<controls:FieldTitle Content="{Binding Localization.TargetDirectory}" />
-								<controls:DirectorySelector Path="{Binding TargetDirectoryPath}" OpenButtonText="{Binding Path=DataContext.Localization.OpenFileDialog,RelativeSource={RelativeSource AncestorType=Window}}" />
-							</DockPanel>
-							<controls:ErrorReminder Text="{Binding DataErrorInfo.TargetDirectoryPath}" />
+
+							<StackPanel Visibility="{c:Binding '!Task.CompressToZipFile'}">
+								<DockPanel>
+									<controls:FieldTitle Content="{Binding Localization.ResultHandler}" />
+									<hc:ComboBox ItemsSource="{Binding Path=DataContext.ResultHandlers,RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding Path=ResultHandler,Mode=TwoWay}" DisplayMemberPath="Name" />
+								</DockPanel>
+								<DockPanel>
+									<controls:FieldTitle Content="{Binding Localization.TargetDirectory}" />
+									<hc:SimplePanel>
+										<controls:DirectorySelector Path="{Binding TargetDirectoryPath}" Visibility="{c:Binding !ResultHandler.Remote}"  OpenButtonText="{Binding Path=DataContext.Localization.OpenFileDialog,RelativeSource={RelativeSource AncestorType=Window}}" />
+										<TextBox Text="{Binding TargetDirectoryPath}" Visibility="{c:Binding ResultHandler.Remote}" />
+									</hc:SimplePanel>
+								</DockPanel>
+								<controls:ErrorReminder Text="{Binding DataErrorInfo.TargetDirectoryPath}" />
+								<WrapPanel Visibility="{c:Binding ResultHandler.Remote}" Margin="0,5,0,0">
+									<WrapPanel>
+										<controls:FieldTitle Content="{Binding Localization.Server}" />
+										<StackPanel>
+											<hc:TextBox Text="{Binding TargetServer}" Width="120" />
+											<controls:ErrorReminder Text="{Binding DataErrorInfo.TargetServer}" />
+										</StackPanel>
+									</WrapPanel>
+									<WrapPanel>
+										<controls:FieldTitle Content="{Binding Localization.Port}" Width="Auto" Margin="20,0,0,0" />
+										<hc:NumericUpDown Value="{Binding TargetPort}" Width="90" />
+									</WrapPanel>
+									<WrapPanel>
+										<controls:FieldTitle Content="{Binding Localization.UserName}" Width="Auto" Margin="20,0,0,0" />
+										<hc:TextBox Text="{Binding TargetUserName}" Width="100" />
+									</WrapPanel>
+									<WrapPanel>
+										<controls:FieldTitle Content="{Binding Localization.Password}" Width="Auto" Margin="20,0,0,0" />
+										<hc:TextBox Text="{Binding TargetPassword}" Width="100" />
+									</WrapPanel>
+								</WrapPanel>
+							</StackPanel>
+							
+							
+							
 							<DockPanel>
 								<controls:FieldTitle Content="{Binding Localization.ConditionDesignMode}" />
 								<ItemsControl ItemsSource="{Binding Path=DataContext.ConditionModes,RelativeSource={RelativeSource AncestorType=Window}}" VerticalAlignment="Center">

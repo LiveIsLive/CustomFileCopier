@@ -74,6 +74,48 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
+		private string _ResultHandlerTypeName;
+		[Newtonsoft.Json.JsonProperty]
+		public string ResultHandlerTypeName
+		{
+			get
+			{
+				if (this._ResultHandlerTypeName == null)
+				{
+					if (this._ResultHandler == null)
+						this._ResultHandler = ResultHandler.All.Values.First();
+					this._ResultHandlerTypeName = ResultHandler.All.First(h => h.Value == this._ResultHandler).Key;
+				}
+				return this._ResultHandlerTypeName;
+			}
+			set
+			{
+				this._ResultHandlerTypeName = value;
+				this._ResultHandler = ResultHandler.All[value];
+			}
+		}
+
+		private ResultHandler _ResultHandler;
+		public ResultHandler ResultHandler
+		{
+			get
+			{
+				if(this._ResultHandler==null)
+				{
+					if (this._ResultHandlerTypeName == null)
+						this._ResultHandlerTypeName = ResultHandler.All.Keys.First();
+					this._ResultHandler = ResultHandler.All[this._ResultHandlerTypeName];
+				}
+				return this._ResultHandler;
+			}
+			set
+			{
+				this._ResultHandler = value;
+				this._ResultHandlerTypeName = ResultHandler.All.First(h => h.Value == value).Key;
+				this.NotifyOfPropertyChange(() => this.ResultHandler);
+			}
+		}
+
 		private string _TargetDirectoryPath;
 		[Newtonsoft.Json.JsonProperty]
 		public string TargetDirectoryPath
@@ -90,6 +132,13 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
+		public string TargetServer { get; set; }
+
+		public int TargetPort { get; set; }
+
+		public string TargetUserName { get; set; }
+
+		public string TargetPassword { get; set; }
 
 		private ConditionMode _ConditionMode;
 		[Newtonsoft.Json.JsonProperty]
@@ -295,13 +344,13 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 				this.FileCopied((copiedCount, copiedSize));
 		}
 
-		public event System.Action Done;
-		protected void OnDone()
-		{
-			if (this.Done != null)
-				this.Done();
-			//this._SourceFiles = null;
-		}
+		//public event System.Action Done;
+		//protected void OnDone()
+		//{
+		//	if (this.Done != null)
+		//		this.Done();
+		//	//this._SourceFiles = null;
+		//}
 
 		public void ClearCache()
 		{
@@ -332,50 +381,11 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			return sourceFilePath.Substring(this.SourceDirectoryLength);
 		}
 
-		public int CopiedFileCount;
-		public long CopiedFileSize;
-		public void CopyFiles()
+		//public int CopiedFileCount;
+		//public long CopiedFileSize;
+		public void Execute()
 		{
-			this.CopiedFileCount = 0;
-			this.CopiedFileSize = 0;
-
-			foreach(File sourceFile in this.SourceFiles)
-			{
-				if(sourceFile.Result!=CopyResult.Success)
-				{
-					sourceFile.Result = CopyResult.Copying;
-					string targetFilePath = this.GetTargetAbsoluteFilePath(sourceFile.Path);
-					string targetDirectory = System.IO.Path.GetDirectoryName(targetFilePath);
-					if(!System.IO.Directory.Exists(targetDirectory))
-						try
-						{
-							System.IO.Directory.CreateDirectory(targetDirectory);
-						}
-						catch(System.Exception exception)
-						{
-							sourceFile.Result = CopyResult.Failure;
-							sourceFile.Error = exception.Message;
-							//return exception.Message;
-							continue;
-						}
-					try
-					{
-						System.IO.File.Copy(sourceFile.Path, targetFilePath, true);
-					}
-					catch (System.Exception exception)
-					{
-						sourceFile.Result = CopyResult.Failure;
-						sourceFile.Error = exception.Message;
-						//return exception.Message;
-						continue;
-					}
-				}
-				sourceFile.Result = CopyResult.Success;
-				this.CopiedFileCount++;
-				this.CopiedFileSize += sourceFile.FileInfo.Length;
-				this.OnFileCopied(this.CopiedFileCount, this.CopiedFileSize);
-			}
-			this.OnDone();
+			this.ResultHandler.Execute(this);
 		}
 
 		private static System.IO.FileInfo[] _TestFileInfos;
@@ -410,7 +420,8 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 				this.DataErrorInfo.SourceDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.SourceDirectory);
 			}
 
-			if(!this.Task.CompressTargetDirectory)
+			if(!this.Task.CompressToZipFile)
+			{
 				if(string.IsNullOrWhiteSpace(this.TargetDirectoryPath))
 				{
 					result = false;
@@ -426,6 +437,10 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 						result = false;
 						this.DataErrorInfo.TargetDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.TargetDirectory) + exception.Message;
 					}
+				if (this.ResultHandler.Remote)
+					if (string.IsNullOrWhiteSpace(this.TargetServer))
+						this.DataErrorInfo.TargetServer = string.Format(localization.ValidationError[ValidationError.Required], localization.Server);
+			}
 
 			switch(this.ConditionMode)
 			{

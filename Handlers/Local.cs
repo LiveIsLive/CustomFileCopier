@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ColdShineSoft.CustomFileCopier.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ColdShineSoft.CustomFileCopier.Handlers
 {
-	public class Local : BaseHandler
+	public class Local : Models.ResultHandler
 	{
 		public override string Name
 		{
 			get
 			{
-				if (System.Threading.Thread.CurrentThread.CurrentUICulture == ChineseCulture)
+				if (System.Threading.Thread.CurrentThread.CurrentUICulture.LCID == ChineseCulture?.LCID)
 					return "本地目录";
 				else return "Local Directory";
 			}
@@ -20,14 +21,21 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 
 		public override bool Remote => false;
 
-		public override void Execute()
+		public override bool TargetDirectoryEmpty(Job job)
 		{
-			foreach (Models.File sourceFile in this.Job.SourceFiles)
+			if (!System.IO.Directory.Exists(job.TargetDirectoryPath))
+				return true;
+			return System.IO.Directory.EnumerateFiles(job.TargetDirectoryPath).FirstOrDefault() == null;
+		}
+
+		public override void Execute(Models.Job job)
+		{
+			foreach (Models.File sourceFile in job.SourceFiles)
 			{
-				if (sourceFile.Result != Models.CopyResult.Success)
-				{
+				//if (sourceFile.Result != Models.CopyResult.Success)
+				//{
 					sourceFile.Result = Models.CopyResult.Copying;
-					string targetFilePath = this.Job.GetTargetAbsoluteFilePath(sourceFile.Path);
+					string targetFilePath = job.GetTargetAbsoluteFilePath(sourceFile.Path);
 					string targetDirectory = System.IO.Path.GetDirectoryName(targetFilePath);
 					if (!System.IO.Directory.Exists(targetDirectory))
 						try
@@ -52,10 +60,10 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 						//return exception.Message;
 						continue;
 					}
-				}
+				//}
 				sourceFile.Result = Models.CopyResult.Success;
-				this.Job.Task.CopiedFileCount++;
-				this.Job.Task.CopiedFileSize += sourceFile.FileInfo.Length;
+				job.Task.CopiedFileCount++;
+				job.Task.CopiedFileSize += sourceFile.FileInfo.Length;
 			}
 		}
 	}

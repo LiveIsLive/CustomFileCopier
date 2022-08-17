@@ -23,9 +23,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
 						if (e.NewItems != null)
 							foreach (Job job in e.NewItems)
 							{
-								job.FileCopied += j => this.OnFileCopied(j.CopiedCount, j.CopiedSize);
+								//job.FileCopied += j => this.OnFileCopied(j.CopiedCount, j.CopiedSize);
 								job.Task = this;
-								//if (!this.CompressTargetDirectory)
+								//if (!this.CompressToZipFile)
 								//	job.SpecifyTargetDirectory = true;
 							}
 					};
@@ -34,18 +34,18 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
-		private bool _CompressTargetDirectory = true;
+		private bool _CompressToZipFile;
 		[Newtonsoft.Json.JsonProperty]
-		public bool CompressTargetDirectory
+		public bool CompressToZipFile
 		{
 			get
 			{
-				return this._CompressTargetDirectory;
+				return this._CompressToZipFile;
 			}
 			set
 			{
-				this._CompressTargetDirectory = value;
-				this.NotifyOfPropertyChange(() => this.CompressTargetDirectory);
+				this._CompressToZipFile = value;
+				this.NotifyOfPropertyChange(() => this.CompressToZipFile);
 				//if (value && string.IsNullOrWhiteSpace(this.CompressFilePath) && this.Jobs.Count > 0)
 				//	this.CompressFilePath = this.Jobs[0].TargetDirectoryPath.TrimEnd('\\', '/') + ".zip";
 				//if (!value)
@@ -184,14 +184,14 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
-		public event System.Action<(int CopiedCount, long CopiedSize)> FileCopied;
-		protected void OnFileCopied(int copiedCount, long copiedSize)
-		{
-			this.CopiedFileCount = this.Jobs.Sum(f => f.CopiedFileCount); ;
-			this.CopiedFileSize = this.Jobs.Sum(f => f.CopiedFileSize); ;
-			if (this.FileCopied != null)
-				this.FileCopied((this.CopiedFileCount, this.CopiedFileSize));
-		}
+		//public event System.Action<(int CopiedCount, long CopiedSize)> FileCopied;
+		//protected void OnFileCopied(int copiedCount, long copiedSize)
+		//{
+		//	this.CopiedFileCount = this.Jobs.Sum(f => f.CopiedFileCount); ;
+		//	this.CopiedFileSize = this.Jobs.Sum(f => f.CopiedFileSize); ;
+		//	if (this.FileCopied != null)
+		//		this.FileCopied((this.CopiedFileCount, this.CopiedFileSize));
+		//}
 
 		private Models.DataErrorInfos.Task _DataErrorInfo;
 		public Models.DataErrorInfos.Task DataErrorInfo
@@ -224,20 +224,13 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			this.Files.ToString();
 		}
 
-		public void CopyFiles()
-		{
-			foreach (Job job in this.Jobs)
-				job.CopyFiles();
-		}
-
 		public void Run()
 		{
 			this._TargetCompressFilePath = null;
 			this.Status = TaskStatus.CollectingFiles;
 			this.LoadFiles();
 			this.Status = TaskStatus.Copying;
-			this.CopyFiles();
-			if (this.CompressTargetDirectory)
+			if (this.CompressToZipFile)
 			{
 				try
 				{
@@ -246,12 +239,21 @@ namespace ColdShineSoft.CustomFileCopier.Models
 					System.IO.FileStream resultFile = new System.IO.FileStream(this.TargetCompressFilePath, System.IO.FileMode.Create);
 					using (System.IO.Compression.ZipArchive zip = new System.IO.Compression.ZipArchive(resultFile, ZipArchiveMode.Create))
 					{
-						foreach(JobFile jobFile in this.Files)
+						foreach (JobFile jobFile in this.Files)
 						{
 							string path = jobFile.Job.GetTargetRelativeFilePath(jobFile.File.Path);
-							if (this.Jobs.Count > 0)
+							if (this.Jobs.Count > 1)
 								path = System.IO.Path.Combine(jobFile.Job.JobNameToDirectoryName, path);
-							jobFile.File.FileInfo.OpenRead().CopyTo(zip.CreateEntry(path).Open());
+							try
+							{
+								zip.CreateEntryFromFile(jobFile.File.Path, path);
+								jobFile.File.Result = CopyResult.Success;
+							}
+							catch(System.Exception exception)
+							{
+								jobFile.File.Result = CopyResult.Failure;
+								jobFile.File.Error = exception.Message;
+							}
 							this.CopiedFileSize += jobFile.File.FileInfo.Length;
 							this.CopiedFileCount++;
 						}
@@ -265,6 +267,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 					this._TargetCompressFilePath = null;
 				}
 			}
+			else foreach (Models.Job job in this.Jobs)
+					job.Execute();
 			this.Status = TaskStatus.Done;
 			this.OnDone();
 		}
@@ -297,7 +301,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		{
 			this.DataErrorInfo = new DataErrorInfos.Task();
 			bool result = true;
-			if(this.CompressTargetDirectory)
+			if(this.CompressToZipFile)
 			{
 				if(string.IsNullOrWhiteSpace(this.CompressFilePath))
 				{

@@ -127,6 +127,10 @@
       <Project>{1333e27f-a5c0-4532-8f47-0e85bf32aeec}</Project>
       <Name>Controls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Handlers\Handlers.csproj">
+      <Project>{ed36b783-b15f-4111-b026-4debd9625b46}</Project>
+      <Name>Handlers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{f17beaa9-f77b-438f-9a04-350885926cd8}</Project>
       <Name>Models</Name>

@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ResultHandler.cs" />
     <Compile Include="Condition.cs" />
     <Compile Include="ConditionMode.cs" />
     <Compile Include="CopyResult.cs" />

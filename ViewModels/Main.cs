@@ -49,36 +49,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			}
 		}
 
-		private System.Windows.GridLength _FileListHeight = new System.Windows.GridLength(3, System.Windows.GridUnitType.Star);
-		public System.Windows.GridLength FileListHeight
-		{
-			get
-			{
-				return this._FileListHeight;
-			}
-			set
-			{
-				this._FileListHeight = value;
-				this.NotifyOfPropertyChange(() => this.FileListHeight);
-
-			}
-		}
-
-		private bool _FileListExpanded = true;
-		public bool FileListExpanded 
-		{
-			get
-			{
-				return this._FileListExpanded;
-			}
-			set
-			{
-				this._FileListExpanded = value;
-				this.NotifyOfPropertyChange(() => this.FileListExpanded);
-			}
-		}
-
-		public double FileListPreviousHeight;
+		public Models.ResultHandler[] ResultHandlers { get; } = Models.ResultHandler.All.Values.ToArray();
 
 		//public string Colon { get; } = "：";
 
@@ -285,22 +256,6 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			System.Threading.Tasks.Task.Run(() => this.Setting.Save());
 		}
 
-		//public void SelectProperty(Models.Condition condition)
-		//{
-
-		//}
-
-		public void CollapsedExpander(double expanderHeight,double fileListHeight)
-		{
-			this.FileListPreviousHeight = fileListHeight;
-			this.FileListHeight = new System.Windows.GridLength(expanderHeight);
-		}
-
-		public void ExpandExpander()
-		{
-			this.FileListHeight = new System.Windows.GridLength(this.FileListPreviousHeight);
-		}
-
 		public void Run()
 		{
 			this.UpdateJobBinding = true;
@@ -308,15 +263,16 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			if (!this.ValidateData())
 				return;
 
-			foreach(Models.Job job in this.Task.Jobs)
-				if(System.IO.Directory.EnumerateFileSystemEntries(job.TargetDirectoryPath).FirstOrDefault()!=null)
-					if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
-						return;
-			
+			if (!this.Task.CompressToZipFile)
+				foreach (Models.Job job in this.Task.Jobs)
+					if (!job.ResultHandler.TargetDirectoryEmpty(job))
+						if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
+							return;
+
 			this.WindowManager.ShowDialogAsync(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
 		}
 
-		public void UncheckedCompressTargetDirectory()
+		public void UncheckedCompressToZipFile()
 		{
 		}
 

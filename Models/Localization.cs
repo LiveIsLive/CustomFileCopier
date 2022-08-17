@@ -26,15 +26,18 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		public string RunTask { get; set; }
 		public string Status { get; set; }
 		public string CompressFilePath { get; set; }
-		public string CompressTargetDirectory { get; set; }
+		public string CompressToZipFile { get; set; }
 		public string AddNowToCompressFileName { get; set; }
 		public string NowFormatString { get; set; }
 
 		public string Name { get; set; }
 		public string SourceDirectory { get; set; }
+		public string ResultHandler { get; set; }
 		public string TargetDirectory { get; set; }
-		public string SpecifyTargetDirectory { get; set; }
-		public string SpecifyTargetDirectoryDescription { get; set; }
+		public string Server { get; set; }
+		public string Port { get; set; }
+		public string UserName { get; set; }
+		public string Password { get; set; }
 
 		public string Condition { get; set; }
 		public string ConditionDesignMode { get; set; }
