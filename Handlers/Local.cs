@@ -21,10 +21,23 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 
 		public override bool Remote => false;
 
+		public override string CheckTargetDirectoryValid(Job job)
+		{
+			try
+			{
+				if (System.IO.Directory.Exists(job.TargetDirectoryPath))
+					return null;
+				System.IO.Directory.CreateDirectory(job.TargetDirectoryPath);
+				return null;
+			}
+			catch(System.Exception exception)
+			{
+				return exception.Message;
+			}
+		}
+
 		public override bool TargetDirectoryEmpty(Job job)
 		{
-			if (!System.IO.Directory.Exists(job.TargetDirectoryPath))
-				return true;
 			return System.IO.Directory.EnumerateFiles(job.TargetDirectoryPath).FirstOrDefault() == null;
 		}
 

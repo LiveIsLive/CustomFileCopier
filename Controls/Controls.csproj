@@ -112,6 +112,7 @@
     <Compile Include="FieldTitle.xaml.cs">
       <DependentUpon>FieldTitle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SplitButton.cs" />
     <Compile Include="SaveFileSelector.xaml.cs">
       <DependentUpon>SaveFileSelector.xaml</DependentUpon>
     </Compile>

@@ -12,6 +12,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		public string SaveAs { get; set; }
 		public string Open { get; set; }
 		public string RecentFiles { get; set; }
+		public string AutoRunWhenFilesFiltered { get; set; }
 		public string Language { get; set; }
 		public string FileList { get; set; }
 		public string Help { get; set; }

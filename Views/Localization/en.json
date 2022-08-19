@@ -3,6 +3,7 @@
 	"SaveAs": "Save As...",
 	"Open": "Open",
 	"RecentFiles": "Recent Files",
+	"AutoRunWhenFilesFiltered": "Run at once when all files are having been filtered",
 	"Language": "Language",
 	"FileList": "File List",
 	"Help": "Help",

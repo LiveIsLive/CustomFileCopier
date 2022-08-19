@@ -33,7 +33,13 @@
 		<hc:SimplePanel DockPanel.Dock="Top">
 			<ToolBar Padding="10,6">
 				<Button Name="AddJob" hc:IconElement.Geometry="{StaticResource AddGeometry}" Margin="10,0,0,0" Content="{Binding Localization.AddJob}" />
-				<Button Name="Run" hc:IconElement.Geometry="{StaticResource RightGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Run}" />
+				<controls:SplitButton Click="Run_Click" hc:IconElement.Geometry="{StaticResource RightGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Run}" cal:Message.Attach="Run">
+					<controls:SplitButton.DropDownContent>
+						<StackPanel>
+							<controls:SaveFileMenuItem Header="{Binding Localization.SaveAs}" cal:Message.Attach="[SaveFile]=[SaveAs($this.SelectedFilePath)]" />
+						</StackPanel>
+					</controls:SplitButton.DropDownContent>
+				</controls:SplitButton>
 				<controls:SaveFileSplitButton SelectedFilePath="{Binding OpeningFilePath}" cal:Message.Attach="[SaveFile]=[Save($this.SelectedFilePath)]" hc:IconElement.Geometry="{StaticResource SaveGeometry}" Margin="10,0,0,0" Content="{Binding Localization.Save}">
 					<controls:SaveFileSplitButton.DropDownContent>
 						<StackPanel>

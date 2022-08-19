@@ -15,6 +15,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		protected static readonly System.Globalization.CultureInfo ChineseCulture;
 		protected static readonly System.Globalization.CultureInfo EnglishCulture;
 
+		public abstract string CheckTargetDirectoryValid(Models.Job job);
+
 		public abstract bool TargetDirectoryEmpty(Models.Job job);
 
 		public abstract void Execute(Models.Job job);
@@ -37,7 +39,10 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			get
 			{
 				if (_All == null)
-					_All = System.Reflection.Assembly.Load("ColdShineSoft.CustomFileCopier.Handlers").GetTypes().Select(t => (ResultHandler)System.Activator.CreateInstance(t)).OrderBy(h => h.Remote).ToDictionary(h => h.GetTypeFullName()); ;
+				{
+					System.Type baseType = typeof(ResultHandler);
+					_All = System.Reflection.Assembly.Load("ColdShineSoft.CustomFileCopier.Handlers").GetTypes().Where(t=>t.IsSubclassOf(baseType)).Select(t => (ResultHandler)System.Activator.CreateInstance(t)).OrderBy(h => h.Remote).ToDictionary(h => h.GetTypeFullName()); ;
+				}
 				return _All;
 			}
 		}

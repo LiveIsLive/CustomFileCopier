@@ -13,14 +13,30 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 
 		public override bool Remote => true;
 
+		public override string CheckTargetDirectoryValid(Job job)
+		{
+			Renci.SshNet.SftpClient sftpClient = new Renci.SshNet.SftpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
+			try
+			{
+				sftpClient.Connect();
+				if (sftpClient.Exists(job.TargetDirectoryPath))
+					return null;
+				sftpClient.CreateDirectory(job.TargetDirectoryPath);
+				return null;
+			}
+			finally
+			{
+				sftpClient.Disconnect();
+			}
+		}
+
 		public override bool TargetDirectoryEmpty(Job job)
 		{
 			Renci.SshNet.SftpClient sftpClient = new Renci.SshNet.SftpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
 			try
 			{
-				if (!sftpClient.Exists(job.TargetDirectoryPath))
-					return true;
-				return sftpClient.ListDirectory(job.TargetDirectoryPath).FirstOrDefault() == null;
+				sftpClient.Connect();
+				return sftpClient.ListDirectory(job.TargetDirectoryPath).Where(d => d.Name.Trim('.') != "").FirstOrDefault() == null;
 			}
 			finally
 			{
@@ -33,6 +49,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			Renci.SshNet.SftpClient sftpClient = new Renci.SshNet.SftpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
 			try
 			{
+				sftpClient.Connect();
 				foreach (Models.File sourceFile in job.SourceFiles)
 				{
 					sourceFile.Result = Models.CopyResult.Copying;

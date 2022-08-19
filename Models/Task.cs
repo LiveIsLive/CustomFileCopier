@@ -112,6 +112,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
+		[Newtonsoft.Json.JsonProperty]
+		public bool AutoRunWhenFilesFiltered { get; set; }
+
 		private TaskStatus _Status;
 		public TaskStatus Status
 		{

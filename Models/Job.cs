@@ -132,12 +132,16 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
+		[Newtonsoft.Json.JsonProperty]
 		public string TargetServer { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public int TargetPort { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public string TargetUserName { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public string TargetPassword { get; set; }
 
 		private ConditionMode _ConditionMode;
@@ -427,16 +431,15 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 					result = false;
 					this.DataErrorInfo.TargetDirectoryPath = string.Format(localization.ValidationError[ValidationError.Required], localization.TargetDirectory);
 				}
-				else if(!System.IO.Directory.Exists(this.TargetDirectoryPath))
-					try
-					{
-						System.IO.Directory.CreateDirectory(this.TargetDirectoryPath);
-					}
-					catch(System.Exception exception)
+				else
+				{
+					this.DataErrorInfo.TargetDirectoryPath = this.ResultHandler.CheckTargetDirectoryValid(this);
+					if(this.DataErrorInfo.TargetDirectoryPath!=null)
 					{
 						result = false;
-						this.DataErrorInfo.TargetDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.TargetDirectory) + exception.Message;
+						this.DataErrorInfo.TargetDirectoryPath = string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], localization.TargetDirectory) + this.DataErrorInfo.TargetDirectoryPath;
 					}
+				}
 				if (this.ResultHandler.Remote)
 					if (string.IsNullOrWhiteSpace(this.TargetServer))
 						this.DataErrorInfo.TargetServer = string.Format(localization.ValidationError[ValidationError.Required], localization.Server);

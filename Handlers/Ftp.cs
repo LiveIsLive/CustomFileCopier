@@ -13,13 +13,29 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 
 		public override bool Remote => true;
 
+		public override string CheckTargetDirectoryValid(Job job)
+		{
+			FluentFTP.FtpClient ftpClient = new FluentFTP.FtpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
+			try
+			{
+				ftpClient.Connect();
+				if (ftpClient.DirectoryExists(job.TargetDirectoryPath))
+					return null;
+				ftpClient.CreateDirectory(job.TargetDirectoryPath);
+				return null;
+			}
+			finally
+			{
+				ftpClient.DisconnectAsync();
+			}
+		}
+
 		public override bool TargetDirectoryEmpty(Job job)
 		{
 			FluentFTP.FtpClient ftpClient = new FluentFTP.FtpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
 			try
 			{
-				if (!ftpClient.DirectoryExists(job.TargetDirectoryPath))
-					return true;
+				ftpClient.Connect();
 				return ftpClient.GetListing(job.TargetDirectoryPath).FirstOrDefault() == null;
 			}
 			finally
@@ -33,6 +49,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			FluentFTP.FtpClient ftpClient = new FluentFTP.FtpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
 			try
 			{
+				ftpClient.Connect();
 				foreach (Models.File sourceFile in job.SourceFiles)
 				{
 					sourceFile.Result = Models.CopyResult.Copying;

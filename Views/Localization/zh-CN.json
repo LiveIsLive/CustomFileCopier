@@ -3,6 +3,7 @@
 	"SaveAs": "另存为...",
 	"Open": "打开",
 	"RecentFiles": "最近使用过的文件",
+	"AutoRunWhenFilesFiltered": "所有文件筛选完成后立即运行",
 	"Language": "语言/Languages",
 	"Help": "帮助",
 	"Tutorial": "入门",

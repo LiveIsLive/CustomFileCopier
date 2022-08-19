@@ -29,7 +29,10 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			get
 			{
 				if (this._Directory == null)
+				{
+
 					this._Directory = System.IO.Path.GetDirectoryName(this.Path);
+				}
 				return this._Directory;
 			}
 		}
