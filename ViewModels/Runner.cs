@@ -29,6 +29,12 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			//this.Thread.Start();
 		}
 
+		public void CopyFiles()
+		{
+			System.Threading.Tasks.Task.Run(this.Task.CopyFiles, this.CancellationTokenSource.Token);
+			//this.Thread.Start();
+		}
+
 		public void Stop()
 		{
 			//this.Thread.Abort();

@@ -16,6 +16,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 		public override string CheckTargetDirectoryValid(Job job)
 		{
 			FluentFTP.FtpClient ftpClient = new FluentFTP.FtpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
+			ftpClient.EncryptionMode = FluentFTP.FtpEncryptionMode.Auto;
 			try
 			{
 				ftpClient.Connect();
@@ -24,9 +25,13 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 				ftpClient.CreateDirectory(job.TargetDirectoryPath);
 				return null;
 			}
+			catch (System.Exception exception)
+			{
+				return exception.Message;
+			}
 			finally
 			{
-				ftpClient.DisconnectAsync();
+				ftpClient.Disconnect();
 			}
 		}
 
@@ -36,11 +41,11 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			try
 			{
 				ftpClient.Connect();
-				return ftpClient.GetListing(job.TargetDirectoryPath).FirstOrDefault() == null;
+				return ftpClient.GetNameListing(job.TargetDirectoryPath).Length == 0;
 			}
 			finally
 			{
-				ftpClient.DisconnectAsync();
+				ftpClient.Disconnect();
 			}
 		}
 

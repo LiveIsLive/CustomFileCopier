@@ -24,6 +24,10 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 				sftpClient.CreateDirectory(job.TargetDirectoryPath);
 				return null;
 			}
+			catch(System.Exception exception)
+			{
+				return exception.Message;
+			}
 			finally
 			{
 				sftpClient.Disconnect();
@@ -36,7 +40,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			try
 			{
 				sftpClient.Connect();
-				return sftpClient.ListDirectory(job.TargetDirectoryPath).Where(d => d.Name.Trim('.') != "").FirstOrDefault() == null;
+				return sftpClient.ListDirectory(job.TargetDirectoryPath).All(d => d.Name.Trim('.') == "");
 			}
 			finally
 			{

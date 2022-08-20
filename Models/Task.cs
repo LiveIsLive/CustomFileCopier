@@ -232,6 +232,13 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			this._TargetCompressFilePath = null;
 			this.Status = TaskStatus.CollectingFiles;
 			this.LoadFiles();
+			if (this.AutoRunWhenFilesFiltered)
+				this.CopyFiles();
+			else this.Status = TaskStatus.Standby;
+		}
+
+		public void CopyFiles()
+		{
 			this.Status = TaskStatus.Copying;
 			if (this.CompressToZipFile)
 			{
@@ -274,6 +281,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 					job.Execute();
 			this.Status = TaskStatus.Done;
 			this.OnDone();
+
 		}
 
 		public void Save(string path)

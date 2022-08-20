@@ -8,8 +8,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public enum TaskStatus
 	{
-		Standby,
+		Idle,
 		CollectingFiles,
+		Standby,
 		Copying,
 		Compressing,
 		Done

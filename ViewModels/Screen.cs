@@ -113,7 +113,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			{
 				try
 				{
-					SetUiLangMethod.Invoke(UiConfigHelper, new object[] { name.Split('-')[0] });
+					SetUiLangMethod.Invoke(UiConfigHelper, new object[] { name.Split('-'                 )[0] });
 				}
 				catch
 				{
@@ -122,9 +122,9 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			}
 		}
 
-		public void CloseWindow()
-		{
-			this.TryCloseAsync();
-		}
+		//public void CloseWindow()
+		//{
+		//	this.TryCloseAsync();
+		//}
 	}
 }
