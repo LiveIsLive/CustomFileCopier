@@ -91,18 +91,34 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			}
 		}
 
+		protected readonly char[] DirectorySeparators = new char[] { '/', '\\' };
+
 		protected void CreateServerDirectoryIfItDoesntExist(Renci.SshNet.SftpClient sftpClient, string serverDestinationPath)
 		{
-			if (serverDestinationPath[0] == '/')
-				serverDestinationPath = serverDestinationPath.Substring(1);
+			string directory = null;
 
-			string[] directories = serverDestinationPath.Split('/');
-			for (int i = 0; i < directories.Length; i++)
+			foreach(char c in serverDestinationPath)
 			{
-				string dirName = string.Join("/", directories, 0, i + 1);
-				if (!sftpClient.Exists(dirName))
-					sftpClient.CreateDirectory(dirName);
+				if (directory != null && this.DirectorySeparators.Contains(c))
+					if (!sftpClient.Exists(directory))
+						sftpClient.CreateDirectory(directory);
+
+				directory += c;
 			}
+			if(!this.DirectorySeparators.Contains(serverDestinationPath.Last()))
+				if (!sftpClient.Exists(serverDestinationPath))
+					sftpClient.CreateDirectory(serverDestinationPath);
+
+			//if (serverDestinationPath[0] == '/')
+			//	serverDestinationPath = serverDestinationPath.Substring(1);
+
+			//string[] directories = serverDestinationPath.Split('/');
+			//for (int i = 0; i < directories.Length; i++)
+			//{
+			//	string dirName = string.Join("/", directories, 0, i + 1);
+			//	if (!sftpClient.Exists(dirName))
+			//		sftpClient.CreateDirectory(dirName);
+			//}
 		}
 
 

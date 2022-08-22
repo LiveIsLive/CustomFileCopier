@@ -63,7 +63,7 @@
 		"FileName": "文件名",
 		"FilePath": "文件路径",
 		"FileSize": "文件大小(字节)",
-		"DirectoryPath": "所在目录路径",
+		"DirectoryPath": "所在目录路径(不以\\结尾)",
 		"Extension": "扩展名(包含.)",
 		"LastWriteTime": "修改时间",
 		"CreationTime": "创建时间",

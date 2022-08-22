@@ -1,6 +1,6 @@
 ﻿namespace ColdShineSoft.CustomFileCopier.Controls
 {
-	public partial class SaveFileSplitButton : HandyControl.Controls.SplitButton
+	public partial class SaveFileSplitButton : DropDownButton
 	{
 		private static Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog _SaveFileDialog;
 		protected Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog SaveFileDialog
@@ -37,7 +37,8 @@
 
 		public SaveFileSplitButton()
 		{
-			this.Style = new System.Windows.Style(typeof(SaveFileSplitButton), (System.Windows.Style)System.Windows.Application.Current.TryFindResource(typeof(HandyControl.Controls.SplitButton)));
+			//this.Style = new System.Windows.Style(typeof(SaveFileSplitButton), (System.Windows.Style)System.Windows.Application.Current.TryFindResource(typeof(HandyControl.Controls.SplitButton)));
+			this.Click += SaveFileSplitButton_Click;
 		}
 
 		protected virtual void OnSaveFile(string path)
@@ -48,16 +49,14 @@
 			RaiseEvent(args);
 		}
 
-		protected override void OnClick()
+		private void SaveFileSplitButton_Click(object sender, System.Windows.RoutedEventArgs e)
 		{
-			if (this.SelectedFilePath==null)
+			if (this.SelectedFilePath == null)
 			{
-				if(this.SaveFileDialog.ShowDialog() == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
-					this.OnSaveFile(this.SaveFileDialog.FileName);             
+				if (this.SaveFileDialog.ShowDialog() == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
+					this.OnSaveFile(this.SaveFileDialog.FileName);
 			}
 			else this.OnSaveFile(this.SelectedFilePath);
-
-			base.OnClick();
 		}
 	}
 }

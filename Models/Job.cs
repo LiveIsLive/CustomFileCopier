@@ -377,7 +377,10 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 
 		public string GetTargetAbsoluteFilePath(string sourceFilePath)
 		{
-			return System.IO.Path.Combine(this.TargetDirectoryPath, sourceFilePath.Substring(this.SourceDirectoryLength));
+			string path = System.IO.Path.Combine(this.TargetDirectoryPath, sourceFilePath.Substring(this.SourceDirectoryLength));
+			if (ResultHandler.Remote)
+				return path.Replace('\\', '/');
+			return path;
 		}
 
 		public string GetTargetRelativeFilePath(string sourceFilePath)

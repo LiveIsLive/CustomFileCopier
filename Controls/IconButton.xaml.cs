@@ -20,7 +20,7 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 	/// </summary>
 	public partial class IconButton : Button
 	{
-		[Bindables.DependencyProperty]
+		//[Bindables.DependencyProperty]
 		public MahApps.Metro.IconPacks.PackIconCodiconsKind Icon { get; set; }
 
 		public IconButton()

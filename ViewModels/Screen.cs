@@ -40,7 +40,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 						System.Threading.Thread.CurrentThread.CurrentCulture= culture;
 						System.Threading.Thread.CurrentThread.CurrentUICulture= culture;
 					}
-					this.SetUiLang(this.Setting.SelectedCultureName);
+					//this.SetUiLang(this.Setting.SelectedCultureName);
 				}
 				return this._Setting;
 			}
@@ -97,30 +97,30 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			}
 		}
 
-		protected static readonly System.Type UiConfigHelperType = System.Type.GetType("HandyControl.Tools.ConfigHelper,HandyControl");
+		//protected static readonly System.Type UiConfigHelperType = System.Type.GetType("HandyControl.Tools.ConfigHelper,HandyControl");
 
-		protected static readonly object UiConfigHelper = UiConfigHelperType.GetField("Instance").GetValue(null);
+		//protected static readonly object UiConfigHelper = UiConfigHelperType.GetField("Instance").GetValue(null);
 
-		protected static System.Reflection.MethodInfo SetUiLangMethod = UiConfigHelperType.GetMethod("SetLang");
+		//protected static System.Reflection.MethodInfo SetUiLangMethod = UiConfigHelperType.GetMethod("SetLang");
 
-		protected void SetUiLang(string name)
-		{
-			try
-			{
-				SetUiLangMethod.Invoke(UiConfigHelper, new object[] { name });
-			}
-			catch
-			{
-				try
-				{
-					SetUiLangMethod.Invoke(UiConfigHelper, new object[] { name.Split('-'                 )[0] });
-				}
-				catch
-				{
-					SetUiLangMethod.Invoke(UiConfigHelper, new object[] { "en" });
-				}
-			}
-		}
+		//protected void SetUiLang(string name)
+		//{
+		//	try
+		//	{
+		//		SetUiLangMethod.Invoke(UiConfigHelper, new object[] { name });
+		//	}
+		//	catch
+		//	{
+		//		try
+		//		{
+		//			SetUiLangMethod.Invoke(UiConfigHelper, new object[] { name.Split('-')[0] });
+		//		}
+		//		catch
+		//		{
+		//			SetUiLangMethod.Invoke(UiConfigHelper, new object[] { "en" });
+		//		}
+		//	}
+		//}
 
 		//public void CloseWindow()
 		//{

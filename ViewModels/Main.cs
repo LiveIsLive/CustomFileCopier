@@ -252,7 +252,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			this.Localization = this.GetLocalization(culture);
 			Models.Global.Instance.Localization = this.Localization;
 			this.Setting.SelectedCultureName = culture.Name;
-			this.SetUiLang(this.Setting.SelectedCultureName);
+			//this.SetUiLang(this.Setting.SelectedCultureName);
 			System.Threading.Tasks.Task.Run(() => this.Setting.Save());
 		}
 

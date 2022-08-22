@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace ColdShineSoft.CustomFileCopier.Controls
 {
-	public class TabControl:HandyControl.Controls.TabControl
+	public class TabControl : MahApps.Metro.Controls.MetroTabControl
 	{
 		[Bindables.DependencyProperty(OnPropertyChanged =nameof(OnIsFocusChanged),Options =System.Windows.FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
 		public bool IsFocus { get; set; }
@@ -24,7 +24,7 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 
 		public TabControl()
 		{
-			this.Style = new System.Windows.Style(typeof(HandyControl.Controls.TabControl), (System.Windows.Style)System.Windows.Application.Current.TryFindResource(typeof(HandyControl.Controls.TabControl)));
+			//this.Style = new System.Windows.Style(typeof(HandyControl.Controls.TabControl), (System.Windows.Style)System.Windows.Application.Current.TryFindResource(typeof(HandyControl.Controls.TabControl)));
 		}
 
 		protected override void OnSelectionChanged(SelectionChangedEventArgs e)

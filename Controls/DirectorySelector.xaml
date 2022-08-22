@@ -3,14 +3,12 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-		xmlns:local="clr-namespace:ColdShineSoft.CustomFileCopier.Controls"
-		xmlns:hc="https://handyorg.github.io/handycontrol"
 		mc:Ignorable="d">
 	<Control.Template>
 		<ControlTemplate>
-			<DockPanel VerticalAlignment="Top">
-				<Button Click="Button_Click" DockPanel.Dock="Right" Margin="5,0,0,0" Content="{Binding Path=OpenButtonText,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-				<TextBox Text="{Binding Path=Path,RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+			<DockPanel VerticalAlignment="Top" DataContext="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}">
+				<Button Click="Button_Click" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,0,10,0"  Content="{Binding OpenButtonText}" FontSize="{Binding FontSize}" />
+				<TextBox Text="{Binding Path}" />
 			</DockPanel>
 		</ControlTemplate>
 	</Control.Template>

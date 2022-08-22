@@ -20,7 +20,7 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 	/// </summary>
 	public partial class SaveFileSelector : Control
 	{
-		private static Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog _SaveFileDialog;
+		private Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog _SaveFileDialog;
 		protected Microsoft.WindowsAPICodePack.Dialogs.CommonSaveFileDialog SaveFileDialog
 		{
 			get

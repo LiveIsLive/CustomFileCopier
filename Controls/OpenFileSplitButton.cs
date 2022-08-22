@@ -18,7 +18,7 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 	/// <summary>
 	/// OpenFileButton.xaml 的交互逻辑
 	/// </summary>
-	public partial class OpenFileSplitButton : HandyControl.Controls.SplitButton
+	public partial class OpenFileSplitButton : DropDownButton
 	{
 		private static Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog _OpenFileDialog;
 		protected Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog OpenFileDialog
@@ -53,7 +53,8 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 
 		public OpenFileSplitButton()
 		{
-			this.Style = new Style(typeof(OpenFileSplitButton), (System.Windows.Style)Application.Current.TryFindResource(typeof(HandyControl.Controls.SplitButton)));
+			//this.Style = new Style(typeof(OpenFileSplitButton), (System.Windows.Style)Application.Current.TryFindResource(typeof(HandyControl.Controls.SplitButton)));
+			this.Click += OpenFileSplitButton_Click;
 		}
 
 		protected virtual void OnOpenFile(string path)
@@ -64,12 +65,10 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 			RaiseEvent(args);
 		}
 
-		protected override void OnClick()
+		private void OpenFileSplitButton_Click(object sender, RoutedEventArgs e)
 		{
 			if (this.OpenFileDialog.ShowDialog() == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
-				this.OnOpenFile(this.OpenFileDialog.FileName);             
-
-			base.OnClick();
+				this.OnOpenFile(this.OpenFileDialog.FileName);
 		}
 	}
 }

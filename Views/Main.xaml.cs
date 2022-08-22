@@ -17,7 +17,7 @@ namespace ColdShineSoft.CustomFileCopier.Views
 	/// <summary>
 	/// Main.xaml 的交互逻辑
 	/// </summary>
-	public partial class Main : Window
+	public partial class Main : MahApps.Metro.Controls.MetroWindow
 	{
 		public Main()
 		{

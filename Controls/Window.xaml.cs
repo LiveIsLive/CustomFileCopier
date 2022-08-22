@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ColdShineSoft.CustomFileCopier.Views
+namespace ColdShineSoft.CustomFileCopier.Controls
 {
 	/// <summary>
-	/// Runner.xaml 的交互逻辑
+	/// Window.xaml 的交互逻辑
 	/// </summary>
-	public partial class Runner : MahApps.Metro.Controls.MetroWindow
+	public partial class Window : MahApps.Metro.Controls.MetroWindow
 	{
-		public Runner()
+		public Window()
 		{
 			InitializeComponent();
 		}

@@ -63,7 +63,7 @@
 		"FileName": "File Name",
 		"FilePath": "File Path",
 		"FileSize": "File Size(Bytes)",
-		"DirectoryPath": "Directory Path",
+		"DirectoryPath": "Directory Path(Not End With \\)",
 		"Extension": "Extension(Starts Width .)",
 		"LastWriteTime": "Last Write Time",
 		"CreationTime": "Creation Time",
