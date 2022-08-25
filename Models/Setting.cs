@@ -12,6 +12,34 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		public byte MaxRecentFileCount { get; set; } = 10;
 
+		private int _ThemeId;
+		public int ThemeId
+		{
+			get
+			{
+				if (this._ThemeId == 0)
+					this._ThemeId = Theme.Default.ThemeId;
+				return this._ThemeId;
+			}
+			set
+			{
+				this._ThemeId = value;
+				this._Theme = null;
+			}
+		}
+
+		private Theme _Theme;
+		[Newtonsoft.Json.JsonIgnore]
+		public Theme Theme
+		{
+			get
+			{
+				if (this._Theme == null)
+					this._Theme = Theme.FromId(this.ThemeId);
+				return this._Theme;
+			}
+		}
+
 		private System.Collections.ObjectModel.ObservableCollection<string> _RecentFiles;
 		public System.Collections.ObjectModel.ObservableCollection<string> RecentFiles
 		{
@@ -40,6 +68,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 						System.IO.StreamReader reader = new System.IO.StreamReader(SavePath);
 						//_Instance = NetJSON.NetJSON.Deserialize<Setting>(reader);
 						_Instance = new Newtonsoft.Json.JsonSerializer().Deserialize<Setting>(new Newtonsoft.Json.JsonTextReader(reader));
+						if (_Instance == null)
+							_Instance = new Setting();
 						reader.Close();
 					}
 					else _Instance = new Setting();

@@ -6,6 +6,9 @@
 			xmlns:controls="clr-namespace:ColdShineSoft.CustomFileCopier.Controls"
 			xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 			mc:Ignorable="d" FontFamily="微软雅黑" FontSize="12" Padding="10,5,10,5">
+	<Button.Style>
+		<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}" />
+	</Button.Style>
 	<Button.ContentTemplate>
 		<DataTemplate>
 			<WrapPanel DataContext="{Binding RelativeSource={RelativeSource AncestorType=Button}}">

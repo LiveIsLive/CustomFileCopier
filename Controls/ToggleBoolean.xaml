@@ -9,7 +9,7 @@
 		<ControlTemplate>
 			<Button Click="Button_Click">
 				<Button.Style>
-					<Style TargetType="Button">
+					<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
 						<Style.Triggers>
 							<DataTrigger Binding="{Binding Path=Value,RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True">
 								<Setter Property="Content" Value="{Binding Path=TrueContent,RelativeSource={RelativeSource Mode=TemplatedParent}}" />

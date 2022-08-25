@@ -91,6 +91,7 @@
     <Compile Include="Setting.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="TaskStatus.cs" />
+    <Compile Include="Theme.cs" />
     <Compile Include="ValidationError.cs" />
   </ItemGroup>
   <ItemGroup>

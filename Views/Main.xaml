@@ -29,6 +29,19 @@
 	<mah:MetroWindow.RightWindowCommands>
 		<mah:WindowCommands>
 			<Menu HorizontalAlignment="Right" Margin="0,0,10,3" VerticalAlignment="Center">
+				<MenuItem Header="{Binding Localization.Theme}" ItemsSource="{Binding Themes}">
+					<MenuItem.ItemContainerStyle>
+						<Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+							<Setter Property="cal:Action.TargetWithoutContext" Value="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}" />
+							<Setter Property="cal:Message.Attach" Value="ChangeTheme($dataContext)" />
+						</Style>
+					</MenuItem.ItemContainerStyle>
+					<MenuItem.ItemTemplate>
+						<HierarchicalDataTemplate ItemsSource="{Binding Children}">
+							<TextBlock Text="{Binding Value}" />
+						</HierarchicalDataTemplate>
+					</MenuItem.ItemTemplate>
+				</MenuItem>
 				<MenuItem Header="{Binding Localization.Language}" ItemsSource="{Binding InstalledCultures}">
 					<MenuItem.ItemContainerStyle>
 						<Style TargetType="MenuItem">
@@ -66,7 +79,11 @@
 			</WrapPanel>
 		</StackPanel>
 		<ToolBar DockPanel.Dock="Top" Background="Red">
-			<controls:IconButton Name="AddJob" Icon="Add" Content="{Binding Localization.AddJob}" BorderThickness="0" Background="Transparent" />
+			<controls:IconButton Name="AddJob" Icon="Add" Content="{Binding Localization.AddJob}">
+				<controls:IconButton.Style>
+					<Style TargetType="controls:IconButton" BasedOn="{StaticResource MahApps.Styles.Button.ToolBar}" />
+				</controls:IconButton.Style>
+			</controls:IconButton>
 			<controls:DropDownButton cal:Message.Attach="[Click]=[Run]" Kind="Play" Margin="10,0,0,0" Text="{Binding Localization.Run}" BorderThickness="0">
 				<controls:DropDownButton.Items>
 					<CheckBox IsChecked="{Binding Task.AutoRunWhenFilesFiltered}" Content="{Binding Localization.AutoRunWhenFilesFiltered}" Margin="10,10" BorderThickness="0" />

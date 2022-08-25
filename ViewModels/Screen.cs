@@ -20,7 +20,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 				if (this._Setting == null)
 				{
 					this._Setting = Models.Setting.Instance;
-					if(string.IsNullOrWhiteSpace(this.Setting.SelectedCultureName))
+					if(string.IsNullOrWhiteSpace(this._Setting.SelectedCultureName))
 					{
 						string baseDirectory = LocalizationDirectory;
 						string filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.Name + ".json";

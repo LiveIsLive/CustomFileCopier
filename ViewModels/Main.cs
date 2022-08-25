@@ -23,6 +23,8 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			}
 		}
 
+		public Models.Theme[] Themes { get; } = Models.Theme.All;
+
 		private System.Globalization.CultureInfo[] _InstalledCultures;
 		public System.Globalization.CultureInfo[] InstalledCultures
 		{
@@ -138,6 +140,11 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 				this._SelectedJob = value;
 				this.NotifyOfPropertyChange(() => this.SelectedJob);
 			}
+		}
+
+		public Main()
+		{
+			this.ChangeTheme(this.Setting.Theme);
 		}
 
 		public void AddJob()
@@ -329,6 +336,19 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			
 			int oldIndex=this.SelectedJob.Conditions.IndexOf(sourceCondition);
 			this.SelectedJob.Conditions.Move(oldIndex, dropInfo.InsertIndex);
+		}
+
+		public void ChangeTheme(Models.Theme theme)
+		{
+			if (theme.Parent == null)
+				return;
+			object themeManager = System.Type.GetType("ControlzEx.Theming.ThemeManager,ControlzEx")?.GetProperty("Current").GetValue(null);
+			//themeManager.ChangeTheme(System.Windows.Application.Current, theme.ToString());
+			if (themeManager!= null)
+				themeManager.GetType().GetMethod("ChangeTheme", new System.Type[] { typeof(System.Windows.Application), typeof(string), typeof(bool) }).Invoke(themeManager, new object[] { System.Windows.Application.Current, theme.ToString(), false });
+
+			this.Setting.ThemeId = theme.ThemeId;
+			this.Setting.Save();
 		}
 	}
 }

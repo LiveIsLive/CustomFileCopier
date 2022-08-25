@@ -18,6 +18,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		public string Help { get; set; }
 		public string Tutorial { get; set; }
 		public string About { get; set; }
+		public string Theme { get; set; }
 
 		public string Job { get; set; }
 		public string AddJob { get; set; }
