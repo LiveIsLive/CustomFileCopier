@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
+
 namespace ColdShineSoft.CustomFileCopier.Views
 {
 	/// <summary>
@@ -22,6 +24,16 @@ namespace ColdShineSoft.CustomFileCopier.Views
 		public Main()
 		{
 			InitializeComponent();
+		}
+
+		private void DialogTest_Click(object sender, RoutedEventArgs e)
+		{
+			MahApps.Metro.Controls.Dialogs.DialogManager.ShowMessageAsync(this,"系统提示","This is a Test！",MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative,new MahApps.Metro.Controls.Dialogs.MetroDialogSettings { AffirmativeButtonText = "确定", NegativeButtonText = "取消" });
+		}
+
+		private void DateTimePicker_Loaded(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }

@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace ColdShineSoft.CustomFileCopier.Models
 {
-	public class Setting
+	public class Setting:Caliburn.Micro.PropertyChangedBase
 	{
+		[Newtonsoft.Json.JsonProperty]
 		public string SelectedCultureName { get; set; }
 
+		[Newtonsoft.Json.JsonProperty]
 		public byte MaxRecentFileCount { get; set; } = 10;
 
 		private int _ThemeId;
+		[Newtonsoft.Json.JsonProperty]
 		public int ThemeId
 		{
 			get
@@ -25,11 +28,11 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			{
 				this._ThemeId = value;
 				this._Theme = null;
+				this.NotifyOfPropertyChange(() => this.Theme);
 			}
 		}
 
 		private Theme _Theme;
-		[Newtonsoft.Json.JsonIgnore]
 		public Theme Theme
 		{
 			get
@@ -41,6 +44,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		}
 
 		private System.Collections.ObjectModel.ObservableCollection<string> _RecentFiles;
+		[Newtonsoft.Json.JsonProperty]
 		public System.Collections.ObjectModel.ObservableCollection<string> RecentFiles
 		{
 			get

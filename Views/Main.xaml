@@ -28,6 +28,7 @@
 	</mah:MetroWindow.Resources>
 	<mah:MetroWindow.RightWindowCommands>
 		<mah:WindowCommands>
+			<controls:ThemeSetter Theme="{Binding Setting.Theme}" />
 			<Menu HorizontalAlignment="Right" Margin="0,0,10,3" VerticalAlignment="Center">
 				<MenuItem Header="{Binding Localization.Theme}" ItemsSource="{Binding Themes}">
 					<MenuItem.ItemContainerStyle>
@@ -79,6 +80,9 @@
 			</WrapPanel>
 		</StackPanel>
 		<ToolBar DockPanel.Dock="Top" Background="Red">
+			<Button Name="DialogTest" Click="DialogTest_Click">Dialog</Button>
+			<mah:DateTimePicker Name="DateTimePickerTest" />
+			<DatePicker />
 			<controls:IconButton Name="AddJob" Icon="Add" Content="{Binding Localization.AddJob}">
 				<controls:IconButton.Style>
 					<Style TargetType="controls:IconButton" BasedOn="{StaticResource MahApps.Styles.Button.ToolBar}" />

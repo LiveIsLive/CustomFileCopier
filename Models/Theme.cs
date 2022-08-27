@@ -92,6 +92,17 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			}
 		}
 
+		private string _Name;
+		public string Name
+		{
+			get
+			{
+				if (this._Name == null)
+					this._Name = this.Parent?.Value + "." + this.Value;
+				return this._Name;
+			}
+		}
+
 		public static Theme FromId(int themeId)
 		{
 			foreach (Theme baseTheme in All)
@@ -103,7 +114,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		public override string ToString()
 		{
-			return this.Parent?.Value + "." + this.Value;
+			return this.Name;
 		}
 
 		//public int CompareTo(Theme other)
