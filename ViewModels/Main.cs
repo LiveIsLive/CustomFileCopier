@@ -263,6 +263,36 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			System.Threading.Tasks.Task.Run(() => this.Setting.Save());
 		}
 
+		private string _ConfirmMessage;
+		public string ConfirmMessage
+		{
+			get
+			{
+				return this._ConfirmMessage;
+			}
+			set
+			{
+				this._ConfirmMessage = value;
+				this.NotifyOfPropertyChange(() => this.ConfirmMessage);
+			}
+		}
+
+		private bool _ShowConfirmMessage;
+		public bool ShowConfirmMessage
+		{
+			get
+			{
+				return this._ShowConfirmMessage;
+			}
+			set
+			{
+				this._ShowConfirmMessage = value;
+				this.NotifyOfPropertyChange(() => this.ShowConfirmMessage);
+			}
+		}
+
+		public bool ConfirmResult { get; set; }
+
 		public void Run()
 		{
 			this.UpdateJobBinding = true;
@@ -273,8 +303,14 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			if (!this.Task.CompressToZipFile)
 				foreach (Models.Job job in this.Task.Jobs)
 					if (!job.ResultHandler.TargetDirectoryEmpty(job))
-						if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
+					{
+						this.ConfirmMessage = String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath);
+						this.ShowConfirmMessage = true;
+						if (!ConfirmResult)
 							return;
+					}
+						//if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
+						//	return;
 
 			this.WindowManager.ShowDialogAsync(new Runner(this.Task, System.IO.Path.GetFileNameWithoutExtension(this.OpeningFilePath)));
 		}

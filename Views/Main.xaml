@@ -29,6 +29,7 @@
 	<mah:MetroWindow.RightWindowCommands>
 		<mah:WindowCommands>
 			<controls:ThemeSetter Theme="{Binding Setting.Theme}" />
+			<controls:ConfirmMessage Show="{Binding ShowConfirmMessage}" Message="{Binding ConfirmMessage}" Result="{Binding ConfirmResult}" />
 			<Menu HorizontalAlignment="Right" Margin="0,0,10,3" VerticalAlignment="Center">
 				<MenuItem Header="{Binding Localization.Theme}" ItemsSource="{Binding Themes}">
 					<MenuItem.ItemContainerStyle>

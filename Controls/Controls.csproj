@@ -127,6 +127,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfirmMessage.cs" />
     <Compile Include="ThemeSetter.cs" />
     <Compile Include="DirectorySelector.xaml.cs">
       <DependentUpon>DirectorySelector.xaml</DependentUpon>
