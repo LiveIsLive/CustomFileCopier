@@ -29,7 +29,7 @@
 	<mah:MetroWindow.RightWindowCommands>
 		<mah:WindowCommands>
 			<controls:ThemeSetter Theme="{Binding Setting.Theme}" />
-			<controls:ConfirmMessage Show="{Binding ShowConfirmMessage}" Message="{Binding ConfirmMessage}" Result="{Binding ConfirmResult}" />
+			<controls:ConfirmMessage Show="{Binding ShowConfirmMessage}" Message="{Binding ConfirmMessage}" Result="{Binding ConfirmResult}" Title="{Binding Localization.Confirm}" OkText="{Binding Localization.OK}" CancelText="{Binding Localization.Cancel}" />
 			<Menu HorizontalAlignment="Right" Margin="0,0,10,3" VerticalAlignment="Center">
 				<MenuItem Header="{Binding Localization.Theme}" ItemsSource="{Binding Themes}">
 					<MenuItem.ItemContainerStyle>
@@ -81,9 +81,6 @@
 			</WrapPanel>
 		</StackPanel>
 		<ToolBar DockPanel.Dock="Top" Background="Red">
-			<Button Name="DialogTest" Click="DialogTest_Click">Dialog</Button>
-			<mah:DateTimePicker Name="DateTimePickerTest" />
-			<DatePicker />
 			<controls:IconButton Name="AddJob" Icon="Add" Content="{Binding Localization.AddJob}">
 				<controls:IconButton.Style>
 					<Style TargetType="controls:IconButton" BasedOn="{StaticResource MahApps.Styles.Button.ToolBar}" />
@@ -352,15 +349,9 @@
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
 													<WrapPanel>
-														<WrapPanel.Resources>
-															<Style TargetType="controls:IconButton">
-																<Setter Property="BorderThickness" Value="0" />
-																<Setter Property="Background" Value="Transparent" />
-															</Style>
-														</WrapPanel.Resources>
-														<controls:IconButton cal:Message.Attach="MoveUpCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstCondition!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" />
-														<controls:IconButton cal:Message.Attach="MoveDownCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastCondition!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" />
-														<controls:IconButton cal:Message.Attach="RemoveCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="Close" />
+														<controls:IconButton cal:Message.Attach="MoveUpCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstCondition!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+														<controls:IconButton cal:Message.Attach="MoveDownCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastCondition!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+														<controls:IconButton cal:Message.Attach="RemoveCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="Close" BorderThickness="0" Background="Transparent" />
 														<controls:ErrorReminder Text="{Binding DataErrorInfo.StringValue}" />
 													</WrapPanel>
 												</DataTemplate>

@@ -37,8 +37,8 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 					//else
 					//{
 						System.Globalization.CultureInfo culture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.GetCultureInfo(this.Setting.SelectedCultureName).Clone();
-					culture.DateTimeFormat.ShortDatePattern = "yyyy年MM月dd日";
-					culture.DateTimeFormat.LongDatePattern = "yyyy年MM月dd日";
+					//culture.DateTimeFormat.ShortDatePattern = "yyyy年MM月dd日";
+					//culture.DateTimeFormat.LongDatePattern = "yyyy年MM月dd日";
 						System.Threading.Thread.CurrentThread.CurrentCulture= culture;
 						System.Threading.Thread.CurrentThread.CurrentUICulture= culture;
 					//}

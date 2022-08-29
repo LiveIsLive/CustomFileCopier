@@ -16,11 +16,6 @@ namespace ColdShineSoft.CustomFileCopier.Views
 		public App()
 		{
 			//HandyControl.Tools.ConfigHelper.Instance.SetNavigationWindowDefaultStyle();
-
-			//foreach(string filePath in System.IO.Directory.GetFiles("E:/apache-maven-3.3.9"))
-			//{
-
-			//}
 		}
 	}
 }

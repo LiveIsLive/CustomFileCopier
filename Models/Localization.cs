@@ -61,8 +61,11 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		public string Bytes { get; set; }
 
 		public string OpenFileDialog { get; set; }
-
 		public string TargetDirectoryIsNotEmpty { get; set; }
+
+		public string Confirm { get; set; }
+		public string OK { get; set; }
+		public string Cancel { get; set; }
 
 		public System.Collections.Generic.Dictionary<ConditionMode,string> ConditionMode { get; set; }
 

@@ -23,6 +23,11 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 		//[Bindables.DependencyProperty]
 		public MahApps.Metro.IconPacks.PackIconCodiconsKind Icon { get; set; }
 
+		//static IconButton()
+		//{
+		//	DefaultStyleKeyProperty.OverrideMetadata(typeof(IconButton), new FrameworkPropertyMetadata(typeof(IconButton)));
+		//}
+
 		public IconButton()
 		{
 			InitializeComponent();

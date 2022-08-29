@@ -51,6 +51,10 @@
 	"Files": "已复制文件数/文件总数",
 	"Bytes": "已复制字节/总字节",
 
+	"Confirm": "覆盖确认",
+	"OK": "确定",
+	"Cancel": "取消",
+
 	"TargetDirectoryIsNotEmpty": "“{0}”是非空目录，执行过程中可能会覆盖已存在文件，是否继续？",
 	"ConditionDesignMode": "条件设置模式",
 	//"ExpressionLimitation": "限制：不支持多行表达式，也就是说表达式内不能包含'{}'或者';'。",

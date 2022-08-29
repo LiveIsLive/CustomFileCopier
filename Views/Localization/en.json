@@ -51,6 +51,10 @@
 	"Files": "Copied File Count/Total File Count",
 	"Bytes": "Copied Bytes/Total Bytes",
 
+	"Confirm": "Overwrite Confirm",
+	"OK": "OK",
+	"Cancel": "Cancel",
+
 	"TargetDirectoryIsNotEmpty": "The target directory “{0}”is not empty. Maybe overwrite the files which have been existed when copying. Do you want to continue?",
 	"ConditionDesignMode": "Condition Design Mode",
 	//"ExpressionLimitation": "Limitation：Not support multiline expressions. It means that the expression can not contain '{}' or ';'.",
