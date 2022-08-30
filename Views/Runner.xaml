@@ -14,8 +14,8 @@
 		mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Runner}"
 		Title="{Binding Title}" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
 	<DockPanel>
-		<ToolBar Padding="10,6" DockPanel.Dock="Top">
-			<controls:IconButton cal:Message.Attach="CopyFiles" Visibility="{c:Binding 'Task.Status==models:TaskStatus.Standby'}" Icon="Play" Margin="10,0,0,0" Content="{Binding Localization.Run}" />
+		<ToolBar DockPanel.Dock="Top" Margin="0,5">
+			<controls:IconButton cal:Message.Attach="CopyFiles" Visibility="{c:Binding 'Task.Status==models:TaskStatus.Standby'}" Icon="Play" Content="{Binding Localization.Run}" />
 			<controls:IconButton cal:Message.Attach="TryCloseAsync(false)" Visibility="{c:Binding 'Task.Status!=models:TaskStatus.Standby'}" IsEnabled="{c:Binding 'Task.Status!=models:TaskStatus.Done'}" Icon="DebugStop" Margin="10,0,0,0" Content="{Binding Localization.Stop}" />
 			<WrapPanel VerticalAlignment="Center" Margin="20,0,0,0">
 				<TextBlock Text="{Binding Localization.Status}" />

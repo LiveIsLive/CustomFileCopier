@@ -349,10 +349,16 @@
 											<DataGridTemplateColumn.CellTemplate>
 												<DataTemplate>
 													<WrapPanel>
+														<WrapPanel.Resources>
+															<Style TargetType="controls:IconButton">
+																<Setter Property="BorderThickness" Value="0" />
+																<Setter Property="Background" Value="Transparent" />
+															</Style>
+														</WrapPanel.Resources>
 														<controls:IconButton cal:Message.Attach="MoveUpCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowUp" Visibility="{c:Binding 'Tag.FirstCondition!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
 														<controls:IconButton cal:Message.Attach="MoveDownCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="ArrowDown" Visibility="{c:Binding 'Tag.LastCondition!=DataContext', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
 														<controls:IconButton cal:Message.Attach="RemoveCondition($this.Tag,$this.DataContext)" Tag="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=DataGrid}}" Icon="Close" BorderThickness="0" Background="Transparent" />
-														<controls:ErrorReminder Text="{Binding DataErrorInfo.StringValue}" />
+														<controls:ErrorReminder Text="{Binding DataErrorInfo.StringValue}" BorderThickness="0" Background="Transparent" />
 													</WrapPanel>
 												</DataTemplate>
 											</DataGridTemplateColumn.CellTemplate>
