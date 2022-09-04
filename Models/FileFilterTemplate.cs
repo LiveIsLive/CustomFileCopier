@@ -195,9 +195,13 @@ namespace ColdShineSoft.CustomFileCopier.Models
             
             #line default
             #line hidden
-            this.Write("\t}\r\n\r\n\tpublic override System.Collections.Generic.IEnumerable<System.IO.FileInfo>" +
-                    " GetFiles(System.Collections.Generic.IEnumerable<System.IO.FileInfo> fileInfos)\r" +
-                    "\n\t{\r\n\t\tforeach(System.IO.FileInfo file in fileInfos)\r\n\t\t{\r\n\t\t\t");
+            this.Write(@"	}
+
+	public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(string sourceDirectoryPath)
+	{
+		foreach(System.IO.FileInfo file in System.IO.Directory.EnumerateFiles(sourceDirectoryPath, ""*"", System.IO.SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f)))
+		{
+			");
             
             #line 41 "G:\WindowsApplications\CustomFileCopier\Models\FileFilterTemplate.tt"
  foreach(IProperty property in this.Job.Conditions.Select(c=>c.Property).Distinct()){ 

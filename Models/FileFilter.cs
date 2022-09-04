@@ -8,7 +8,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public abstract class FileFilter
 	{
-		public abstract System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(System.Collections.Generic.IEnumerable<System.IO.FileInfo> fileInfos);
+		public abstract System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(string sourceDirectoryPath);
 	}
 
 	public partial class FileFilterTemplate

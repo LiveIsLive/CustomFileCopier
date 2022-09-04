@@ -367,14 +367,8 @@
 								</DataGrid>
 							</DockPanel>
 							<DockPanel Visibility="{c:Binding 'ConditionMode==models:ConditionMode.Expression'}" Margin="0,20,0,0">
-								<WrapPanel DockPanel.Dock="Top">
-									<TextBlock Foreground="Green">/* System.IO.FileInfo */ </TextBlock>
-									<TextBlock>fileInfo=></TextBlock>
-									<controls:ErrorReminder Text="{Binding DataErrorInfo.CustomExpression}" />
-									<!--<TextBlock Foreground="Green"> //</TextBlock>
-									<TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.Localization.ExpressionLimitation}" Foreground="Green" />-->
-								</WrapPanel>
-								<TextBox Text="{Binding CustomExpression}" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" />
+								<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding DataErrorInfo.CustomExpression}" />
+								<TextBox Text="{Binding CustomExpression}" AcceptsReturn="True" TextWrapping="Wrap" AcceptsTab="True" VerticalContentAlignment="Top" />
 							</DockPanel>
 						</Grid>
 					</DockPanel>

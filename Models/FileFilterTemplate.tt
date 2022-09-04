@@ -34,9 +34,9 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 		<# } #>
 	}
 
-	public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(System.Collections.Generic.IEnumerable<System.IO.FileInfo> fileInfos)
+	public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(string sourceDirectoryPath)
 	{
-		foreach(System.IO.FileInfo file in fileInfos)
+		foreach(System.IO.FileInfo file in System.IO.Directory.EnumerateFiles(sourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f)))
 		{
 			<# foreach(IProperty property in this.Job.Conditions.Select(c=>c.Property).Distinct()){ #>
 				this.<#= property.ValueVariableName #>=this.<#= property.PropertyVariableName #>.GetValue(file);

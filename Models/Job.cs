@@ -165,10 +165,20 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		private string _CustomExpression;
 		[Newtonsoft.Json.JsonProperty]
-		public string CustomExpression
+		public virtual string CustomExpression
 		{
 			get
 			{
+				if (this._CustomExpression == null)
+					this._CustomExpression = @"using System.Linq;
+using System.IO;
+public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
+{
+	public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(string sourceDirectoryPath)
+	{
+		return Directory.EnumerateFiles(sourceDirectoryPath, ""*"", SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f)).Where(f=>LastWriteTime>=System.DateTime.Today);
+	}
+}";
 				return this._CustomExpression;
 			}
 			set
@@ -193,15 +203,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 							this._FileFilter = (FileFilter)CSScriptLibrary.CSScript.LoadCode(new FileFilterTemplate { Job = this }.TransformText()).CreateObject("*", this.Conditions);
 							break;
 						case ConditionMode.Expression:
-							this._FileFilter= (FileFilter)CSScriptLibrary.CSScript.LoadCode($@"
-using System.Linq;
-public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
-{{
-	public override System.Collections.Generic.IEnumerable<System.IO.FileInfo> GetFiles(System.Collections.Generic.IEnumerable<System.IO.FileInfo> fileInfos)
-	{{
-		return fileInfos.Where(fileInfo=>{this.CustomExpression});
-	}}
-}}").CreateObject("*");
+							this._FileFilter= (FileFilter)CSScriptLibrary.CSScript.LoadCode(this.CustomExpression).CreateObject("*");
 							break;
 					}
 				return this._FileFilter;
@@ -320,7 +322,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			{
 				lock(System.DBNull.Value)
 				if(this._SourceFiles==null)
-					this._SourceFiles = this.FileFilter.GetFiles(System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f))).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
+					this._SourceFiles = this.FileFilter.GetFiles(this.SourceDirectoryPath).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
 				//this._SourceFiles = new CustomFileFilter(this.Conditions).GetFiles(System.IO.Directory.GetFiles(this.SourceDirectoryPath, "*", System.IO.SearchOption.AllDirectories).Select(f => new System.IO.FileInfo(f))).Select(f => new File(f, this.SourceDirectoryLength)).ToArray();
 				return this._SourceFiles;
 			}
@@ -395,14 +397,36 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			this.ResultHandler.Execute(this);
 		}
 
-		private static System.IO.FileInfo[] _TestFileInfos;
-		public System.IO.FileInfo[] TestFileInfos
+		//private static System.IO.FileInfo[] _TestFileInfos;
+		//public System.IO.FileInfo[] TestFileInfos
+		//{
+		//	get
+		//	{
+		//		if (_TestFileInfos == null)
+		//			_TestFileInfos = new System.IO.FileInfo[] { new System.IO.FileInfo(File.ExecutingAssembly.Location) };
+		//		return _TestFileInfos;
+		//	}
+		//}
+
+		//private static System.IO.FileInfo[] _TestFileInfos;
+		//public System.IO.FileInfo[] TestFileInfos
+		//{
+		//	get
+		//	{
+		//		if (_TestFileInfos == null)
+		//			_TestFileInfos = new System.IO.FileInfo[] { new System.IO.FileInfo(File.ExecutingAssembly.Location) };
+		//		return _TestFileInfos;
+		//	}
+		//}
+
+		private static string _TestDirectoryPath;
+		public string TestDirectoryPath
 		{
 			get
 			{
-				if (_TestFileInfos == null)
-					_TestFileInfos = new System.IO.FileInfo[] { new System.IO.FileInfo(File.ExecutingAssembly.Location) };
-				return _TestFileInfos;
+				if (_TestDirectoryPath == null)
+					_TestDirectoryPath = System.IO.Path.Combine(System.AppContext.BaseDirectory, "Localization");
+				return _TestDirectoryPath;
 			}
 		}
 
@@ -477,7 +501,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 					}
 					else try
 					{
-						this.FileFilter.GetFiles(this.TestFileInfos);
+						this.FileFilter.GetFiles(this.TestDirectoryPath);
 					}
 					catch(Exception exception)
 					{

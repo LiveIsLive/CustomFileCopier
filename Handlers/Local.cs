@@ -38,7 +38,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 
 		public override bool TargetDirectoryEmpty(Job job)
 		{
-			return System.IO.Directory.EnumerateFiles(job.TargetDirectoryPath).FirstOrDefault() == null;
+			return System.IO.Directory.EnumerateFileSystemEntries(job.TargetDirectoryPath).FirstOrDefault() == null;
 		}
 
 		public override void Execute(Models.Job job)

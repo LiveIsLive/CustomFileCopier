@@ -35,5 +35,18 @@ namespace ColdShineSoft.CustomFileCopier.Models.DataErrorInfos
 				this.NotifyOfPropertyChange(() => this.Condition);
 			}
 		}
+
+		private string _CustomExpression;
+		public override string CustomExpression
+		{
+			get
+			{
+				return this._CustomExpression;
+			}
+			set
+			{
+				this._CustomExpression = value;
+			}
+		}
 	}
 }

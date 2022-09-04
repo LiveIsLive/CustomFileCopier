@@ -23,7 +23,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 
 		public void ShowHomePage()
 		{
-			System.Diagnostics.Process.Start("http://cold-shine-soft.com/");
+			System.Diagnostics.Process.Start("https://cold-shine-soft.com/");
 		}
 	}
 }
