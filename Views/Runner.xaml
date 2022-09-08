@@ -12,7 +12,7 @@
 		xmlns:cal="http://www.caliburnproject.org"
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
 		mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Runner}"
-		Title="{Binding Title}" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
+		TitleCharacterCasing="Normal" Title="{Binding Title}" cal:Message.Attach="[Loaded]=[Run];[Closed]=[Stop]">
 	<DockPanel>
 		<ToolBar DockPanel.Dock="Top" Margin="0,5">
 			<controls:IconButton cal:Message.Attach="CopyFiles" Visibility="{c:Binding 'Task.Status==models:TaskStatus.Standby'}" Icon="Play" Content="{Binding Localization.Run}" />

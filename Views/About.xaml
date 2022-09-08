@@ -7,7 +7,7 @@
 		xmlns:viewModels="clr-namespace:ColdShineSoft.CustomFileCopier.ViewModels;assembly=ColdShineSoft.CustomFileCopier.ViewModels"
 		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 		mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:About,IsDesignTimeCreatable=True}"
-		Title="{Binding Localization.About}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" FontSize="16">
+		TitleCharacterCasing="Normal" Title="{Binding Localization.About}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" FontSize="16">
 	<StackPanel Margin="30">
 		<WrapPanel HorizontalAlignment="Center">
 			<TextBlock>Custom File Copier</TextBlock>

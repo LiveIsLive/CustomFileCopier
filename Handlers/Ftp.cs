@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ColdShineSoft.CustomFileCopier.Handlers
 {
-	internal class Ftp : Models.ResultHandler
+	public class Ftp : Models.ResultHandler
 	{
 		public override string Name { get; }= "FTP";
 
@@ -16,7 +16,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 		public override string CheckTargetDirectoryValid(Job job)
 		{
 			FluentFTP.FtpClient ftpClient = new FluentFTP.FtpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
-			ftpClient.EncryptionMode = FluentFTP.FtpEncryptionMode.Auto;
+			//ftpClient.EncryptionMode = FluentFTP.FtpEncryptionMode.Auto;
 			try
 			{
 				ftpClient.Connect();

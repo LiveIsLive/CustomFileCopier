@@ -19,7 +19,7 @@
 	"RunTask": "执行任务",
 	"Status": "状态",
 	"CompressFilePath": "压缩文件路径",
-	"CompressToZipFile": "打包所有符合条件的文件到一个压缩文件：",
+	"CompressToZipFile": "打包所有符合条件的文件打包到一个压缩文件：",
 	"AddNowToCompressFileName": "添加时间戳到压缩文件名。",
 	"NowFormatString": "时间格式",
 

@@ -88,16 +88,16 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			}
 		}
 
-		private MvvmDialogs.IDialogService _DialogService;
-		public MvvmDialogs.IDialogService DialogService
-		{
-			get
-			{
-				if (this._DialogService == null)
-					this._DialogService = new MvvmDialogs.DialogService();
-				return this._DialogService;
-			}
-		}
+		//private MvvmDialogs.IDialogService _DialogService;
+		//public MvvmDialogs.IDialogService DialogService
+		//{
+		//	get
+		//	{
+		//		if (this._DialogService == null)
+		//			this._DialogService = new MvvmDialogs.DialogService();
+		//		return this._DialogService;
+		//	}
+		//}
 
 		//protected static readonly System.Type UiConfigHelperType = System.Type.GetType("HandyControl.Tools.ConfigHelper,HandyControl");
 

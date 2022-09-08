@@ -11,10 +11,10 @@
 		xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
 		xmlns:cal="http://www.caliburnproject.org"
 		xmlns:c="clr-namespace:CalcBinding;assembly=CalcBinding"
-		xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs" md:DialogServiceViews.IsRegistered="True"
+		xmlns:md="https://github.com/fantasticfiasco/mvvm-dialogs"
 		xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
 	mc:Ignorable="d" d:DataContext="{d:DesignInstance Type=viewModels:Main,IsDesignTimeCreatable=True}"
-		Title="{Binding Title}" Name="Window">
+		TitleCharacterCasing="Normal" Title="{Binding Title}" Name="Window">
 	<mah:MetroWindow.Resources>
 		<Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
 			<Setter Property="FontFamily" Value="微软雅黑" />
@@ -193,7 +193,7 @@
 									</WrapPanel>
 									<WrapPanel>
 										<controls:FieldTitle Content="{Binding Localization.Password}" Width="Auto" Margin="20,0,0,0" />
-										<TextBox Text="{Binding TargetPassword}" Width="100" />
+										<PasswordBox Width="100" mah:PasswordBoxBindingBehavior.Password="{Binding TargetPassword}" />
 									</WrapPanel>
 								</WrapPanel>
 							</StackPanel>
