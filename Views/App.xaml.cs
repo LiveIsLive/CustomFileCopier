@@ -16,6 +16,12 @@ namespace ColdShineSoft.CustomFileCopier.Views
 		public App()
 		{
 			//HandyControl.Tools.ConfigHelper.Instance.SetNavigationWindowDefaultStyle();
+			System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+		}
+
+		private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			System.IO.File.AppendAllText(System.AppContext.BaseDirectory + "Error.txt", e.ExceptionObject.ToString());
 		}
 	}
 }

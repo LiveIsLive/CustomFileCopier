@@ -37,13 +37,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 						string filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.Name + ".json";
 						if (System.IO.File.Exists(filePath))
 							cultureName = System.Globalization.CultureInfo.CurrentUICulture.Name;
-						else
-						{
-							filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName + ".json";
-							if (System.IO.File.Exists(filePath))
-								cultureName = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-							else cultureName = "en";
-						}
+						else cultureName = "en";
 					}
 					this._SelectedCulture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.GetCultureInfo(cultureName).Clone();
 				}
