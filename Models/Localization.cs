@@ -80,5 +80,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		public System.Collections.Generic.Dictionary<TaskStatus, string> TaskStatus { get; set; }
 
 		public System.Collections.Generic.Dictionary<ValidationError, string> ValidationError { get; set; }
+
+		public static readonly string InstallationDirectory = System.AppDomain.CurrentDomain.BaseDirectory + @"Localization\";
+
 	}
 }

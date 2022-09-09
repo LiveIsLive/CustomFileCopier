@@ -16,6 +16,10 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 
 		protected override void OnStartup(object sender, System.Windows.StartupEventArgs e)
 		{
+			System.Threading.Thread.CurrentThread.CurrentCulture = Models.Setting.Instance.SelectedCulture;
+			System.Threading.Thread.CurrentThread.CurrentUICulture = Models.Setting.Instance.SelectedCulture;
+
+
 			if (e.Args.Length == 1)
 				Main.SetOpeningFilePath(e.Args[0]);
 

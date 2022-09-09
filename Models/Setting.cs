@@ -8,8 +8,48 @@ namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public class Setting:Caliburn.Micro.PropertyChangedBase
 	{
+		private string _SelectedCultureName;
 		[Newtonsoft.Json.JsonProperty]
-		public string SelectedCultureName { get; set; }
+		public string SelectedCultureName
+		{
+			get
+			{
+				return this._SelectedCultureName;
+			}
+			set
+			{
+				this._SelectedCultureName = value;
+				this._SelectedCulture = null;
+			}
+		}
+
+		private System.Globalization.CultureInfo _SelectedCulture;
+		public System.Globalization.CultureInfo SelectedCulture
+		{
+			get
+			{
+				if(this._SelectedCulture==null)
+				{
+					string cultureName = this.SelectedCultureName;
+					if (string.IsNullOrWhiteSpace(this.SelectedCultureName))
+					{
+						string baseDirectory = Localization.InstallationDirectory;
+						string filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.Name + ".json";
+						if (System.IO.File.Exists(filePath))
+							cultureName = System.Globalization.CultureInfo.CurrentUICulture.Name;
+						else
+						{
+							filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName + ".json";
+							if (System.IO.File.Exists(filePath))
+								cultureName = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+							else cultureName = "en";
+						}
+					}
+					this._SelectedCulture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.GetCultureInfo(cultureName).Clone();
+				}
+				return this._SelectedCulture;
+			}
+		}
 
 		[Newtonsoft.Json.JsonProperty]
 		public byte MaxRecentFileCount { get; set; } = 30;

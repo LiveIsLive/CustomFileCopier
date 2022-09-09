@@ -20,28 +20,27 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 				if (this._Setting == null)
 				{
 					this._Setting = Models.Setting.Instance;
-					if(string.IsNullOrWhiteSpace(this._Setting.SelectedCultureName))
-					{
-						string baseDirectory = LocalizationDirectory;
-						string filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.Name + ".json";
-						if (System.IO.File.Exists(filePath))
-							this._Setting.SelectedCultureName = System.Globalization.CultureInfo.CurrentUICulture.Name;
-						else
-						{
-							filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName + ".json";
-							if (System.IO.File.Exists(filePath))
-								this._Setting.SelectedCultureName = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-							else this._Setting.SelectedCultureName = "en";
-						}
-					}
-					//else
+					//if(string.IsNullOrWhiteSpace(this._Setting.SelectedCultureName))
 					//{
-						System.Globalization.CultureInfo culture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.GetCultureInfo(this.Setting.SelectedCultureName).Clone();
-					//culture.DateTimeFormat.ShortDatePattern = "yyyy年MM月dd日";
-					//culture.DateTimeFormat.LongDatePattern = "yyyy年MM月dd日";
-						System.Threading.Thread.CurrentThread.CurrentCulture= culture;
-						System.Threading.Thread.CurrentThread.CurrentUICulture= culture;
+					//	string baseDirectory = LocalizationDirectory;
+					//	string filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.Name + ".json";
+					//	if (System.IO.File.Exists(filePath))
+					//		this._Setting.SelectedCultureName = System.Globalization.CultureInfo.CurrentUICulture.Name;
+					//	else
+					//	{
+					//		filePath = baseDirectory + System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName + ".json";
+					//		if (System.IO.File.Exists(filePath))
+					//			this._Setting.SelectedCultureName = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+					//		else this._Setting.SelectedCultureName = "en";
+					//	}
 					//}
+					//System.Globalization.CultureInfo culture = (System.Globalization.CultureInfo)System.Globalization.CultureInfo.GetCultureInfo(this._Setting.SelectedCultureName).Clone();
+
+					//System.Windows.Application.Current.Dispatcher.Invoke(() =>
+					//{
+					//	System.Threading.Thread.CurrentThread.CurrentCulture= culture;
+					//	System.Threading.Thread.CurrentThread.CurrentUICulture= culture;
+					//});
 					//this.SetUiLang(this.Setting.SelectedCultureName);
 				}
 				return this._Setting;

@@ -368,7 +368,7 @@
 							</DockPanel>
 							<DockPanel Visibility="{c:Binding 'ConditionMode==models:ConditionMode.Expression'}" Margin="0,20,0,0">
 								<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding DataErrorInfo.CustomExpression}" />
-								<TextBox Text="{Binding CustomExpression}" AcceptsReturn="True" TextWrapping="Wrap" AcceptsTab="True" VerticalContentAlignment="Top" />
+								<TextBox Text="{Binding CustomExpression}" AcceptsReturn="True" TextWrapping="Wrap" AcceptsTab="True" VerticalContentAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
 							</DockPanel>
 						</Grid>
 					</DockPanel>

@@ -142,11 +142,6 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			}
 		}
 
-		//public Main()
-		//{
-		//	this.ChangeTheme(this.Setting.Theme);
-		//}
-
 		public void AddJob()
 		{
 			Models.Job job = new Models.Job();
