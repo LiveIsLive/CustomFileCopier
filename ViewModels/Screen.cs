@@ -10,7 +10,7 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 	{
 		protected readonly System.Threading.CancellationTokenSource CancellationTokenSource = new System.Threading.CancellationTokenSource();
 
-		protected static readonly string LocalizationDirectory = System.AppDomain.CurrentDomain.BaseDirectory + @"Localization\";
+		protected static readonly string LocalizationDirectory = Models.Localization.InstallationDirectory;
 
 		private Models.Setting _Setting;
 		public Models.Setting Setting
