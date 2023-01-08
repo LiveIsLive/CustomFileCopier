@@ -202,6 +202,9 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 						case ConditionMode.Designer:
 							this._FileFilter = (FileFilter)CSScriptLibrary.CSScript.LoadCode(new FileFilterTemplate { Job = this }.TransformText()).CreateObject("*", this.Conditions);
 							break;
+						case ConditionMode.SpecifyPaths:
+							this._FileFilter = new FilesAndDirectoriesFileFilter(this.FilePaths, this.DirectoryPaths); ;
+							break;
 						case ConditionMode.Expression:
 							this._FileFilter= (FileFilter)CSScriptLibrary.CSScript.LoadCode(this.CustomExpression).CreateObject("*");
 							break;
@@ -282,6 +285,36 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			get
 			{
 				return this.Conditions.Select(c => c.Property).Distinct().ToArray();
+			}
+		}
+
+		private System.Collections.ObjectModel.ObservableCollection<string> _FilePaths;
+		public System.Collections.ObjectModel.ObservableCollection<string> FilePaths
+		{
+			get
+			{
+				if (this._FilePaths == null)
+					this._FilePaths = new System.Collections.ObjectModel.ObservableCollection<string>();
+				return this._FilePaths;
+			}
+			set
+			{
+				this._FilePaths = value;
+			}
+		}
+
+		private System.Collections.ObjectModel.ObservableCollection<string> _DirectoryPaths;
+		public System.Collections.ObjectModel.ObservableCollection<string> DirectoryPaths
+		{
+			get
+			{
+				if (this._DirectoryPaths == null)
+					this._DirectoryPaths = new System.Collections.ObjectModel.ObservableCollection<string>();
+				return this._DirectoryPaths;
+			}
+			set
+			{
+				this._DirectoryPaths = value;
 			}
 		}
 
@@ -390,7 +423,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 			return sourceFilePath.Substring(this.SourceDirectoryLength);
 		}
 
-		//public int CopiedFileCount;
+		//public int CopiedFileCount;   
 		//public long CopiedFileSize;
 		public void Execute()
 		{
@@ -428,6 +461,19 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 					_TestDirectoryPath = System.IO.Path.Combine(System.AppContext.BaseDirectory, "Localization");
 				return _TestDirectoryPath;
 			}
+		}
+
+		public bool InSourceDirectory(string path)
+		{
+			string souceDirectory = this.SourceDirectoryPath.TrimEnd('\\', '/');
+			if (!path.StartsWith(souceDirectory, System.StringComparison.OrdinalIgnoreCase))
+				return false;
+			if (souceDirectory.Length == path.Length)
+				return true;
+			char separator = path.Substring(souceDirectory.Length, 1)[0];
+			if (separator != '\\' && separator != '/')
+				return false;
+			return true;
 		}
 
 		public bool ValidateData(Localization localization)
@@ -491,6 +537,36 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 						foreach (Condition condition in this.Conditions)
 							if (!condition.ValidateData(localization))
 								result = false;
+					}
+					break;
+				case ConditionMode.SpecifyPaths:
+					foreach(string path in this.FilePaths)
+					{
+						if(!System.IO.File.Exists(path))
+						{
+							this.DataErrorInfo.FilePaths.Add(string.Format(localization.ValidationError[ValidationError.InvalidFilePath], path));
+							result = false;
+							continue;
+						}
+						if (!this.InSourceDirectory(path))
+						{
+							this.DataErrorInfo.FilePaths.Add(string.Format(localization.ValidationError[ValidationError.FileNotInSourceDirectoy], path));
+							result = false;
+						}
+					}
+					foreach(string path in this.DirectoryPaths)
+					{
+						if (!System.IO.Directory.Exists(path))
+						{
+							this.DataErrorInfo.DirectoryPaths.Add(string.Format(localization.ValidationError[ValidationError.InvalidDirectoryPath], path));
+							result = false;
+							continue;
+						}
+						if (!this.InSourceDirectory(path))
+						{
+							this.DataErrorInfo.DirectoryPaths.Add(path);
+							result = false;
+						}
 					}
 					break;
 				case ConditionMode.Expression:

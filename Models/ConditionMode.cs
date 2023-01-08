@@ -9,6 +9,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 	public enum ConditionMode
 	{
 		Designer,
+		SpecifyPaths,
 		Expression
 	}
 }

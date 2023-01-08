@@ -15,6 +15,8 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		BracketMissing,
 		InvalidRegularExpression,
 		InvalidCsScript,
-		InvalidDateTimeFormatString
+		InvalidDateTimeFormatString,
+		FileNotInSourceDirectoy,
+		DirectoryNotInSourceDirectoy
 	}
 }

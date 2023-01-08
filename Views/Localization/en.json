@@ -1,4 +1,5 @@
 ﻿{
+	"Add": "Add",
 	"Save": "Save",
 	"SaveAs": "Save As...",
 	"Open": "Open",
@@ -55,12 +56,16 @@
 	"OK": "OK",
 	"Cancel": "Cancel",
 
+	"FilePaths": "File Paths",
+	"DirectoryPaths": "Directory Paths",
+
 	"TargetDirectoryIsNotEmpty": "The target directory “{0}”is not empty. Maybe overwrite the files which have been existed when copying. Do you want to continue?",
 	"ConditionDesignMode": "Condition Design Mode",
 	//"ExpressionLimitation": "Limitation：Not support multiline expressions. It means that the expression can not contain '{}' or ';'.",
 	"ConditionMode":
 	{
 		"Designer": "Designer",
+		"SpecifyPaths": "Specify the files or directories",
 		"Expression": "C# Expression"
 	},
 	"Properties":
@@ -115,6 +120,8 @@
 		"BracketMissing": "The count of the left brackets must equal to the count of the rihgt brackets.",
 		"InvalidRegularExpression": "The regular expression is not valid.",
 		"InvalidCsScript": "The C# expression is invaild.",
-		"InvalidDateTimeFormatString": "The “DateTime” format string is invaild."
+		"InvalidDateTimeFormatString": "The “DateTime” format string is invaild.",
+		"FileNotInSourceDirectoy": "“{0}” must be in the source directory.",
+		"DirectoryNotInSourceDirectoy": "“{0}” must be in the source directory."
 	}
 }

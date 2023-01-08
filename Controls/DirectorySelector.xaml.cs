@@ -20,7 +20,7 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 	/// </summary>
 	public partial class DirectorySelector : Control
 	{
-		private static Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog _FolderDialog;
+		private Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog _FolderDialog;
 		protected Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog FolderDialog
 		{
 			get
@@ -34,11 +34,50 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 			}
 		}
 
+		public bool IsFolderPicker
+		{
+			get
+			{
+				return this.FolderDialog.IsFolderPicker;
+			}
+			set
+			{
+				this.FolderDialog.IsFolderPicker = value;
+			}
+		}
+
 		[Bindables.DependencyProperty]
 		public string OpenButtonText { get; set; } = "选择...";
 
 		[Bindables.DependencyProperty(Options =FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)]
 		public string Path { get; set; }
+
+		public static readonly RoutedEvent PathChangedEvent = EventManager.RegisterRoutedEvent("PathChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<string>), typeof(DirectorySelector));
+
+		public event RoutedPropertyChangedEventHandler<string> PathChanged
+		{
+			add
+			{
+				this.AddHandler(PathChangedEvent, value);
+			}
+			remove
+			{
+				this.RemoveHandler(PathChangedEvent, value);
+			}
+		}
+
+		protected virtual void OnPathChanged(string oldPath,string newPath)
+		{
+			RoutedPropertyChangedEventArgs<string> args = new RoutedPropertyChangedEventArgs<string>(oldPath, newPath);
+			//this.Path = path;
+			args.RoutedEvent = PathChangedEvent;
+			//this.RaiseEvent(args);
+			System.Threading.Tasks.Task.Run(() =>
+			{
+				System.Threading.Thread.Sleep(100);
+				System.Windows.Application.Current.Dispatcher.Invoke(() => this.RaiseEvent(args));
+			});
+		}
 
 		public DirectorySelector()
 		{
@@ -49,6 +88,13 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 		{
 			if (this.FolderDialog.ShowDialog() == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
 				this.Path = this.FolderDialog.FileName;
+		}
+
+		protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+		{
+			base.OnPropertyChanged(e);
+			if(e.Property.Name==nameof(this.Path))
+				this.OnPathChanged((string)e.OldValue, (string)e.NewValue);
 		}
 	}
 }

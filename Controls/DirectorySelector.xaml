@@ -8,7 +8,7 @@
 		<ControlTemplate>
 			<DockPanel VerticalAlignment="Top" DataContext="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}}">
 				<Button Click="Button_Click" DockPanel.Dock="Right" Margin="5,0,0,0" Padding="10,0,10,0"  Content="{Binding OpenButtonText}" FontSize="{Binding FontSize}" />
-				<TextBox Text="{Binding Path}" />
+				<TextBox Text="{Binding Path=Path,Mode=TwoWay}" />
 			</DockPanel>
 		</ControlTemplate>
 	</Control.Template>

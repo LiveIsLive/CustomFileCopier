@@ -46,6 +46,7 @@ namespace ColdShineSoft.CustomFileCopier.Models.DataErrorInfos
 			set
 			{
 				this._CustomExpression = value;
+				this.NotifyOfPropertyChange(() => this.CustomExpression);
 			}
 		}
 	}

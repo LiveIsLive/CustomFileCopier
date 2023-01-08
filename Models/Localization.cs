@@ -8,6 +8,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 {
 	public class Localization
 	{
+		public string Add { get; set; }
 		public string Save { get; set; }
 		public string SaveAs { get; set; }
 		public string Open { get; set; }
@@ -66,6 +67,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		public string Confirm { get; set; }
 		public string OK { get; set; }
 		public string Cancel { get; set; }
+
+		public string FilePaths { get; set; }
+		public string DirectoryPaths { get; set; }
 
 		public System.Collections.Generic.Dictionary<ConditionMode,string> ConditionMode { get; set; }
 

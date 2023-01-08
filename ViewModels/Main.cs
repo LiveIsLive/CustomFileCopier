@@ -295,15 +295,15 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			if (!this.ValidateData())
 				return;
 
-			if (!this.Task.CompressToZipFile)
-				foreach (Models.Job job in this.Task.Jobs)
-					if (!job.ResultHandler.TargetDirectoryEmpty(job))
-					{
-						this.ConfirmMessage = String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath);
-						this.ShowConfirmMessage = true;
-						if (!ConfirmResult)
-							return;
-					}
+			//if (!this.Task.CompressToZipFile)
+			//	foreach (Models.Job job in this.Task.Jobs)
+			//		if (!job.ResultHandler.TargetDirectoryEmpty(job))
+			//		{
+			//			this.ConfirmMessage = String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath);
+			//			this.ShowConfirmMessage = true;
+			//			if (!ConfirmResult)
+			//				return;
+			//		}
 						//if (this.DialogService.ShowMessageBox(this, String.Format(this.Localization.TargetDirectoryIsNotEmpty, job.TargetDirectoryPath), "", System.Windows.MessageBoxButton.OKCancel, System.Windows.MessageBoxImage.Warning) != System.Windows.MessageBoxResult.OK)
 						//	return;
 
@@ -329,6 +329,16 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 		//	this.SelectedJob = null;
 		//	this.SelectedJob = job;
 		//}
+
+		public void AddFilePath(Models.Job job)
+		{
+			job.FilePaths.Add("");
+		}
+
+		public void AddDirectoryPath(Models.Job job)
+		{
+			job.DirectoryPaths.Add("");
+		}
 
 		public void ShowTutorial()
 		{
@@ -380,6 +390,26 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 
 			this.Setting.ThemeId = theme.ThemeId;
 			this.Setting.Save();
+		}
+
+		public void SetListElementValue(System.Collections.IList list,int index,object value)
+		{
+			list[index] = value;
+		}
+
+		public void MoveUpListElement(System.Collections.ObjectModel.ObservableCollection<string> list,int index)
+		{
+			list.Move(index, index - 1);
+		}
+
+		public void MoveDownListElement(System.Collections.ObjectModel.ObservableCollection<string> list,int index)
+		{
+			list.Move(index, index + 1);
+		}
+
+		public void RemoveListElement(System.Collections.IList list,int index)
+		{
+			list.RemoveAt(index);
 		}
 	}
 }
