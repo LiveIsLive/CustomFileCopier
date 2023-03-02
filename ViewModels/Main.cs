@@ -392,9 +392,9 @@ namespace ColdShineSoft.CustomFileCopier.ViewModels
 			this.Setting.Save();
 		}
 
-		public void SetListElementValue(System.Collections.IList list,int index,object value)
+		public void SetListElementValue(System.Collections.IList list,int index, System.Windows.RoutedPropertyChangedEventArgs<string> args)
 		{
-			list[index] = value;
+			list[index] = args.NewValue;
 		}
 
 		public void MoveUpListElement(System.Collections.ObjectModel.ObservableCollection<string> list,int index)

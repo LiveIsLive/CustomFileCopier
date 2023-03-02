@@ -46,7 +46,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 		}
 
 		[Newtonsoft.Json.JsonProperty]
-		public byte MaxRecentFileCount { get; set; } = 30;
+		public byte MaxRecentFileCount { get; set; } = 50;
 
 		private int _ThemeId;
 		[Newtonsoft.Json.JsonProperty]

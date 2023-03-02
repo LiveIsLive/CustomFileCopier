@@ -366,104 +366,102 @@
 									</DataGrid.Columns>
 								</DataGrid>
 							</DockPanel>
-							<StackPanel Visibility="{c:Binding 'ConditionMode==models:ConditionMode.SpecifyPaths'}" Margin="0,20,0,0">
-								<ItemsControl ItemsSource="{Binding DataErrorInfo.FilePaths}">
-									<ItemsControl.ItemsPanel>
-										<ItemsPanelTemplate>
-											<StackPanel />
-										</ItemsPanelTemplate>
-									</ItemsControl.ItemsPanel>
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<controls:ErrorReminder Text="{Binding}" />
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-								<WrapPanel Margin="5,0,0,0">
-									<WrapPanel VerticalAlignment="Center">
-										<TextBlock Text="{Binding Path=DataContext.Localization.FilePaths,Source={x:Reference Window}}" />
-										<TextBlock>：</TextBlock>
+							<ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{c:Binding 'ConditionMode==models:ConditionMode.SpecifyPaths'}" Margin="0,20,0,0">
+								<StackPanel>
+									<ItemsControl ItemsSource="{Binding DataErrorInfo.FilePaths}">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<StackPanel />
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<controls:ErrorReminder Text="{Binding}" />
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+									<WrapPanel Margin="5,0,0,0">
+										<WrapPanel VerticalAlignment="Center">
+											<TextBlock Text="{Binding Path=DataContext.Localization.FilePaths,Source={x:Reference Window}}" />
+											<TextBlock>：</TextBlock>
+										</WrapPanel>
+										<controls:IconButton cal:Message.Attach="AddFilePath($dataContext)" Icon="Add" Content="{Binding Path=DataContext.Localization.Add,Source={x:Reference Window}}" />
 									</WrapPanel>
-									<controls:IconButton cal:Message.Attach="AddFilePath($dataContext)" Icon="Add" Content="{Binding Path=DataContext.Localization.Add,Source={x:Reference Window}}" />
-								</WrapPanel>
-								<ItemsControl ItemsSource="{Binding FilePaths}" AlternationCount="{Binding FilePaths.Count}">
-									<ItemsControl.ItemsPanel>
-										<ItemsPanelTemplate>
-											<StackPanel />
-										</ItemsPanelTemplate>
-									</ItemsControl.ItemsPanel>
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<DockPanel>
-												<WrapPanel DockPanel.Dock="Right" VerticalAlignment="Center">
-													<WrapPanel.Resources>
-														<Style TargetType="controls:IconButton">
-															<Setter Property="BorderThickness" Value="0" />
-															<Setter Property="Background" Value="Transparent" />
-														</Style>
-													</WrapPanel.Resources>
-													<controls:IconButton cal:Message.Attach="MoveUpListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.FilePaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="ArrowUp" Visibility="{c:Binding 'TabIndex>0', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-													<controls:IconButton cal:Message.Attach="MoveDownListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.FilePaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="ArrowDown" Visibility="{c:Binding 'TabIndex!=Tag.Count-1', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-													<controls:IconButton cal:Message.Attach="RemoveListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.FilePaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="Close" BorderThickness="0" Background="Transparent" />
-												</WrapPanel>
-												<controls:DirectorySelector IsFolderPicker="False" Tag="{Binding Path=DataContext.FilePaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Path="{Binding Mode=OneTime}" cal:Message.Attach="[PathChanged]=[SetListElementValue($this.Tag,$this.TabIndex,$this.Path)]" Margin="5,5,0,0" />
-											</DockPanel>
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
+									<ItemsControl ItemsSource="{Binding FilePaths}" AlternationCount="{Binding FilePaths.Count}">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<StackPanel />
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<DockPanel>
+													<WrapPanel DockPanel.Dock="Right" VerticalAlignment="Center">
+														<WrapPanel.Resources>
+															<Style TargetType="controls:IconButton">
+																<Setter Property="BorderThickness" Value="0" />
+																<Setter Property="Background" Value="Transparent" />
+															</Style>
+														</WrapPanel.Resources>
+														<controls:IconButton cal:Message.Attach="MoveUpListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.FilePaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="ArrowUp" Visibility="{c:Binding 'TabIndex>0', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+														<controls:IconButton cal:Message.Attach="MoveDownListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.FilePaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="ArrowDown" Visibility="{c:Binding 'TabIndex!=Tag.Count-1', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+														<controls:IconButton cal:Message.Attach="RemoveListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.FilePaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="Close" BorderThickness="0" Background="Transparent" />
+													</WrapPanel>
+													<controls:DirectorySelector IsFolderPicker="False" Tag="{Binding Path=DataContext.FilePaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Path="{Binding Mode=OneTime}" cal:Message.Attach="[PathChanged]=[SetListElementValue($this.Tag,$this.TabIndex,$eventArgs)]" Margin="5,5,0,0" />
+												</DockPanel>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
 								
 								
 								
 								
-								<ItemsControl ItemsSource="{Binding DataErrorInfo.DirectoryPaths}">
-									<ItemsControl.ItemsPanel>
-										<ItemsPanelTemplate>
-											<StackPanel />
-										</ItemsPanelTemplate>
-									</ItemsControl.ItemsPanel>
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<controls:ErrorReminder Text="{Binding}" />
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-								<WrapPanel Margin="5,10,0,0">
-									<WrapPanel VerticalAlignment="Center">
-										<TextBlock Text="{Binding Path=DataContext.Localization.DirectoryPaths,Source={x:Reference Window}}" />
-										<TextBlock>：</TextBlock>
+									<ItemsControl ItemsSource="{Binding DataErrorInfo.DirectoryPaths}">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<StackPanel />
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<controls:ErrorReminder Text="{Binding}" />
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+									<WrapPanel Margin="5,10,0,0">
+										<WrapPanel VerticalAlignment="Center">
+											<TextBlock Text="{Binding Path=DataContext.Localization.DirectoryPaths,Source={x:Reference Window}}" />
+											<TextBlock>：</TextBlock>
+										</WrapPanel>
+										<controls:IconButton cal:Message.Attach="AddDirectoryPath($dataContext)" Icon="Add" Content="{Binding Path=DataContext.Localization.Add,Source={x:Reference Window}}" />
 									</WrapPanel>
-									<controls:IconButton cal:Message.Attach="AddDirectoryPath($dataContext)" Icon="Add" Content="{Binding Path=DataContext.Localization.Add,Source={x:Reference Window}}" />
-								</WrapPanel>
-								<ItemsControl ItemsSource="{Binding DirectoryPaths}" AlternationCount="{Binding DirectoryPaths.Count}">
-									<ItemsControl.ItemsPanel>
-										<ItemsPanelTemplate>
-											<StackPanel />
-										</ItemsPanelTemplate>
-									</ItemsControl.ItemsPanel>
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<DockPanel>
-												<WrapPanel DockPanel.Dock="Right">
-													<WrapPanel.Resources>
-														<Style TargetType="controls:IconButton">
-															<Setter Property="BorderThickness" Value="0" />
-															<Setter Property="Background" Value="Transparent" />
-														</Style>
-													</WrapPanel.Resources>
-													<controls:IconButton cal:Message.Attach="MoveUpListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.DirectoryPaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="ArrowUp" Visibility="{c:Binding 'TabIndex>0', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-													<controls:IconButton cal:Message.Attach="MoveDownListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.DirectoryPaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="ArrowDown" Visibility="{c:Binding 'TabIndex!=Tag.Count-1', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
-													<controls:IconButton cal:Message.Attach="RemoveListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.DirectoryPaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="Close" BorderThickness="0" Background="Transparent" />
-												</WrapPanel>
-												<controls:DirectorySelector Tag="{Binding Path=DataContext.DirectoryPaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Path="{Binding Mode=OneTime}" cal:Message.Attach="[PathChanged]=[SetListElementValue($this.Tag,$this.TabIndex,$this.Path)]" Margin="5,5,0,0" />
-											</DockPanel>
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-								
-								
-								
-								
-							</StackPanel>
+									<ItemsControl ItemsSource="{Binding DirectoryPaths}" AlternationCount="{Binding DirectoryPaths.Count}">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<StackPanel />
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<DockPanel>
+													<WrapPanel DockPanel.Dock="Right">
+														<WrapPanel.Resources>
+															<Style TargetType="controls:IconButton">
+																<Setter Property="BorderThickness" Value="0" />
+																<Setter Property="Background" Value="Transparent" />
+															</Style>
+														</WrapPanel.Resources>
+														<controls:IconButton cal:Message.Attach="MoveUpListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.DirectoryPaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="ArrowUp" Visibility="{c:Binding 'TabIndex>0', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+														<controls:IconButton cal:Message.Attach="MoveDownListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.DirectoryPaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="ArrowDown" Visibility="{c:Binding 'TabIndex!=Tag.Count-1', FalseToVisibility=Hidden,RelativeSource={RelativeSource Mode=Self}}" BorderThickness="0" Background="Transparent" />
+														<controls:IconButton cal:Message.Attach="RemoveListElement($this.Tag,$this.TabIndex)" Tag="{Binding Path=DataContext.DirectoryPaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Icon="Close" BorderThickness="0" Background="Transparent" />
+													</WrapPanel>
+													<controls:DirectorySelector Tag="{Binding Path=DataContext.DirectoryPaths,RelativeSource={RelativeSource AncestorType=ItemsControl}}" TabIndex="{Binding Path=(ItemsControl.AlternationIndex),RelativeSource={RelativeSource TemplatedParent}}" Path="{Binding Mode=OneTime}" cal:Message.Attach="[PathChanged]=[SetListElementValue($this.Tag,$this.TabIndex,$eventArgs)]" Margin="5,5,0,0" />
+												</DockPanel>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+								</StackPanel>
+							</ScrollViewer>
 							<DockPanel Visibility="{c:Binding 'ConditionMode==models:ConditionMode.Expression'}" Margin="0,20,0,0">
 								<controls:ErrorReminder DockPanel.Dock="Top" Text="{Binding DataErrorInfo.CustomExpression}" />
 								<TextBox Text="{Binding CustomExpression}" AcceptsReturn="True" TextWrapping="Wrap" AcceptsTab="True" VerticalContentAlignment="Top" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />

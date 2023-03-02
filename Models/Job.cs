@@ -289,6 +289,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 		}
 
 		private System.Collections.ObjectModel.ObservableCollection<string> _FilePaths;
+		[Newtonsoft.Json.JsonProperty]
 		public System.Collections.ObjectModel.ObservableCollection<string> FilePaths
 		{
 			get
@@ -304,6 +305,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 		}
 
 		private System.Collections.ObjectModel.ObservableCollection<string> _DirectoryPaths;
+		[Newtonsoft.Json.JsonProperty]
 		public System.Collections.ObjectModel.ObservableCollection<string> DirectoryPaths
 		{
 			get

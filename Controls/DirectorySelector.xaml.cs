@@ -71,12 +71,12 @@ namespace ColdShineSoft.CustomFileCopier.Controls
 			RoutedPropertyChangedEventArgs<string> args = new RoutedPropertyChangedEventArgs<string>(oldPath, newPath);
 			//this.Path = path;
 			args.RoutedEvent = PathChangedEvent;
-			//this.RaiseEvent(args);
-			System.Threading.Tasks.Task.Run(() =>
-			{
-				System.Threading.Thread.Sleep(100);
-				System.Windows.Application.Current.Dispatcher.Invoke(() => this.RaiseEvent(args));
-			});
+			this.RaiseEvent(args);
+			//System.Threading.Tasks.Task.Run(() =>
+			//{
+			//	System.Threading.Thread.Sleep(100);
+			//	System.Windows.Application.Current.Dispatcher.Invoke(() => this.RaiseEvent(args));
+			//});
 		}
 
 		public DirectorySelector()
