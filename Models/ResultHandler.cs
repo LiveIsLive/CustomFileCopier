@@ -17,9 +17,9 @@ namespace ColdShineSoft.CustomFileCopier.Models
 
 		public abstract string CheckTargetDirectoryValid(Models.Job job);
 
-		public abstract bool TargetDirectoryEmpty(Models.Job job);
+		public abstract System.Threading.Tasks.Task<bool> TargetDirectoryEmpty(Models.Job job);
 
-		public abstract void Execute(Models.Job job);
+		public abstract System.Threading.Tasks.Task Execute(Models.Job job);
 
 		static ResultHandler()
 		{

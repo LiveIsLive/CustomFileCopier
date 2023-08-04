@@ -36,12 +36,12 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			}
 		}
 
-		public override bool TargetDirectoryEmpty(Job job)
+		public override System.Threading.Tasks.Task<bool> TargetDirectoryEmpty(Job job)
 		{
-			return System.IO.Directory.EnumerateFileSystemEntries(job.TargetDirectoryPath).FirstOrDefault() == null;
+			return System.Threading.Tasks.Task<bool>.Run(() => System.IO.Directory.EnumerateFileSystemEntries(job.TargetDirectoryPath).FirstOrDefault() == null);
 		}
 
-		public override void Execute(Models.Job job)
+		public override async System.Threading.Tasks.Task Execute(Models.Job job)
 		{
 			foreach (Models.File sourceFile in job.SourceFiles)
 			{
@@ -64,12 +64,14 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 						}
 					try
 					{
-						System.IO.File.Copy(sourceFile.Path, targetFilePath, true);
+						System.IO.FileStream sourceStream = new System.IO.FileStream(sourceFile.Path,System.IO.FileMode.Open,System.IO.FileAccess.Read);
+						System.IO.FileStream targetStream = new System.IO.FileStream(targetFilePath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+						await sourceStream.CopyToAsync(targetStream);
 					}
 					catch (System.Exception exception)
 					{
 						sourceFile.Result = Models.CopyResult.Failure;
-						sourceFile.Error = exception.Message;
+						sourceFile.Error = exception?.InnerException?.Message??exception.Message;
 						//return exception.Message;
 						continue;
 					}

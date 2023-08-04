@@ -227,17 +227,17 @@ namespace ColdShineSoft.CustomFileCopier.Models
 			this.Files.ToString();
 		}
 
-		public void Run()
+		public async System.Threading.Tasks.Task Run()
 		{
 			this._TargetCompressFilePath = null;
 			this.Status = TaskStatus.CollectingFiles;
 			this.LoadFiles();
 			if (this.AutoRunWhenFilesFiltered)
-				this.CopyFiles();
+				await this.CopyFiles();
 			else this.Status = TaskStatus.Standby;
 		}
 
-		public void CopyFiles()
+		public async System.Threading.Tasks.Task CopyFiles()
 		{
 			this.Status = TaskStatus.Copying;
 			if (this.CompressToZipFile)
@@ -278,7 +278,7 @@ namespace ColdShineSoft.CustomFileCopier.Models
 				}
 			}
 			else foreach (Models.Job job in this.Jobs)
-					job.Execute();
+					await job.Execute();
 			this.Status = TaskStatus.Done;
 			this.OnDone();
 

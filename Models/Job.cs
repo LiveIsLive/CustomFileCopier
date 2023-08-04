@@ -427,9 +427,9 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 
 		//public int CopiedFileCount;   
 		//public long CopiedFileSize;
-		public void Execute()
+		public async System.Threading.Tasks.Task Execute()
 		{
-			this.ResultHandler.Execute(this);
+			await this.ResultHandler.Execute(this);
 		}
 
 		//private static System.IO.FileInfo[] _TestFileInfos;

@@ -35,13 +35,13 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			}
 		}
 
-		public override bool TargetDirectoryEmpty(Job job)
+		public override async System.Threading.Tasks.Task<bool> TargetDirectoryEmpty(Job job)
 		{
 			FluentFTP.FtpClient ftpClient = new FluentFTP.FtpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
 			try
 			{
-				ftpClient.Connect();
-				return ftpClient.GetNameListing(job.TargetDirectoryPath).Length == 0;
+				await ftpClient.ConnectAsync();
+				return (await ftpClient.GetNameListingAsync(job.TargetDirectoryPath)).Length == 0;
 			}
 			finally
 			{
@@ -49,12 +49,12 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			}
 		}
 
-		public override void Execute(Models.Job job)
+		public override async System.Threading.Tasks.Task Execute(Models.Job job)
 		{
 			FluentFTP.FtpClient ftpClient = new FluentFTP.FtpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
 			try
 			{
-				ftpClient.Connect();
+				await ftpClient.ConnectAsync();
 				foreach (Models.File sourceFile in job.SourceFiles)
 				{
 					sourceFile.Result = Models.CopyResult.Copying;
@@ -73,7 +73,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 					//	}
 					try
 					{
-						ftpClient.UploadFile(sourceFile.Path, targetFilePath, createRemoteDir: true);
+						await ftpClient.UploadFileAsync(sourceFile.Path, targetFilePath, createRemoteDir: true);
 					}
 					catch (System.Exception exception)
 					{
@@ -88,7 +88,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			}
 			finally
 			{
-				ftpClient.DisconnectAsync();
+				await ftpClient.DisconnectAsync();
 			}
 		}
 	}

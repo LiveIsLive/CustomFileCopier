@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Renci.SshNet.Async;
 
 namespace ColdShineSoft.CustomFileCopier.Handlers
 {
@@ -34,13 +35,13 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			}
 		}
 
-		public override bool TargetDirectoryEmpty(Job job)
+		public override async System.Threading.Tasks.Task<bool> TargetDirectoryEmpty(Job job)
 		{
 			Renci.SshNet.SftpClient sftpClient = new Renci.SshNet.SftpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
 			try
 			{
 				sftpClient.Connect();
-				return sftpClient.ListDirectory(job.TargetDirectoryPath).All(d => d.Name.Trim('.') == "");
+				return (await sftpClient.ListDirectoryAsync(job.TargetDirectoryPath)).All(d => d.Name.Trim('.') == "");
 			}
 			finally
 			{
@@ -48,7 +49,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			}
 		}
 
-		public override void Execute(Models.Job job)
+		public override async System.Threading.Tasks.Task Execute(Models.Job job)
 		{
 			Renci.SshNet.SftpClient sftpClient = new Renci.SshNet.SftpClient(job.TargetServer, job.TargetPort, job.TargetUserName, job.TargetPassword);
 			try
@@ -72,7 +73,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 						}
 					try
 					{
-						this.CopyFile(sftpClient, sourceFile.Path, targetFilePath);
+						await this.CopyFile(sftpClient, sourceFile.Path, targetFilePath);
 					}
 					catch (System.Exception exception)
 					{
@@ -122,10 +123,10 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 		}
 
 
-		public void CopyFile(Renci.SshNet.SftpClient sftpClient, string localFilePath, string remoteFilePath)
+		public async System.Threading.Tasks.Task CopyFile(Renci.SshNet.SftpClient sftpClient, string localFilePath, string remoteFilePath)
 		{
 			System.IO.Stream stream = System.IO.File.OpenRead(localFilePath);
-			sftpClient.UploadFile(stream, remoteFilePath, true);
+			await sftpClient.UploadAsync(stream, remoteFilePath, true);
 			stream.Close();
 		}
 	}
