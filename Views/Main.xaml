@@ -98,28 +98,30 @@
 			</controls:SaveFileSplitButton>
 			<controls:OpenFileSplitButton DockPanel.Dock="Right" cal:Message.Attach="[OpenFile]=[Open($this.SelectedFilePath)]" Kind="FolderOpened" Margin="10,0,0,0" Text="{Binding Localization.Open}" BorderThickness="0">
 				<controls:OpenFileSplitButton.Items>
-					<StackPanel>
-						<mah:MetroHeader Content="{Binding Localization.RecentFiles}" Margin="5" FontWeight="Bold" />
-						<ItemsControl ItemsSource="{Binding RecentFiles}">
-							<ItemsControl.ItemsPanel>
-								<ItemsPanelTemplate>
-									<StackPanel />
-								</ItemsPanelTemplate>
-							</ItemsControl.ItemsPanel>
-							<ItemsControl.ItemTemplate>
-								<DataTemplate>
-									<MenuItem cal:Message.Attach="Open($dataContext)" cal:Action.TargetWithoutContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}">
-										<MenuItem.Header>
-											<DockPanel>
-												<controls:IconButton DockPanel.Dock="Right" cal:Message.Attach="RemoveRecentFile($dataContext)" Icon="Close" Margin="20,0,0,0" Padding="0" BorderThickness="0" Background="Transparent" />
-												<TextBlock Text="{Binding}" VerticalAlignment="Center" />
-											</DockPanel>
-										</MenuItem.Header>
-									</MenuItem>
-								</DataTemplate>
-							</ItemsControl.ItemTemplate>
-						</ItemsControl>
-					</StackPanel>
+					<DockPanel>
+						<mah:MetroHeader DockPanel.Dock="Top" Content="{Binding Localization.RecentFiles}" Margin="5" FontWeight="Bold" />
+						<ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="200">
+							<ItemsControl ItemsSource="{Binding RecentFiles}">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<StackPanel />
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<MenuItem cal:Message.Attach="Open($dataContext)" cal:Action.TargetWithoutContext="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType=Window}}">
+											<MenuItem.Header>
+												<DockPanel>
+													<controls:IconButton DockPanel.Dock="Right" cal:Message.Attach="RemoveRecentFile($dataContext)" Icon="Close" Margin="20,0,0,0" Padding="0" BorderThickness="0" Background="Transparent" />
+													<TextBlock Text="{Binding}" VerticalAlignment="Center" />
+												</DockPanel>
+											</MenuItem.Header>
+										</MenuItem>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</ScrollViewer>
+					</DockPanel>
 				</controls:OpenFileSplitButton.Items>
 			</controls:OpenFileSplitButton>
 		</ToolBar>

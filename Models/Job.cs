@@ -566,7 +566,7 @@ public class CustomFileFilter:ColdShineSoft.CustomFileCopier.Models.FileFilter
 						}
 						if (!this.InSourceDirectory(path))
 						{
-							this.DataErrorInfo.DirectoryPaths.Add(path);
+							this.DataErrorInfo.DirectoryPaths.Add(string.Format(localization.ValidationError[ValidationError.DirectoryNotInSourceDirectoy],path));
 							result = false;
 						}
 					}
