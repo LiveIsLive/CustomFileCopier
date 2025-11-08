@@ -19,11 +19,11 @@ namespace ColdShineSoft.CustomFileCopier.Models
 						new Operator<string>(101,"Contains",(souce,comparison)=>souce.Contains(comparison)),
 						new Operator<string>(102,"NotContains",(souce,comparison)=>!souce.Contains(comparison)),
 						new Operator<string>(103,"Equals",(souce,comparison)=>souce.Equals(comparison,System.StringComparison.OrdinalIgnoreCase)),
-						new Operator<string>(103,"NotEquals",(souce,comparison)=>!souce.Equals(comparison,System.StringComparison.OrdinalIgnoreCase)),
-						new Operator<string>(104,"StartsWith",(souce,comparison)=>souce.StartsWith(comparison)),
-						new Operator<string>(105,"NotStartsWith",(souce,comparison)=>!souce.StartsWith(comparison)),
-						new Operator<string>(106,"EndsWith",(souce,comparison)=>souce.EndsWith(comparison)),
-						new Operator<string>(107,"NotEndsWith",(souce,comparison)=>!souce.EndsWith(comparison)),
+						new Operator<string>(104,"NotEquals",(souce,comparison)=>!souce.Equals(comparison,System.StringComparison.OrdinalIgnoreCase)),
+						new Operator<string>(105,"StartsWith",(souce,comparison)=>souce.StartsWith(comparison)),
+						new Operator<string>(106,"NotStartsWith",(souce,comparison)=>!souce.StartsWith(comparison)),
+						new Operator<string>(107,"EndsWith",(souce,comparison)=>souce.EndsWith(comparison)),
+						new Operator<string>(108,"NotEndsWith",(souce,comparison)=>!souce.EndsWith(comparison)),
 						new RegularExpressionOperator<string>(199)
 					};
 				return _StringOperators;

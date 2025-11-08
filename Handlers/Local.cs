@@ -30,7 +30,7 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 				System.IO.Directory.CreateDirectory(job.TargetDirectoryPath);
 				return null;
 			}
-			catch(System.Exception exception)
+			catch (System.Exception exception)
 			{
 				return exception.Message;
 			}
@@ -47,34 +47,40 @@ namespace ColdShineSoft.CustomFileCopier.Handlers
 			{
 				//if (sourceFile.Result != Models.CopyResult.Success)
 				//{
-					sourceFile.Result = Models.CopyResult.Copying;
-					string targetFilePath = job.GetTargetAbsoluteFilePath(sourceFile.Path);
-					string targetDirectory = System.IO.Path.GetDirectoryName(targetFilePath);
-					if (!System.IO.Directory.Exists(targetDirectory))
-						try
-						{
-							System.IO.Directory.CreateDirectory(targetDirectory);
-						}
-						catch (System.Exception exception)
-						{
-							sourceFile.Result = Models.CopyResult.Failure;
-							sourceFile.Error = exception.Message;
-							//return exception.Message;
-							continue;
-						}
+				sourceFile.Result = Models.CopyResult.Copying;
+				string targetFilePath = job.GetTargetAbsoluteFilePath(sourceFile.Path);
+				string targetDirectory = System.IO.Path.GetDirectoryName(targetFilePath);
+				if (!System.IO.Directory.Exists(targetDirectory))
 					try
 					{
-						System.IO.FileStream sourceStream = new System.IO.FileStream(sourceFile.Path,System.IO.FileMode.Open,System.IO.FileAccess.Read);
-						System.IO.FileStream targetStream = new System.IO.FileStream(targetFilePath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
-						await sourceStream.CopyToAsync(targetStream);
+						System.IO.Directory.CreateDirectory(targetDirectory);
 					}
 					catch (System.Exception exception)
 					{
 						sourceFile.Result = Models.CopyResult.Failure;
-						sourceFile.Error = exception?.InnerException?.Message??exception.Message;
+						sourceFile.Error = exception.Message;
 						//return exception.Message;
 						continue;
 					}
+				try
+				{
+					System.IO.FileStream sourceStream = new System.IO.FileStream(sourceFile.Path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+					System.IO.FileStream targetStream = new System.IO.FileStream(targetFilePath, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+					await sourceStream.CopyToAsync(targetStream);
+					try
+					{
+						sourceStream.Close();
+					}
+					catch { }
+					targetStream.Close();
+				}
+				catch (System.Exception exception)
+				{
+					sourceFile.Result = Models.CopyResult.Failure;
+					sourceFile.Error = exception?.InnerException?.Message ?? exception.Message;
+					//return exception.Message;
+					continue;
+				}
 				//}
 				sourceFile.Result = Models.CopyResult.Success;
 				job.Task.CopiedFileCount++;
